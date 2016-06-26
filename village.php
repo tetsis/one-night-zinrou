@@ -332,6 +332,53 @@ class Village {
 
     //通知画面を表示
     public function displayNotification($socket, $id) {
+        $player = getPlayer($id);
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'init')));
+        sendMessage($txData, $socket);
+        switch ($player->position) {
+            case WEREWOLF:
+                $buddyName = array();
+                foreach ($this->playerArray as $i) {
+                    if (($player->position == WEREWOLF) && ($player->id != $id)) {
+                        $buddyName[] = $player->name;
+                    }
+                }
+                if (empty($buddyName) == false) {
+                    foreach ($buddyName as $i) {
+                        $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setBuddy', 'name'=>$i)));
+                        sendMessage($txData, $socket);
+                    }
+                }
+                else {
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setBuddy', 'name'=>null)));
+                    sendMessage($txData, $socket);
+                }
+                break;
+            case FORTUNETELLER:
+                if ($player->selectionId != -1) {
+                    $selectionPlayer = getPlayer($player->selectionId);
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position)));
+                    sendMessage($txData, $socket);
+                }
+                else {
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setResultOfField', 'position1'=>$this->fieldPosition1, 'position2'=>$this->fieldPosition2)));
+                    sendMessage($txData, $socket);
+                }
+                break;
+            case THIEF:
+                if ($player->selectionId != -1) {
+                    $selectionPlayer = getPlayer($player->selectionId);
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position)));
+                    sendMessage($txData, $socket);
+                }
+                else {
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setNotSwapped')));
+                    sendMessage($txData, $socket);
+                }
+                break;
+        }
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'display', 'villageId'=>$this->villageId, 'id'=>$id, 'position'=>$player->position)));
+        sendMessage($txData, $socket);
     }
 
 

@@ -19,14 +19,14 @@ class Player {
         $this->name = $name;
         $this->socket = $socket;
         $this->point = 0;
-        $this->positionId = -1;
+        $this->position = -1;
         $this->gameStartFlag = false;
         $this->actionFlag = false;
         $this->daytimeFlag = false;
         $this->talksEndFlag = false;
         $this->resultFlag = false;
         $this->winnerOrLoser = -1;
-        $this->slectionId = -1;
+        $this->selectionId = -1;
     }
 }
 ?>
