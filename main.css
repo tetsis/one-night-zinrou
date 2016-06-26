@@ -1,0 +1,43 @@
+* {
+    font-size: 50px;
+}
+
+input {
+    font-size: 100px;
+}
+
+input[type="text"] {
+    width: 90%;
+    padding: 50px 0px;
+}
+
+input[type="button"] {
+    padding: 50px;
+}
+
+body {
+    width: 800px;
+    margin: 0 auto;
+}
+
+div {
+    //border: solid;
+    text-align: center;
+}
+
+table {
+    margin: 0 auto;
+}
+
+td {
+    vertical-align: top;
+}
+
+.border {
+    border: solid;
+}
+
+.participant {
+    font-size: 50px;
+    padding: 10px;
+}
