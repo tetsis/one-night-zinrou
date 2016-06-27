@@ -135,13 +135,13 @@ class VillageManagement {
         $password = $messageArray->password;
         $village = $this->getVillage($villageId);
         if ($village != null) {
-            $isCorrect = true;
+            $correctFlag = true;
             if ($village->password != '') {
-                if ($village->password !== password) {
-                    $isCorrect = false;
+                if ($village->password !== $password) {
+                    $correctFlag = false;
                 }
             }
-            if ($isCorrect == true) {
+            if ($correctFlag == true) {
                 $village->participantArray[] = $socket;
                 $village->numberOfParticipant++;
                 $village->goToParticipationFromLobby($socket, $villageId, $villageName, $spectatorFlag);
@@ -192,18 +192,20 @@ class VillageManagement {
     //socketで「戻る」をクリック
     public function clickBackInParticipation($socket, $messageArray) {
         $village = getVillage($villageId);
-        $foundSocket = array_search($socket, $village->participantArray);
-        if ($foundSocket != false) {
-            unset($village->participantArray[$foundSocket]);
-            $village->numberOfParticipant--;
-            if ($village->numberOfParticipant == 0) {
-                echo "$this->villageArray";
-                $foundVillage = array_search($village, $this->villageArray);
-                unset($this->villageArray[$foundVillage]);
-                echo "$this->villageArray";
+        if ($village != null) {
+            $foundSocket = array_search($socket, $village->participantArray);
+            if ($foundSocket != false) {
+                unset($village->participantArray[$foundSocket]);
+                $village->numberOfParticipant--;
+                if ($village->numberOfParticipant == 0) {
+                    echo "$this->villageArray";
+                    $foundVillage = array_search($village, $this->villageArray);
+                    unset($this->villageArray[$foundVillage]);
+                    echo "$this->villageArray";
+                }
             }
+            $this->goToTopFromParticipation($socket);
         }
-        $this->goToTopFromParticipation($socket);
     }
 
     //socketをトップ画面に遷移
@@ -219,43 +221,45 @@ class VillageManagement {
         $attribute = $messageArray->attribute;
         $id = $messageArray->id;
         $village = $this->getVillage($villageId);
-        switch ($attribute) {
-            case PLAYER:
-                $player = $village->getPlayer($id);
-                $foundPlayer = array_search($player, $village->playerArray);
-                if ($foundPlayer != false) {
-                    unset($village->playerArray[$foundPlayer]);
-                }
-                break;
-            case SPECTATOR:
-                $spectator = $village->getSpectator($id);
-                $foundSpectator = array_search($spectator, $village->spectatorArray);
-                if ($foundSpectator != false) {
-                    unset($village->spectatorArray[$foundSpectator]);
-                }
-                break;
-        }
-        $foundSocket = array_search($socket, $village->participantArray);
-        if ($foundSocket != false) {
-            unset($village->participantArray[$foundSocket]);
-            $village->numberOfParticipant--;
-            if ($village->numberOfParticipant == 0) {
-                echo "$this->villageArray";
-                $foundVillage = array_search($village, $this->villageArray);
-                unset($this->villageArray[$foundVillage]);
-                echo "$this->villageArray";
+        if ($village != null) {
+            switch ($attribute) {
+                case PLAYER:
+                    $player = $village->getPlayer($id);
+                    $foundPlayer = array_search($player, $village->playerArray);
+                    if ($foundPlayer != false) {
+                        unset($village->playerArray[$foundPlayer]);
+                    }
+                    break;
+                case SPECTATOR:
+                    $spectator = $village->getSpectator($id);
+                    $foundSpectator = array_search($spectator, $village->spectatorArray);
+                    if ($foundSpectator != false) {
+                        unset($village->spectatorArray[$foundSpectator]);
+                    }
+                    break;
             }
-            else {
-                foreach ($village->playerArray as $i) {
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>PLAYER, 'id'=>$i->id)));
-                    sendMessage($txData, $socket);
+            $foundSocket = array_search($socket, $village->participantArray);
+            if ($foundSocket != false) {
+                unset($village->participantArray[$foundSocket]);
+                $village->numberOfParticipant--;
+                if ($village->numberOfParticipant == 0) {
+                    echo "$this->villageArray";
+                    $foundVillage = array_search($village, $this->villageArray);
+                    unset($this->villageArray[$foundVillage]);
+                    echo "$this->villageArray";
                 }
-                foreach ($village->spectatorArray as $i) {
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>SPECTATOR, 'id'=>$i->id)));
-                    sendMessage($txData, $socket);
+                else {
+                    foreach ($village->playerArray as $i) {
+                        $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>PLAYER, 'id'=>$i->id)));
+                        sendMessage($txData, $socket);
+                    }
+                    foreach ($village->spectatorArray as $i) {
+                        $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>SPECTATOR, 'id'=>$i->id)));
+                        sendMessage($txData, $socket);
+                    }
                 }
+                $this->goToTopFromWaiting($socket);
             }
-            $this->goToTopFromWaiting($socket);
         }
     }
 
