@@ -491,22 +491,70 @@ class Village {
             }
         }
         if ($attribute == SPECTATOR) {
-            //ここから
+            foreach ($this->playerArray as $i) {
+                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setPositionOfPlayer', 'id'=>$i->id, 'position'=>$i->position)));
+                sendMessage($txData, $socket);
+                if ($i->position == FORTUNETELLER) {
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+                    sendMessage($txData, $socket);
+                }
+                else if ($i->position == THIEF) {
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+                    sendMessage($txData, $socket);
+                }
+            }
         }
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'display', 'villageId'=>$this->villageId, 'attribute'=>$attribute, 'id'=>$id)));
+        sendMessage($txData, $socket);
     }
 
 
     ////Execution////
     //「結果発表へ」がクリックされた
     public function clickResult($messageArray) {
+        $id = $messageArray->id;
+        $player = getPlayer($id);
+        if ($player != null) {
+            $player->resultFlag = true;
+
+            foreach ($this->playerArray as $i) {
+                $sum = 0;
+                if ($i->resultFlag == true) {
+                    $sum++;
+                }
+            }
+            if ($sum == count($playerArray)) {
+                $this->judgeWinner();
+                $this->state = RESUT;
+                foreach ($this->playerArray as $i) {
+                    $this->goToResultFromExecution($i->socket, PLAYER);
+                }
+                foreach ($this->spectatorArray as $i) {
+                    $this->goToResultFromExecution($i->socket, SPECTATOR);
+                }
+            }
+        }
     }
 
     //結果発表画面に遷移
-    public function goToResultFromExecution($socket, $attribute, $id) {
+    public function goToResultFromExecution($socket, $attribute) {
+        $this->displayResult($socket, $attribute);
     }
 
     //吊る人選択画面を表示
     public function displayExecution($socket, $attribute, $id) {
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'init')));
+        sendMessage($txData, $socket);
+        if ($attribute == PLAYER) {
+            foreach ($this->playerArray as $i) {
+                if ($i->id != $id) {
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name)));
+                    sendMessage($txData, $socket);
+                }
+            }
+        }
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'display', 'villageId'=>$this->villageId, 'attribute'=>$attribute, 'id'=>$id)));
+        sendMessage($txData, $socket);
     }
 
     //勝者を判定
