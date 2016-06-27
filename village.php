@@ -27,8 +27,8 @@ class Village {
         $this->password = $password;
         $this->spectatorFlag = $spectatorFlag;
         global $positionArray;
-        for ($i = 0; $i < count($positionArray); $i++) {
-            $this->numberOfPositionArray[$positionArray[$i]] = 0;
+        foreach ($positionArray as $i) {
+            $this->numberOfPositionArray[$i] = 0;
         }
         $this->state = PARTICIPATION;
 
@@ -241,8 +241,8 @@ class Village {
         sendMessage($txData, $socket);
         foreach ($this->playerArray as $i) {
             if ($i->gameStartFlag == true) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'gameStart', 'id'=>$i->id)));
-            sendMessage($txData, $socket);
+                $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'gameStart', 'id'=>$i->id)));
+                sendMessage($txData, $socket);
             }
         }
     }
@@ -314,7 +314,7 @@ class Village {
             }
             if ($sum == count($playerArray)) {
                 $this->state = DAYTIME;
-                $endingTime = new DateTime('+'. $this->talkingTime. ' minutes')
+                $this->endingTime = new DateTime('+'. $this->talkingTime. ' minutes')
                 foreach ($this->playerArray as $i) {
                     $this->goToDaytimeFromNotification($i->socket, $i->id);
                 }
@@ -327,7 +327,7 @@ class Village {
 
     //昼の画面に遷移
     public function goToDaytimeFromNotification($socket, $id) {
-        $this->displayDaytime($socket, $id);
+        $this->displayDaytime($socket, PLAYER, $id);
     }
 
     //通知画面を表示
@@ -385,28 +385,114 @@ class Village {
     ////Night////
     //昼の画面に遷移
     public function goToDaytimeFromNight($socket) {
+        $this->displayDaytime($socket, SPECTATOR, $id);
     }
 
     //夜の画面を表示
     public function displayNight($socket) {
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'init')));
+        sendMessage($txData, $socket);
+        foreach ($this->playerArray as $i) {
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setPositionOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position)));
+            sendMessage($txData, $socket);
+            if ($i->position == FORTUNETELLER) {
+                if ($i->actionFlag == true) {
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+                    sendMessage($txData, $socket);
+                }
+            }
+            else if ($i->position == THIEF) {
+                if ($i->actionFlag == true) {
+                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+                    sendMessage($txData, $socket);
+                }
+            }
+        }
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'display')));
+        sendMessage($txData, $socket);
     }
 
 
     ////Daytime////
     //「話し合い延長」がクリックされた
     public function clickExtension($messageArray) {
+        $endingTime = new DateTime('+1 minutes')
+            foreach ($this->playerArray as $i) {
+                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1)));
+                sendMessage($txData, $i->socket);
+            }
+        foreach ($this->spectatorArray as $i) {
+                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1)));
+                sendMessage($txData, $i->socket);
+        }
     }
 
     //「話し合い終了」がクリックされた
     public function clickTalksEnd($messageArray) {
+        $id = $messageArray->id;
+        $player = getPlayer($id);
+        if ($player != null) {
+            $player->talksEndFlag = true;
+            foreach ($this->playerArray as $i) {
+                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalksEnd', 'id'=>$id)));
+                sendMessage($txData, $i->socket);
+            }
+            foreach ($this->spectatorArray as $i) {
+                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalksEnd', 'id'=>$id)));
+                sendMessage($txData, $i->socket);
+            }
+
+            foreach ($this->playerArray as $i) {
+                $sum = 0;
+                if ($i->talksEndFlag == true) {
+                    $sum++;
+                }
+            }
+            if ($sum == count($playerArray)) {
+                $this->state = EXECUTION;
+                foreach ($this->playerArray as $i) {
+                    $this->goToExecutionFromDaytime($i->socket, PLAYER, $i->id);
+                }
+                foreach ($this->spectatorArray as $i) {
+                    $this->goToExecutionFromDaytime($i->socket, SPECTATOR, $i-id);
+                }
+            }
+        }
     }
 
     //吊る人選択画面に遷移
     public function goToExecutionFromDaytime($socket, $attribute, $id) {
+        displayExecution($socket, $attribute, $id);
     }
 
     //昼の画面を表示
     public function displayDaytime($socket, $attribute, $id) {
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'init')));
+        sendMessage($txData, $socket);
+        foreach ($this->playerArray as $i) {
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name)));
+            sendMessage($txData, $socket);
+        }
+        foreach ($this->spectatorArray as $i) {
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setSpectator', 'id'=>$i->id, 'name'=>$i->name)));
+            sendMessage($txData, $socket);
+        }
+        global $positionArray;
+        foreach ($positionArray as $i) {
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setNumberOfPosition', 'position'=>$i, 'number'=>$this->numberOfPositionArray[$i])));
+            sendMessage($txData, $socket);
+        }
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>$this->talkingTime)));
+        sendMessage($txData, $socket);
+        foreach ($this->playerArray as $i) {
+            if ($i->gameStartFlag == true) {
+                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'talksEnd', 'id'=>$i->id)));
+                sendMessage($txData, $socket);
+            }
+        }
+        if ($attribute == SPECTATOR) {
+            //ここから
+        }
     }
 
 
