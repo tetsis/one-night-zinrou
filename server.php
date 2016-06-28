@@ -12,7 +12,7 @@ define('NOTIFICATION', 8);
 define('NIGHT', 9);
 define('DAYTIME', 10);
 define('EXECUTION', 11);
-define('RESUT', 12);
+define('RESULT', 12);
 
 define('VILLAGER', 0);
 define('WEREWOLF', 1);
@@ -215,7 +215,7 @@ while (true) {
                                 }
                             }
                             break;
-                        case RESUT:
+                        case RESULT:
                             if ($message == 'nextNight') {
                                 $villageId = $messageArray->villageId;
                                 $village = getVillage($villageId);

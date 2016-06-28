@@ -336,7 +336,7 @@ class VillageManagement {
                     case EXECUTION:
                         $this->goToExecutionFromConnection($socket, $villageId, $attribute, $id);
                         break;
-                    case RESUT:
+                    case RESULT:
                         $this->goToResultFromConnection($socket, $villageId, $attribute);
                         break;
                 }
