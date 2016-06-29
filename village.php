@@ -512,9 +512,12 @@ class Village {
     //「結果発表へ」がクリックされた
     public function clickResult($messageArray) {
         $id = $messageArray->id;
+        $hangingId = $messageArray->hangingId;
         $player = $this->getPlayer($id);
         if ($player != null) {
             $player->resultFlag = true;
+            $player->hangingId = hangingId;
+            $player->hangingNumber++:;
 
             $sum = 0;
             foreach ($this->playerArray as $i) {
@@ -524,6 +527,10 @@ class Village {
             }
             if ($sum == count($playerArray)) {
                 $this->judgeWinner();
+                foreach ($this->playerArray as $i) {
+                    $i->winnerOrLoser = isWinner($i->position, $this->winnerSide);
+                    $i->point = getPoint($i->position, $this->winnerSide);
+                }
                 $this->state = RESULT;
                 foreach ($this->playerArray as $i) {
                     $this->goToResultFromExecution($i->socket, PLAYER);
@@ -571,14 +578,152 @@ class Village {
                 }
             }
         }
+        //最も多く指名されたプレイヤーを抜き出す
+        $hangingArray = array();
+        $max foreach ($playerArray as $i) {
+        foreach ($playerArray as $i) {
+            if ($i->hangingNumber > $max) {
+                $max = $i->hangingNumber;
+            }
+        }
+        $maxPlayerArray = array();
+        foreach ($playerArray as $i) {
+            if ($i->hangingNumber >= $max) {
+                $maxPlayerArray[] = $i;
+            }
+        }
+
+        //maxは1？
+        if ($max == 1) {
+            //プレイヤーの中に人狼はいる？
+            $flag = false;
+            foreach ($playerArray as $i) {
+                if ($i->position == WEREWOLF) {
+                    $flag = true;
+                    break;
+                }
+            }
+            //いる場合は人狼サイドの勝利
+            if ($flag == true) {
+                $this->winnerSide = WEREWOLF;
+            }
+            //いない場合は村人サイドの勝利
+            else {
+                $this->winnerSide = VILLAGER;
+            }
+        }
+        else {
+            //最も多く指名されたプレイヤーの中にてるてるはいる？
+            $flag = false;
+            foreach ($maxPlayerArray as $i) {
+                if ($i->position == HANGING) {
+                    $flag = true;
+                    break;
+                }
+            }
+            //いる場合はてるてるサイドの勝利
+            if ($flag == true) {
+                $this->winnerSide = HANGING;
+            }
+            else {
+                //最も多く指名されたプレイヤーの中に人狼はいる？
+                $flag = false;
+                foreach ($maxPlayerArray as $i) {
+                    if ($i->position == WEREWOLF) {
+                        $flag = true;
+                        break;
+                    }
+                }
+                //いる場合は村人サイドの勝利
+                if ($flag == true) {
+                    $this->winnerSide = VILLAGER;
+                }
+                //いない場合は人狼サイドの勝利
+                else {
+                    $this->winnerSide = WEREWOLF;
+                }
+            }
+        }
     }
 
     //役職が勝者サイドか
     public function isWinner($position, $winnerSide) {
+        $flag = false;
+        switch ($position) {
+            case VILLAGER:
+            case FORTUNETELLER:
+            case THIEF:
+                if ($winnerSide == VILLAGER) {
+                    $flag = true;
+                }
+                break;
+            case WEREWOLF:
+            case MADMAN:
+                if ($winnerSide == WEREWOLF) {
+                    $flag = true;
+                }
+                break;
+            case HANGING:
+                if ($winnerSide == HANGING) {
+                    $flag = true;
+                }
+                break;
+        }
+        return $flag;
     }
 
     //ポイントを計算
-    public function getPointOfPosition($position, $winnerSide) {
+    public function getPoint($position, $winnerSide) {
+        $point = 0;
+        switch ($winnerSide) {
+            case VILLAGER:
+                switch ($position) {
+                    case FORTUNETELLER:
+                        $point = 2;
+                        break;
+                    case VILLAGER:
+                    case THIEF:
+                        $point = 1;
+                        break;
+                    case WEREWOLF:
+                    case MADMAN:
+                    case HANGING:
+                        $point = 0;
+                        break;
+                }
+                break;
+            case WEREWOLF:
+                switch ($position) {
+                    case WEREWOLF:
+                    case MADMAN:
+                        $point = 2;
+                        break;
+                    case VILLAGER:
+                    case THIEF:
+                    case HANGING:
+                        $point = 0;
+                        break;
+                    case FORTUNETELLER:
+                        $point = -1;
+                        break;
+                }
+                break;
+            case HANGING:
+                switch ($position) {
+                    case HANGING:
+                        $point = 3;
+                        break;
+                    case VILLAGER:
+                    case WEREWOLF:
+                    case FORTUNETELLER:
+                    case THIEF:
+                    case MADMAN:
+                        $point = 0;
+                        break;
+                }
+                break;
+        }
+        return $point;
     }
 
 
