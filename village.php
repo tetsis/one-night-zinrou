@@ -204,7 +204,7 @@ class Village {
         $currentPositionArray = array();
         global $positionArray;
         foreach ($positionArray as $i) {
-            for ($j = 0; $j < $this->numberOfPositionArray[$i]); $j++) {
+            for ($j = 0; $j < $this->numberOfPositionArray[$i]; $j++) {
                 $currentPositionArray[] = $i;
             }
         }
@@ -315,7 +315,7 @@ class Village {
             }
             if ($sum == count($$this->playerArray)) {
                 $this->state = DAYTIME;
-                $this->endingTime = new DateTime('+'. $this->talkingTime. ' minutes')
+                $this->endingTime = new DateTime('+'. $this->talkingTime. ' minutes');
                 foreach ($this->playerArray as $i) {
                     $this->goToDaytimeFromNotification($i->socket, $i->id);
                 }
@@ -519,7 +519,7 @@ class Village {
         if ($player != null) {
             $player->resultFlag = true;
             $player->hangingId = hangingId;
-            $player->hangingNumber++:;
+            $player->hangingNumber++;
 
             $sum = 0;
             foreach ($this->playerArray as $i) {
@@ -582,7 +582,7 @@ class Village {
         }
         //最も多く指名されたプレイヤーを抜き出す
         $hangingArray = array();
-        $max foreach ($playerArray as $i) {
+        $max = 0;
         foreach ($playerArray as $i) {
             if ($i->hangingNumber > $max) {
                 $max = $i->hangingNumber;
@@ -590,7 +590,7 @@ class Village {
         }
         $maxPlayerArray = array();
         foreach ($playerArray as $i) {
-            if ($i->hangingNumber >= $max) {
+            if ($i->hangingNumber == $max) {
                 $maxPlayerArray[] = $i;
             }
         }
@@ -777,15 +777,15 @@ class Village {
             sendMessage($txData, $socket);
         }
         foreach ($playerArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i~>name, 'position'=>$i->position, 'point'=>$i->point)));
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position, 'point'=>$i->point)));
             sendMessage($txData, $socket);
         }
         foreach ($resultOfFortunetellerArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i~>selectionId)));
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
             sendMessage($txData, $socket);
         }
         foreach ($resultOfThiefArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i~>selectionId)));
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
             sendMessage($txData, $socket);
         }
         $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'display', 'villageId'=>$villageId, 'attribute'=>$attribute, 'side'=>$this->winnerSide)));
