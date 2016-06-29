@@ -243,6 +243,8 @@ class Village {
                 sendMessage($txData, $socket);
             }
         }
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'display', 'villageId'=>$this->villageId, 'villageName'=>$this->villageName, 'id'=>$id, 'position'=>$player->position)));
+        sendMessage($txData, $socket);
     }
 
 
@@ -730,27 +732,64 @@ class Village {
     ////Result////
     //「次の夜へ」がクリックされた
     public function clickNextNight() {
+        $this->startGame();
+        foreach ($this->playerArray as $i) {
+            $this->goToActionFromResult($i->socket, $i->id);
+        }
+        foreach ($this->spectatorArray as $i) {
+            $this->goToNightFromResult($i->socket);
+        }
     }
 
     //「終了」がクリックされた
     public function clickExit() {
+        $this->state = WAITING;
+        foreach ($playerArray as $i) {
+            $this->goToWaitingFromResult($i->socket, PLAYER, $i->id);
+        }
+        foreach ($spectatorArray as $i) {
+            $this->goToWaitingFromResult($i->socket, SPECTATOR, $i->id);
+        }
     }
 
     //行動画面に遷移
     public function goToActionFromResult($socket, $id) {
+        $this->displayAction($socket, $id);
     }
 
     //夜の画面に遷移
-    public function goToNightFromResult($socket, $id) {
+    public function goToNightFromResult($socket) {
+        $this->displayNight($socket);
     }
 
     //待機画面に遷移
     public function goToWaitingFromResult($socket, $attribute, $id) {
+        $this->displayWaiting($socket, $attribute, $id);
     }
 
     //結果発表画面を表示
-    public function displayResult($socket, $attribute) {
+    public function displayResult($socket, $attribute, $id) {
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'init')));
+        sendMessage($txData, $socket);
+        if ($attribute == PLAYER) {
+            $player = $this->getPlayer($id);
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setWinnerOrLoser', 'winnerOrLoser'=>$player->winnerOrLoser)));
+            sendMessage($txData, $socket);
+        }
+        foreach ($playerArray as $i) {
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i~>name, 'position'=>$i->position, 'point'=>$i->point)));
+            sendMessage($txData, $socket);
+        }
+        foreach ($resultOfFortunetellerArray as $i) {
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i~>selectionId)));
+            sendMessage($txData, $socket);
+        }
+        foreach ($resultOfThiefArray as $i) {
+            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i~>selectionId)));
+            sendMessage($txData, $socket);
+        }
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'display', 'villageId'=>$villageId, 'attribute'=>$attribute, 'side'=>$this->winnerSide)));
+        sendMessage($txData, $socket);
     }
 }
-
 ?>
