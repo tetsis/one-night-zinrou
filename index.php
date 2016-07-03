@@ -215,15 +215,21 @@
 役職<br/>
 <table>
     <tr>
+        <td>村人：</td>
         <td><div id="scrn_numberOfVillagerInDaytime"></div></td>
+        <td>  人狼：</td>
         <td><div id="scrn_numberOfWerewolfInDaytime"></div></td>
     </tr>
     <tr>
+        <td>占い師：</td>
         <td><div id="scrn_numberOfFortunetellerInDaytime"></div></td>
+        <td>  怪盗：</td>
         <td><div id="scrn_numberOfThiefInDaytime"></div></td>
     </tr>
     <tr>
+        <td>狂人：</td>
         <td><div id="scrn_numberOfMadmanInDaytime"></div></td>
+        <td>  てるてる：</td>
         <td><div id="scrn_numberOfHangingInDaytime"></div></td>
     </tr>
 </table>
