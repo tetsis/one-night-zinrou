@@ -6,8 +6,8 @@ var STATE = {
     'PARTICIPATION': 4,
     'WAITING': 5,
     'CONFIGURE': 6,
-    'ACTION': 7
-    'NOTIFICATION': 8
+    'ACTION': 7,
+    'NOTIFICATION': 8,
     'NIGHT': 9,
     'DAYTIME': 10,
     'EXECUTION': 11,
@@ -484,7 +484,6 @@ function clickSpectatorNo() {
 //「決定」をクリック
 function clickDecideInMaking() {
     var name = document.getElementById('txt_villageName').value;
-    var password = document.getElementById('txt_villagePassword').value;
     if (name == "") {
         alert('名前を入力してください');
     }
@@ -580,6 +579,61 @@ function clickBackInLobby() {
         type: 'system',
         state: STATE.LOBBY,
         message: 'back'
+    };
+    websocket.send(JSON.stringify(messageArray));
+}
+
+
+////Participation////
+//「プレイヤー参加」をクリック
+function clickParticipationAsPlayer() {
+    var name = document.getElementById('txt_participantName').value;
+    if (name == "") {
+        alert('名前を入力してください');
+    }
+    else {
+        document.getElementById('btn_participationAsPlayer').disabled = true;
+        //サーバに送信
+        var messageArray = {
+            type: 'system',
+            state: STATE.PARTICIPATION,
+            message: 'participateAsPlayer',
+            villageId: villageId,
+            name: name
+        };
+        websocket.send(JSON.stringify(messageArray));
+    }
+}
+
+//「観戦者参加」をクリック
+function clickParticipationAsSpectator() {
+    var name = document.getElementById('txt_participantName').value;
+    if (name == "") {
+        alert('名前を入力してください');
+    }
+    else {
+        document.getElementById('btn_participationAsSpectator').disabled = true;
+        //サーバに送信
+        var messageArray = {
+            type: 'system',
+            state: STATE.PARTICIPATION,
+            message: 'participateAsSpectator',
+            villageId: villageId,
+            name: name
+        };
+        websocket.send(JSON.stringify(messageArray));
+    }
+}
+
+//「戻る」をクリック
+function clickBackInParticipation() {
+    document.getElementById('btn_backInParticipation').disabled = true;
+    //サーバに送信
+    var messageArray = {
+        type: 'system',
+        state: STATE.PARTICIPATION,
+        message: 'back',
+        villageId: villageId
     };
     websocket.send(JSON.stringify(messageArray));
 }
@@ -844,7 +898,7 @@ function clickNextNight() {
 }
 
 //「終了」をクリック
-function clickExit() {
+function clickExitInResult() {
     document.getElementById('btn_exitInResult').disabled = true;
     //サーバに送信
     var messageArray = {
@@ -1114,7 +1168,7 @@ function setNumberOfPositionInWaiting(messageArray) {
     var position = messageArray['position'];
     var number = messageArray['number'];
     numberOfPositionArray[position] = number;
-    var positionString getPositionNameInEnglish(position);
+    var positionString = getPositionNameInEnglish(position);
     divId = 'scrn_numberOf' + positionString + 'InWaiting';
     document.getElementById(divId).innerHTML = number + '人';
     if (attribute == ATTRIBUTE.PLAYER) {
