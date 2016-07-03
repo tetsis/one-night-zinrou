@@ -43,6 +43,7 @@ var resultOfThiefArray;
 var numberOfPlayer;
 var numberOfPositionArray;
 var talkingTime;
+var remaingTime;
 var selectionId;
 var selectionName;
 var selectionPosition;
@@ -141,11 +142,38 @@ function getPositionNameInJapanese(position) {
     return positionString;
 }
 
+//役職IDから役職名（英語）を取得
+function getPositionNameInEnglish(position) {
+    var positionString = '';
+    switch (position) {
+        case POSITION.VILLAGER:
+            positionString = 'Villager';
+            break;
+        case POSITION.WEREWOLF:
+            positionString = 'Werewolf';
+            break;
+        case POSITION.FORTUNETELLER:
+            positionString = 'Fortuneteller';
+            break;
+        case POSITION.THIEF:
+            positionString = 'Thief';
+            break;
+        case POSITION.MADMAN:
+            positionString = 'Madman';
+            break;
+        case POSITION.HANGING:
+            positionString = 'Hanging';
+            break;
+    }
+
+    return positionString;
+}
+
 //プレイヤーIDからプレイヤー名を取得
-function getPlayerName(id) {
+function getPlayer(id) {
     for (var i = 0; i < playerArray.length; i++) {
         if (playerArray[i].id == id) {
-            return playerArray[i].name;
+            return playerArray[i];
         }
     }
 
@@ -561,27 +589,7 @@ function clickBackInLobby() {
 //役職の人数をクリック
 function clickNumberOfPosition(position, incrementOrDecrement) {
     var buttonId;
-    var positionString;
-    switch (position) {
-        case POSITION.VILLAGER:
-            positionString = 'Villager';
-            break;
-        case POSITION.WEREWOLF:
-            positionString = 'Werewolf';
-            break;
-        case POSITION.FORTUNETELLER:
-            positionString = 'Fortuneteller';
-            break;
-        case POSITION.THIEF:
-            positionString = 'Thief';
-            break;
-        case POSITION.MADMAN:
-            positionString = 'Madman';
-            break;
-        case POSITION.HANGING:
-            positionString = 'Hanging';
-            break;
-    }
+    var positionString = getPositionNameInEnglish(position);
     if (incrementOrDecrement == true) {
         buttonId = 'btn_incrementOf' + positionString;
         document.getElementById(buttonId).disabled = true;
@@ -761,24 +769,24 @@ function clickConfirmation() {
     popupString += '\n';
     popupString += '占い結果\n';
     for (var i = 1; i < resultOfFortunetellerArray.length; i++) {
-        var fortunetellerName = getPlayerName(resultOfFortunetellerArray[i].id);
+        var fortunetellerName = getPlayer(resultOfFortunetellerArray[i].id).name;
         if (resultOfFortunetellerArray[i].selectionId == -1) {
             popupString += fortunetellerName + 'は場の2枚を占いました\n';
         }
         else {
-            selectionName = getPlayerName(resultOfFortunetellerArray[i].selectionId);
+            selectionName = getPlayer(resultOfFortunetellerArray[i].selectionId).name;
             popupString += fortunetellerName + 'は' + selectionName + 'を占いました\n';
         }
     }
     popupString += '\n';
     popupString += '交換結果\n';
     for (var i = 1; i < resultOfThiefArray.length; i++) {
-        var thiefName = getPlayerName(resultOfThiefArray[i].id);
+        var thiefName = getPlayer(resultOfThiefArray[i].id).name;
         if (resultOfThiefArray[i].selectionId == -1) {
             popupString += thiefName + 'は誰とも交換しませんでした\n';
         }
         else {
-            selectionName = getPlayerName(resultOfThiefArray[i].selectionId);
+            selectionName = getPlayer(resultOfThiefArray[i].selectionId).name;
             popupString += thiefName + 'は' + selectionName + 'と役職を交換しました\n';
         }
     }
@@ -1103,32 +1111,12 @@ function delParticipant(messageArray) {
 function setNumberOfPositionInWaiting(messageArray) {
     var divId;
     var buttonId;
-    var positionString;
     var position = messageArray['position'];
     var number = messageArray['number'];
     numberOfPositionArray[position] = number;
-    switch (position) {
-        case POSITION.VILLAGER:
-            positionString = 'Villager';
-            break;
-        case POSITION.WEREWOLF:
-            positionString = 'Werewolf';
-            break;
-        case POSITION.FORTUNETELLER:
-            positionString = 'Fortuneteller';
-            break;
-        case POSITION.THIEF:
-            positionString = 'Thief';
-            break;
-        case POSITION.MADMAN:
-            positionString = 'Madman';
-            break;
-        case POSITION.HANGING:
-            positionString = 'Hanging';
-            break;
-    }
+    var positionString getPositionNameInEnglish(position);
     divId = 'scrn_numberOf' + positionString + 'InWaiting';
-    document.getElementById(divId).innerHTML = number;
+    document.getElementById(divId).innerHTML = number + '人';
     if (attribute == ATTRIBUTE.PLAYER) {
         var sum = 0;
         for (var i = 0; i < positionArray.length; i++) {
@@ -1161,26 +1149,7 @@ function setNumberOfPositionInWaiting(messageArray) {
             }
         }
         for (var i = 0; i < positionArray.length; i++) {
-            switch (positionArray[i]) {
-                case POSITION.VILLAGER:
-                    positionString = 'Villager';
-                    break;
-                case POSITION.WEREWOLF:
-                    positionString = 'Werewolf';
-                    break;
-                case POSITION.FORTUNETELLER:
-                    positionString = 'Fortuneteller';
-                    break;
-                case POSITION.THIEF:
-                    positionString = 'Thief';
-                    break;
-                case POSITION.MADMAN:
-                    positionString = 'Madman';
-                    break;
-                case POSITION.HANGING:
-                    positionString = 'Hanging';
-                    break;
-            }
+            positionString = getPositionNameInEnglish(positionArray[i]);
             buttonId = 'btn_decrementOfNumberOf' + positionString;
             if (numberOfPositionArray[positionArray[i]] <= 0) {
                 document.getElementById(buttonId).disabled = true;
@@ -1367,8 +1336,8 @@ function setPositionOfPlayerInNight(messageArray) {
     var name = messageArray['name'];
     var position = messageArray['position'];
     var player = {id: id, name: name, position: position};
-    var positionString = getPositionNameInJapanese(position);
     playerArray.push(player);
+    var positionString = getPositionNameInJapanese(position);
     var box = document.getElementById('box_playerListInNight');
     var element = document.createElement('div');
     element.id = 'scrn_playerListInNight' + id;
@@ -1380,7 +1349,7 @@ function setPositionOfPlayerInNight(messageArray) {
 function setResultOfFortunetellerInNight(messageArray) {
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
-    var fortunetellerName = getPlayerName(id);
+    var fortunetellerName = getPlayer(id).name;
     var box = document.getElementById('box_resultOfFortunetellerInNight');
     var element = document.createElement('div');
     element.id = 'scrn_resultOfFortunetellerInNight' + id;
@@ -1388,7 +1357,7 @@ function setResultOfFortunetellerInNight(messageArray) {
         element.innerHTML = fortunetellerName + 'は場を占いました';
     }
     else {
-        selectionName = getPlayerName(selectionId);
+        selectionName = getPlayer(selectionId).name;
         element.innerHTML = fortunetellerName + 'は' + selectionName + 'を占いました';
     }
     box.appendChild(element);
@@ -1398,8 +1367,8 @@ function setResultOfFortunetellerInNight(messageArray) {
 function setResultOfThiefInNight(messageArray) {
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
-    var thiefName = getPlayerName(id);
-    selectionName = getPlayerName(selectionId);
+    var thiefName = getPlayer(id).name;
+    selectionName = getPlayer(selectionId).name;
     var box = document.getElementById('box_resultOfThiefInNight');
     var element = document.createElement('div');
     element.id = 'scrn_resultOfThiefInNight' + id;
@@ -1407,8 +1376,114 @@ function setResultOfThiefInNight(messageArray) {
         element.innerHTML = thiefName + '役職を交換していません';
     }
     else {
-        selectionName = getPlayerName(selectionId);
+        selectionName = getPlayer(selectionId).name;
         element.innerHTML = thiefName + 'は' + selectionName + 'と役職を交換しました';
     }
     box.appendChild(element);
+}
+
+
+////Daytime////
+//初期化
+function initInDaytime(messageArray) {
+    playerArray = [];
+    numberOfPositionArray = [];
+    talkingTime = 3;
+    resultOfFortunetellerArray = [];
+    resultOfThiefArray = [];
+    document.getElementById(box_playerListInDaytime).textContent = null;
+    document.getElementById(box_spectatorListInDaytime).textContent = null;
+    villageId = messageArray['villageId'];
+    attribute = messageArray['attribute'];
+    id = messageArray['id'];
+    switch (attribute) {
+        case ATTRIBUTE.PLAYER:
+            document.getElementById('btn_talksEnd').disabled = false;
+            break;
+        case ATTRIBUTE.SPECTATOR:
+            document.getElementById('btn_talksEnd').disabled = true;
+            document.getElementById('btn_extension').style.display = 'none';
+            break;
+    }
+}
+
+//昼の画面を表示
+function displayDaytime() {
+    displayState(STATE.DAYTIME);
+}
+
+//プレイヤーを設定
+function setPlayerInDaytime(messageArray) {
+    var id = messageArray['id'];
+    var name = messageArray['name'];
+    var player = {id: id, name: name, position: -1};
+    playerArray.push(player);
+    var box = document.getElementById('box_playerListInDaytime');
+    var element = document.createElement('div');
+    element.id = 'scrn_playerListInDaytime' + id;
+    element.innerHTML = name;
+    box.appendChild(element);
+}
+
+//観戦者を設定
+function setSpectatorInDaytime(messageArray) {
+    var id = messageArray['id'];
+    var name = messageArray['name'];
+    var box = document.getElementById('box_spectatorListInDaytime');
+    var element = document.createElement('div');
+    element.id = 'scrn_spectatorListInDaytime' + id;
+    element.innerHTML = name;
+    box.appendChild(element);
+}
+
+//役職の人数を設定
+function setNumberOfPositionInDaytime(messageArray) {
+    var position = messageArray['position'];
+    var number = messageArray['number'];
+    numberOfPositionArray[position] = number;
+    var positionString = getPositionNameInEnglish(position);
+    var elementId = 'scrn_numberOf' + positionString + 'InDaytime';
+    document.getElementById(elementId).innerHTML = number + '人';
+}
+
+//話し合い時間を設定
+function setTalkingTimeInDaytime(messageArray) {
+    var time = messageArray['time'];
+    talkingTime = time;
+    setInterval(updateTimer, 100);
+}
+
+//「話し合い終了」をクリックしたプレイヤーがいた
+function setTalksEnd(messageArray) {
+    var id = messageArray['id'];
+    var elementId = 'scrn_playerListInDaytime' + id;
+    selectedElement(elementId);
+}
+
+//プレイヤーの役職を設定
+function setPositionOfPlayerInDaytime(messageArray) {
+    var id = messageArray['id'];
+    var position = messageArray['position'];
+    for (var i = 0; i < playerArray.length; i++) {
+        if (playerArray[i].id == id) {
+            playerArray[i].position = position;
+            break;
+        }
+    }
+}
+
+//占い結果を設定
+function setResultOfFortunetellerInDaytime(messageArray) {
+    var id = messageArray['id'];
+    var selectionId = messageArray['selectionId'];
+    var array = {id: id, selectionId: selectionId};
+    resultOfFortunetellerArray.push(array);
+}
+
+//交換結果を設定
+function setResultOfThiefInDaytime(messageArray) {
+    var id = messageArray['id'];
+    var selectionId = messageArray['selectionId'];
+    var array = {id: id, selectionId: selectionId};
+    resultOfThiefArray.push(array);
 }
