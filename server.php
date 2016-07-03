@@ -34,7 +34,7 @@ require_once('spectator.php');
 $villageManagement = new VillageManagement();
 
 //$host = 'localhost'; //host
-$host = 'chiaki.tetsis-net'; //host
+$host = 'www.tetsis-net'; //host
 $port = '9000'; //port
 $null = NULL; //null var
 

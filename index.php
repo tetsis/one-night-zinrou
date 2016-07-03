@@ -149,7 +149,7 @@
 <table>
     <tr>
         <td><input type="button" id="btn_decrementOfTalkingTime" value="－"></td>
-        <td><div id="scrn_numberOfTalkingTime"></div></td>
+        <td><div id="scrn_talkingTimeInWaiting"></div></td>
         <td><input type="button" id="btn_incrementOfTalkingTime" value="＋"></td>
     </tr>
 </table>
@@ -190,7 +190,7 @@
 <!-- Daytime -->
 <div id="daytime">
 残り時間<br/>
-<div id="scrn_talkingTime"></div>
+<div id="scrn_remainingTime"></div>
 <input type="button" id="btn_extension" value="延長"><br/>
 
 <table>
@@ -237,7 +237,7 @@
 <div id="execution">
 <div id="scrn_execution"></div>
 <div id="box_selectionInExecution"></div>
-<input type="button" id="btn_resut" value="結果発表へ"><br/>
+<input type="button" id="btn_result" value="結果発表へ"><br/>
 </div>
 
 
