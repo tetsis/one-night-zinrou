@@ -67,6 +67,7 @@ positionArray = [
 //汎用関数
 //stateの画面を表示
 function displayState(state) {
+    console.log('ENTER displayState: ' + state);
     document.getElementById('top').style.display = 'none';
     document.getElementById('making').style.display = 'none';
     document.getElementById('lobby').style.display = 'none';
@@ -113,6 +114,35 @@ function displayState(state) {
             document.getElementById('result').style.display = 'block';
             break;
     }
+}
+
+//buttonIdのボタンを選択されたという表示に設定
+function selectButton(buttonId) {
+    document.getElementById(buttonId).style.background = 'blue';
+    document.getElementById(buttonId).style.color = 'white';
+}
+
+//buttonIdのボタンを選択されていないという表示に設定
+function notSelectButton(buttonId) {
+    document.getElementById(buttonId).style.background = '';
+    document.getElementById(buttonId).style.color = '';
+}
+
+//elementIdの要素を選択されたという表示に設定
+function selectedElement(elementId) {
+    document.getElementById(elementId).style.background = 'blue';
+    document.getElementById(elementId).style.color = 'white';
+}
+
+//elementIdの要素を選択されていないという表示に設定
+function notSelectedElement(elementId) {
+    document.getElementById(elementId).style.background = '';
+    document.getElementById(elementId).style.color = '';
+}
+
+//タイマーを更新
+function updateTimer() {
+    //ここから
 }
 
 //役職IDから役職名（日本語）を取得
@@ -183,6 +213,7 @@ function getPlayer(id) {
 //ロード時の処理
 window.addEventListener('load',
     function (event) {
+        console.log('ENTER addEventListener');
         //var wsUri = "ws://www.tetsis.com:9000/server.php";
         var wsUri = "ws://www.tetsis-net:9000/server.php";
         websocket = new WebSocket(wsUri);
@@ -443,6 +474,7 @@ window.addEventListener('load',
 ////Top////
 //「村に参加」をクリック
 function clickLobby() {
+    console.log('ENTER clickLobby');
     document.getElementById('btn_lobby').disabled = true;
     //サーバに送信
     var messageArray = {
@@ -455,6 +487,7 @@ function clickLobby() {
 
 //「村を作成」をクリック
 function clickMaking() {
+    console.log('ENTER clickMaking');
     document.getElementById('btn_making').disabled = true;
     //サーバに送信
     var messageArray = {
@@ -469,6 +502,7 @@ function clickMaking() {
 ////Making////
 //観戦者ありをクリック
 function clickSpectatorYes() {
+    console.log('ENTER clickSpectatorYes');
     selectButton('btn_spectatorYes');
     notSelectButton('btn_spectatorNo');
     spectatorFlag = true;
@@ -476,6 +510,7 @@ function clickSpectatorYes() {
 
 //観戦者なしをクリック
 function clickSpectatorNo() {
+    console.log('ENTER clickSpectatorNo');
     selectButton('btn_spectatorNo');
     notSelectButton('btn_spectatorYes');
     spectatorFlag = false;
@@ -483,6 +518,7 @@ function clickSpectatorNo() {
 
 //「決定」をクリック
 function clickDecideInMaking() {
+    console.log('ENTER clickDecideInLobby');
     var name = document.getElementById('txt_villageName').value;
     var password = document.getElementById('txt_villagePassword').value;
     if (name == "") {
@@ -505,6 +541,7 @@ function clickDecideInMaking() {
 
 //「戻る」をクリック
 function clickBackInMaking() {
+    console.log('ENTER clickBackInMaking');
     document.getElementById('btn_backInMaking').disabled = true;
     //サーバに送信
     var messageArray = {
@@ -519,6 +556,7 @@ function clickBackInMaking() {
 ////Lobby////
 //村をクリック
 function clickSelectionInLobby(id, flag) {
+    console.log('ENTER clickSelectionInLobby');
     var buttonId;
     if (selectedVillageId != -1) {
         buttonId = 'btn_village' + selectedVillageId;
@@ -533,6 +571,7 @@ function clickSelectionInLobby(id, flag) {
 
 //「更新」をクリック
 function clickUpdateInLobby() {
+    console.log('ENTER clickUpdateInLobby');
     document.getElementById('btn_updateInLobby').disabled = true;
     document.getElementById('btn_decideInLobby').disabled = true;
     document.getElementById('box_villageList').textContent = null;
@@ -548,6 +587,7 @@ function clickUpdateInLobby() {
 
 //「決定」をクリック
 function clickDecideInLobby() {
+    console.log('ENTER clickDecideInLobby');
     if (selectedVillageId == -1) {
         alert('参加する村を選択してください');
     }
@@ -574,6 +614,7 @@ function clickDecideInLobby() {
 
 //「戻る」をクリック
 function clickBackInLobby() {
+    console.log('ENTER clickBackInLobby');
     document.getElementById('btn_backInLobby').disabled = true;
     //サーバに送信
     var messageArray = {
@@ -588,6 +629,7 @@ function clickBackInLobby() {
 ////Participation////
 //「プレイヤー参加」をクリック
 function clickParticipationAsPlayer() {
+    console.log('ENTER clickParticipationAsPlayer');
     var name = document.getElementById('txt_participantName').value;
     if (name == "") {
         alert('名前を入力してください');
@@ -608,6 +650,7 @@ function clickParticipationAsPlayer() {
 
 //「観戦者参加」をクリック
 function clickParticipationAsSpectator() {
+    console.log('ENTER clickParticipationAsSpectator');
     var name = document.getElementById('txt_participantName').value;
     if (name == "") {
         alert('名前を入力してください');
@@ -628,6 +671,7 @@ function clickParticipationAsSpectator() {
 
 //「戻る」をクリック
 function clickBackInParticipation() {
+    console.log('ENTER clickBackInParticipation');
     document.getElementById('btn_backInParticipation').disabled = true;
     //サーバに送信
     var messageArray = {
@@ -1504,7 +1548,8 @@ function setNumberOfPositionInDaytime(messageArray) {
 function setTalkingTimeInDaytime(messageArray) {
     var time = messageArray['time'];
     talkingTime = time;
-    setInterval(updateTimer, 100);
+    remaingTime = 60 * time;
+    setInterval(updateTimer, 1000);
 }
 
 //「話し合い終了」をクリックしたプレイヤーがいた
