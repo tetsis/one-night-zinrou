@@ -484,6 +484,7 @@ function clickSpectatorNo() {
 //「決定」をクリック
 function clickDecideInMaking() {
     var name = document.getElementById('txt_villageName').value;
+    var password = document.getElementById('txt_villagePassword').value;
     if (name == "") {
         alert('名前を入力してください');
     }
