@@ -461,7 +461,7 @@ class Village {
 
     //昼の画面を表示
     public function displayDaytime($socket, $attribute, $id) {
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'init', 'villageId'=>$this->villageId, 'attribute'=>$attribute, 'id'=>$id))));
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'init', 'villageId'=>$this->villageId, 'attribute'=>$attribute, 'id'=>$id)));
         sendMessage($txData, $socket);
         foreach ($this->playerArray as $i) {
             $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name)));
@@ -498,7 +498,7 @@ class Village {
                 }
             }
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'display'));
+        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'display')));
         sendMessage($txData, $socket);
     }
 
