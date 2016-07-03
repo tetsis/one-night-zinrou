@@ -783,7 +783,7 @@ function clickConfirmation() {
     for (var i = 1; i < resultOfThiefArray.length; i++) {
         var thiefName = getPlayer(resultOfThiefArray[i].id).name;
         if (resultOfThiefArray[i].selectionId == -1) {
-            popupString += thiefName + 'は誰とも交換しませんでした\n';
+            popupString += thiefName + 'は役職を交換しませんでした\n';
         }
         else {
             selectionName = getPlayer(resultOfThiefArray[i].selectionId).name;
@@ -1368,12 +1368,11 @@ function setResultOfThiefInNight(messageArray) {
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
     var thiefName = getPlayer(id).name;
-    selectionName = getPlayer(selectionId).name;
     var box = document.getElementById('box_resultOfThiefInNight');
     var element = document.createElement('div');
     element.id = 'scrn_resultOfThiefInNight' + id;
     if (selectionId == -1) {
-        element.innerHTML = thiefName + '役職を交換していません';
+        element.innerHTML = thiefName + 'は役職を交換しませんでした';
     }
     else {
         selectionName = getPlayer(selectionId).name;
@@ -1530,4 +1529,110 @@ function setPlayerInExecution(messageArray) {
 }
 
 
+////Result////
+//初期化
+function initInResult(messageArray) {
+    playerArray = [];
+    resultOfFortunetellerArray = [];
+    resultOfThiefArray = [];
+    document.getElementById('box_playerListInResult').textContent = null;
+    document.getElementById('box_resultOfFortunetellerInResult').textContent = null;
+    document.getElementById('box_resultOfThiefInResult').textContent = null;
+    villageId = messageArray['villageId'];
+    attribute = messageArray['attribute'];
+    side = messageArray['side'];
+    var sideString = '';
+    switch (side) {
+        case POSITION.VILLAGER:
+            sideString = '勝者は村人サイドです';
+            break;
+        case POSITION.WEREWOLF:
+            sideString = '勝者は人狼サイドです';
+            break;
+        case POSITION.HANGING:
+            sideString = '勝者はてるてるサイドです';
+            break;
+    }
+    document.getElementById('scrn_winnerSide').innerHTML = sideString;
+    switch (attribute) {
+        case ATTRIBUTE.PLAYER:
+            document.getElementById('btn_nextNight').disabled = false;
+            document.getElementById('scrn_winnerOrLoser').style.display = 'block';
+            break;
+        case ATTRIBUTE.SPECTATOR:
+            document.getElementById('btn_nextNight').disabled = true;
+            document.getElementById('scrn_winnerOrLoser').style.display = 'none';
+            break;
+    }
+    document.getElementById('btn_exitInResult').disabled = false;
+}
 
+//結果発表画面を表示
+function displayResult() {
+    displayState(STATE.RESULT);
+}
+
+//勝ち負けを設定
+function setWinnerOrLoser(messageArray) {
+    var winnerOrLoser = messageArray['winnerOrLoser'];
+    var winnerOrLoserString = '';
+    if (winnerOrLoser == true) {
+        winnerOrLoserString = 'あなたの勝ちです';
+    }
+    else {
+        winnerOrLoserString = 'あなたの負けです';
+    }
+    document.getElementById('scrn_winnerOrLoser').innerHTML = winnerOrLoserString;
+}
+
+//プレイヤーの結果を設定
+function setResultOfPlayerInResult(messageArray) {
+    var id = messageArray['id'];
+    var name = messageArray['name'];
+    var position = messageArray['position'];
+    var point = messageArray['point'];
+    var player = {id: id, name: name, position: position, point: point};
+    playerArray.push(player);
+    var positionString = getPositionNameInJapanese(position);
+    var box = document.getElementById('box_playerListInResult');
+    var element = document.createElement('div');
+    element.id = 'scrn_playerListInResult' + id;
+    element.innerHTML = name + ': ' + positionString + ': ' + point;
+    box.appendChild(element);
+}
+
+//占い結果を表示
+function setResultOfFortunetellerInResult(messageArray) {
+    var id = messageArray['id'];
+    var selectionId = messageArray['selectionId'];
+    var fortunetellerName = getPlayer(id).name;
+    var box = document.getElementById('box_resultOfFortunetellerInResult');
+    var element = document.createElement('div');
+    element.id = 'scrn_resultOfFortunetellerInResult' + id;
+    if (selectionId == -1) {
+        element.innerHTML = fortunetellerName + 'は場を占いました';
+    }
+    else {
+        selectionName = getPlayer(selectionId).name;
+        element.innerHTML = fortunetellerName + 'は' + selectionName + 'を占いました';
+    }
+    box.appendChild(element);
+}
+
+//交換結果を設定
+function setResultOfThiefInResult(messageArray) {
+    var id = messageArray['id'];
+    var selectionId = messageArray['selectionId'];
+    var thiefName = getPlayer(id).name;
+    var box = document.getElementById('box_resultOfThiefInResult');
+    var element = document.createElement('div');
+    element.id = 'scrn_resultOfThiefInResult' + id;
+    if (selectionId == -1) {
+        element.innerHTML = thiefName + 'は役職を交換しませんでした';
+    }
+    else {
+        selectionName = getPlayer(selectionId).name;
+        element.innerHTML = thiefName + 'は' + selectionName + 'と役職を交換しました';
+    }
+    box.appendChild(element);
+}
