@@ -1487,3 +1487,47 @@ function setResultOfThiefInDaytime(messageArray) {
     var array = {id: id, selectionId: selectionId};
     resultOfThiefArray.push(array);
 }
+
+
+////Execution////
+//初期化
+function initInExecution(messageArray) {
+    selectionId = -1;
+    document.getElementById('box_selectionInExecution').textContent = null;
+    villageId = messageArray['villageId'];
+    attribute = messageArray['attribute'];
+    id = messageArray['id'];
+    switch (attribute) {
+        case ATTRIBUTE.PLAYER:
+            document.getElementById('scrn_execution').innerHTML = '吊る人を選択してください';
+            document.getElementById('btn_result').disabled = false;
+            break;
+        case ATTRIBUTE.SPECTATOR:
+            document.getElementById('scrn_execution').innerHTML = 'プレイヤーが吊る人を選択しています';
+            document.getElementById('btn_result').disabled = true;
+            break;
+    }
+
+}
+
+//吊る人選択画面を表示
+function displayExecution() {
+    displayState(STATE.EXECUTION);
+}
+
+//選択するプレイヤーを設定
+function setPlayerInExecution(messageArray) {
+    var id = messageArray['id'];
+    var name = messageArray['name'];
+    var box = document.getElementById('box_selectionInExecution');
+    var element = document.createElement('input');
+    element.id = 'btn_player' + id + 'InExecution';
+    element.type = 'button';
+    element.value = name;
+    element.addEventListener('click', function(){clickSelectionInExecution(id)}, false);
+    box.appendChild(element);
+    box.appendChild(document.createElement('br'));
+}
+
+
+
