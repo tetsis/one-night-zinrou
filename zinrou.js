@@ -784,11 +784,11 @@ function clickOK() {
 function clickSelectionInAction(selectionId) {
     var buttonId;
     if (this.selectionId != -1) {
-        buttonId = 'btn_player' + this.selectionId + 'InAction';
+        buttonId = 'btn_selectionInAction' + this.selectionId;
         notSelectButton(buttonId);
     }
     this.selectionId = selectionId;
-    buttonId = 'btn_player' + this.selectionId + 'InAction';
+    buttonId = 'btn_selectionInAction' + this.selectionId;
     selectButton(buttonId);
     document.getElementById('btn_notification').disabled = false;
 }
@@ -898,11 +898,11 @@ function clickConfirmation() {
 function clickSelectionInExecution(selectionId) {
     var buttonId;
     if (this.selectionId != -1) {
-        buttonId = 'btn_player' + this.selectionId + 'InExecution';
+        buttonId = 'btn_selectionInExecution' + this.selectionId;
         notSelectButton(buttonId);
     }
     this.selectionId = selectionId;
-    buttonId = 'btn_player' + this.selectionId + 'InExecution';
+    buttonId = 'btn_selectionInExecution' + this.selectionId;
     selectButton(buttonId);
     document.getElementById('btn_result').disabled = false;
 }
@@ -1018,7 +1018,7 @@ function displayMaking() {
 
 //村名重複により拒否
 function rejectVillageName() {
-    alert('同じ名前の村が既に存在しています\n別の名前で作り直してください')
+    alert('同じ名前の村が既に存在しています\n別の名前で作り直してください');
     document.getElementById('txt_villageName').value = '';
     document.getElementById('btn_decideInMaking').disabled = false;
 }
@@ -1325,7 +1325,7 @@ function setPlayerInAction(messageArray) {
     var name = messageArray['name'];
     var box = document.getElementById('box_selectionInAction');
     var element = document.createElement('input');
-    element.id = 'btn_player' + id + 'InAction';
+    element.id = 'btn_selectionInAction' + id;
     element.type = 'button';
     element.value = name;
     element.addEventListener('click', function(){clickSelectionInAction(id)}, false);
@@ -1379,7 +1379,7 @@ function displayNotification() {
             break;
         case POSITION.THIEF:
             if (selectionPosition == -1) {
-                resultString += '誰とも交換していません';
+                resultString += '誰とも役職を交換しませんでした';
             }
             else {
                 var positionString = getPositionNameInJapanese(selectionPosition);
@@ -1620,7 +1620,7 @@ function setPlayerInExecution(messageArray) {
     var name = messageArray['name'];
     var box = document.getElementById('box_selectionInExecution');
     var element = document.createElement('input');
-    element.id = 'btn_player' + id + 'InExecution';
+    element.id = 'btn_selectionInExecution' + id;
     element.type = 'button';
     element.value = name;
     element.addEventListener('click', function(){clickSelectionInExecution(id)}, false);
