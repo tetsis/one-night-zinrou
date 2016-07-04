@@ -20,6 +20,7 @@ class Village {
 
     //コンストラクタ
     public function __construct($id, $name, $password, $spectatorFlag) {
+        outputLog('ENTER construct of Village');
         $this->id = $id;
         $this->name = $name;
         $this->password = $password;
@@ -63,29 +64,34 @@ class Village {
     ////Participation////
     //socketで「プレイヤーとして参加」をクリック
     public function clickParticipationAsPlayer($socket, $messageArray) {
+        outputLog('ENTER clickParticipationAsPlayer, messageArray: '. $messageArray);
         $name = $messageArray->name;
         $this->participateInVillage($socket, PLAYER, $name);
     }
 
     //socketで「観戦者として参加」をクリック
     public function clickParticipationAsSpectator($socket, $messageArray) {
+        outputLog('ENTER clickParticipationAsSpectator, messageArray: '. $messageArray);
         $name = $messageArray->name;
         $this->participateInVillage($socket, SPECTATOR, $name);
     }
 
     //待機画面に遷移
     public function goToWaitingFromParticipation($socket, $attribute, $id) {
+        outputLog('ENTER goToWaitingFromParticipation, attribute: '. $attribute. ', id: '. $id);
         $this->displayWaiting($socket, $attribute, $id);
     }
 
     //村参加画面を表示
     public function displayParticipation($socket, $villageId, $villageName, $spectatorFlag) {
+        outputLog('ENTER displayParticipation, villageId: '. $villageId. ', villageName: '. $villageName. ', spectatorFlag: '. $spectatorFlag);
         $txData = mask(json_encode(array('type'=>'system', 'state'=>PARTICIPATION, 'message'=>'display', 'villageId'=>$villageId, 'villageName'=>$villageName, 'spectatorFlag'=>$spectatorFlag)));
         sendMessage($txData, $socket);
     }
 
     //村に参加
     public function participateInVillage($socket, $attribute, $name) {
+        outputLog('ENTER participateInVillage, attribute: '. $attribute. ', name: '. $name;
         if (($this->state == PARTICIPATION) || ($this->state == WAITING)) {
             $flag = false;
             foreach ($this->playerArray as $i) {
@@ -130,6 +136,7 @@ class Village {
     ////Waiting////
     //役職数がクリックされた
     public function clickNumberOfPosition($messageArray) {
+        outputLog('ENTER clickNumberOfPosition, messageArray: '. $messageArray);
         $position = $messageArray->position;
         $number = $messageArray->number;
         $numberOfPositionArray[$position] = $number;
@@ -145,6 +152,7 @@ class Village {
 
     //話し合い時間がクリックされた
     public function clickTalkingTime($messageArray) {
+        outputLog('ENTER clickTalkingTime, messageArray: '. $messageArray);
         $time = $messageArray->time;
         $talkingTime = $time;
         foreach ($this->playerArray as $i) {
@@ -159,6 +167,7 @@ class Village {
 
     //「ゲーム開始」がクリックされた
     public function clickGameStart($messageArray) {
+        outputLog('ENTER clickGameStart, messageArray: '. $messageArray);
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
         if ($player != null) {
@@ -192,16 +201,19 @@ class Village {
 
     //行動画面に遷移
     public function goToActionFromWaiting($socket, $id) {
+        outputLog('ENTER goToActionFromWaiting, id: '. $id);
         $this->displayAction($socket, $id);
     }
 
     //夜の画面に遷移
     public function goToNightFromWaiting($socket) {
+        outputLog('ENTER goToNightFromWaiting');
         $this->displayNight($socket);
     }
 
     //ゲームを開始
     public function startGame() {
+        outputLog('ENTER startGame');
         $currentPositionArray = array();
         global $positionArray;
         foreach ($positionArray as $i) {
@@ -221,6 +233,7 @@ class Village {
 
     //待機画面を表示
     public function displayWaiting($socket, $attribute, $id) {
+        outputLog('ENTER displayWaiting, attribute: '. $attribute. ', id: '. $id);
         global $positionArray;
         $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'init', 'villageId'=>$this->villageId, 'villageName'=>$this->villageName, 'id'=>$id, 'position'=>$player->position)));
         sendMessage($txData, $socket);
@@ -252,6 +265,7 @@ class Village {
     ////Action////
     //「次へ」がクリックされた
     public function clickNotification($messageArray) {
+        outputLog('ENTER clickNotification, messageArray: '. $messageArray);
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
         if ($player != null) {
@@ -279,11 +293,13 @@ class Village {
 
     //通知画面に遷移
     public function goToNotificationFromAction($socket, $id) {
+        outputLog('ENTER goToNotificationFromAction, id: '. $id);
         $this->displayNotification($socket, $id);
     }
 
     //行動画面を表示
     public function displayAction($socket, $id) {
+        outputLog('ENTER displayAction, id: '. $id);
         $player = $this->getPlayer($id);
         $txData = mask(json_encode(array('type'=>'system', 'state'=>ACTION, 'message'=>'init', 'villageId'=>$this->villageId, 'id'=>$id, 'position'=>$player->position)));
         sendMessage($txData, $socket);
@@ -303,6 +319,7 @@ class Village {
     ////Notification////
     //「昼のフェーズへ」がクリックされた
     public function clickDaytime($messageArray) {
+        outputLog('ENTER clickDaytime, messageArray: '. $messageArray);
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
         if ($player != null) {
@@ -329,11 +346,13 @@ class Village {
 
     //昼の画面に遷移
     public function goToDaytimeFromNotification($socket, $id) {
+        outputLog('ENTER goToDaytimeFromNotification, id: '. $id);
         $this->displayDaytime($socket, PLAYER, $id);
     }
 
     //通知画面を表示
     public function displayNotification($socket, $id) {
+        outputLog('ENTER displayNotification, id: '. $id);
         $player = $this->getPlayer($id);
         $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'init', 'villageId'=>$this->villageId, 'id'=>$id, 'position'=>$player->position)));
         sendMessage($txData, $socket);
@@ -379,11 +398,13 @@ class Village {
     ////Night////
     //昼の画面に遷移
     public function goToDaytimeFromNight($socket, $id) {
+        outputLog('ENTER goToDaytimeFromNight, id: '. $id);
         $this->displayDaytime($socket, SPECTATOR, $id);
     }
 
     //夜の画面を表示
     public function displayNight($socket) {
+        outputLog('ENTER displayNight');
         $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'init')));
         sendMessage($txData, $socket);
         foreach ($this->playerArray as $i) {
@@ -410,6 +431,7 @@ class Village {
     ////Daytime////
     //「話し合い延長」がクリックされた
     public function clickExtension($messageArray) {
+        outputLog('ENTER clickExtension, messageArray: '. $messageArray);
         $endingTime = new DateTime('+1 minutes');
             foreach ($this->playerArray as $i) {
                 $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1)));
@@ -423,6 +445,7 @@ class Village {
 
     //「話し合い終了」がクリックされた
     public function clickTalksEnd($messageArray) {
+        outputLog('ENTER clickTalksEnd, messageArray: '. $messageArray);
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
         if ($player != null) {
@@ -456,11 +479,13 @@ class Village {
 
     //吊る人選択画面に遷移
     public function goToExecutionFromDaytime($socket, $attribute, $id) {
+        outputLog('ENTER goToExecutionFromDaytime, attribute: '. $attribute. ', id: '. $id);
         displayExecution($socket, $attribute, $id);
     }
 
     //昼の画面を表示
     public function displayDaytime($socket, $attribute, $id) {
+        outputLog('ENTER displayDaytime, attribute: '. $attribute. ', id: '. $id);
         $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'init', 'villageId'=>$this->villageId, 'attribute'=>$attribute, 'id'=>$id)));
         sendMessage($txData, $socket);
         foreach ($this->playerArray as $i) {
@@ -506,6 +531,7 @@ class Village {
     ////Execution////
     //「結果発表へ」がクリックされた
     public function clickResult($messageArray) {
+        outputLog('ENTER clickResult, messageArray: '. $messageArray);
         $id = $messageArray->id;
         $hangingId = $messageArray->hangingId;
         $player = $this->getPlayer($id);
@@ -539,11 +565,13 @@ class Village {
 
     //結果発表画面に遷移
     public function goToResultFromExecution($socket, $attribute) {
+        outputLog('ENTER goToResultFromExecution, attribute: '. $attribute);
         $this->displayResult($socket, $attribute);
     }
 
     //吊る人選択画面を表示
     public function displayExecution($socket, $attribute, $id) {
+        outputLog('ENTER displayExecution, attribute: '. $attribute. ', id: '. $id);
         $txData = mask(json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'init', 'villageId'=>$this->villageId, 'attribute'=>$attribute, 'id'=>$id)));
         sendMessage($txData, $socket);
         if ($attribute == PLAYER) {
@@ -560,6 +588,7 @@ class Village {
 
     //勝者を判定
     public function judgeWinner() {
+        outputLog('ENTER judgeWinner');
         //怪盗が交換した後の役職に設定
         foreach ($playerArray as $i) {
             if ($i->position == THIEF) {
@@ -643,6 +672,7 @@ class Village {
 
     //役職が勝者サイドか
     public function isWinner($position, $winnerSide) {
+        outputLog('ENTER isWinner, position: '. $position. ', winnerSide: '. $winnerSide);
         $flag = false;
         switch ($position) {
             case VILLAGER:
@@ -669,6 +699,7 @@ class Village {
 
     //ポイントを計算
     public function getPoint($position, $winnerSide) {
+        outputLog('ENTER getPoint, position: '. $position. ', winnerSide: '. $winnerSide);
         $point = 0;
         switch ($winnerSide) {
             case VILLAGER:
@@ -725,6 +756,7 @@ class Village {
     ////Result////
     //「次の夜へ」がクリックされた
     public function clickNextNight() {
+        outputLog('ENTER clickNextNight');
         $this->startGame();
         foreach ($this->playerArray as $i) {
             $this->goToActionFromResult($i->socket, $i->id);
@@ -736,6 +768,7 @@ class Village {
 
     //「終了」がクリックされた
     public function clickExit() {
+        outputLog('ENTER clickExit');
         $this->state = WAITING;
         foreach ($playerArray as $i) {
             $this->goToWaitingFromResult($i->socket, PLAYER, $i->id);
@@ -747,21 +780,25 @@ class Village {
 
     //行動画面に遷移
     public function goToActionFromResult($socket, $id) {
+        outputLog('ENTER goToActionFromResult, id: '. $id);
         $this->displayAction($socket, $id);
     }
 
     //夜の画面に遷移
     public function goToNightFromResult($socket) {
+        outputLog('ENTER goToNightFromResult');
         $this->displayNight($socket);
     }
 
     //待機画面に遷移
     public function goToWaitingFromResult($socket, $attribute, $id) {
+        outputLog('ENTER goToWaitingFromResult, attribute: '. $attribute. ', id: '. $id);
         $this->displayWaiting($socket, $attribute, $id);
     }
 
     //結果発表画面を表示
     public function displayResult($socket, $attribute, $id) {
+        outputLog('ENTER displayResult, attribute: '. $attribute. ', id: '. $id);
         $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'init', 'villageId'=>$villageId, 'attribute'=>$attribute, 'side'=>$this->winnerSide)));
         sendMessage($txData, $socket);
         if ($attribute == PLAYER) {
