@@ -214,6 +214,7 @@ function getPlayer(id) {
 window.addEventListener('load',
     function (event) {
         console.log('ENTER addEventListener');
+        displayState(-1);
         //var wsUri = "ws://www.tetsis.com:9000/server.php";
         var wsUri = "ws://www.tetsis-net:9000/server.php";
         websocket = new WebSocket(wsUri);
