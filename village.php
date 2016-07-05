@@ -64,14 +64,14 @@ class Village {
     ////Participation////
     //socketで「プレイヤーとして参加」をクリック
     public function clickParticipationAsPlayer($socket, $messageArray) {
-        outputLog('ENTER clickParticipationAsPlayer, messageArray: '. $messageArray);
+        outputLog('ENTER clickParticipationAsPlayer');
         $name = $messageArray->name;
         $this->participateInVillage($socket, PLAYER, $name);
     }
 
     //socketで「観戦者として参加」をクリック
     public function clickParticipationAsSpectator($socket, $messageArray) {
-        outputLog('ENTER clickParticipationAsSpectator, messageArray: '. $messageArray);
+        outputLog('ENTER clickParticipationAsSpectator');
         $name = $messageArray->name;
         $this->participateInVillage($socket, SPECTATOR, $name);
     }
@@ -91,7 +91,7 @@ class Village {
 
     //村に参加
     public function participateInVillage($socket, $attribute, $name) {
-        outputLog('ENTER participateInVillage, attribute: '. $attribute. ', name: '. $name;
+        outputLog('ENTER participateInVillage, attribute: '. $attribute. ', name: '. $name);
         if (($this->state == PARTICIPATION) || ($this->state == WAITING)) {
             $flag = false;
             foreach ($this->playerArray as $i) {
@@ -119,7 +119,7 @@ class Village {
                         $this->goToWaitingFromParticipation($socket, $attribute, $this->currentPlayerId);
                     case SPECTATOR:
                         //観戦者を作成
-                        $player = new Spectator($this->currentSpectatorId, $name, $socket);
+                        $spectator = new Spectator($this->currentSpectatorId, $name, $socket);
                         $this->spectatorArray[] = $spectator;
                         $this->currentSpectatorId++;
                         $this->goToWaitingFromParticipation($socket, $attribute, $this->currentSpectatorId);
@@ -136,7 +136,7 @@ class Village {
     ////Waiting////
     //役職数がクリックされた
     public function clickNumberOfPosition($messageArray) {
-        outputLog('ENTER clickNumberOfPosition, messageArray: '. $messageArray);
+        outputLog('ENTER clickNumberOfPosition');
         $position = $messageArray->position;
         $number = $messageArray->number;
         $numberOfPositionArray[$position] = $number;
@@ -152,7 +152,7 @@ class Village {
 
     //話し合い時間がクリックされた
     public function clickTalkingTime($messageArray) {
-        outputLog('ENTER clickTalkingTime, messageArray: '. $messageArray);
+        outputLog('ENTER clickTalkingTime');
         $time = $messageArray->time;
         $talkingTime = $time;
         foreach ($this->playerArray as $i) {
@@ -167,7 +167,7 @@ class Village {
 
     //「ゲーム開始」がクリックされた
     public function clickGameStart($messageArray) {
-        outputLog('ENTER clickGameStart, messageArray: '. $messageArray);
+        outputLog('ENTER clickGameStart');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
         if ($player != null) {
@@ -265,7 +265,7 @@ class Village {
     ////Action////
     //「次へ」がクリックされた
     public function clickNotification($messageArray) {
-        outputLog('ENTER clickNotification, messageArray: '. $messageArray);
+        outputLog('ENTER clickNotification');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
         if ($player != null) {
@@ -319,7 +319,7 @@ class Village {
     ////Notification////
     //「昼のフェーズへ」がクリックされた
     public function clickDaytime($messageArray) {
-        outputLog('ENTER clickDaytime, messageArray: '. $messageArray);
+        outputLog('ENTER clickDaytime');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
         if ($player != null) {
@@ -431,7 +431,7 @@ class Village {
     ////Daytime////
     //「話し合い延長」がクリックされた
     public function clickExtension($messageArray) {
-        outputLog('ENTER clickExtension, messageArray: '. $messageArray);
+        outputLog('ENTER clickExtension');
         $endingTime = new DateTime('+1 minutes');
             foreach ($this->playerArray as $i) {
                 $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1)));
@@ -445,7 +445,7 @@ class Village {
 
     //「話し合い終了」がクリックされた
     public function clickTalksEnd($messageArray) {
-        outputLog('ENTER clickTalksEnd, messageArray: '. $messageArray);
+        outputLog('ENTER clickTalksEnd');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
         if ($player != null) {
@@ -531,7 +531,7 @@ class Village {
     ////Execution////
     //「結果発表へ」がクリックされた
     public function clickResult($messageArray) {
-        outputLog('ENTER clickResult, messageArray: '. $messageArray);
+        outputLog('ENTER clickResult');
         $id = $messageArray->id;
         $hangingId = $messageArray->hangingId;
         $player = $this->getPlayer($id);

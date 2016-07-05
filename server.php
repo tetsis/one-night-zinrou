@@ -86,6 +86,7 @@ while (true) {
         {
             $received_text = unmask($buf); //unmask data
             $messageArray = json_decode($received_text); //json decode 
+            outputLog(var_dump($messageArray));
             if ($messageArray !== null) {
                 $type = $messageArray->type;
                 if ($type == 'system') {
@@ -122,21 +123,21 @@ while (true) {
                         case PARTICIPATION:
                             if ($message == 'participateAsPlayer') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickParticipationAsPlayer($changedSocket, $messageArray);
                                 }
                             }
                             else if ($message == 'participateAsSpectator') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickParticipationAsSpectator($changedSocket, $messageArray);
                                 }
                             }
                             else if ($message == 'back') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $villageManagement->clickBackInParticipation($changedSocket, $messageArray);
                                 }
@@ -145,28 +146,28 @@ while (true) {
                         case WAITING:
                             if ($message == 'setNumberOfPosition') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickNumberOfPosition($messageArray);
                                 }
                             }
                             else if ($message == 'setTalkingTime') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickTalkingTime($messageArray);
                                 }
                             }
                             else if ($message == 'gameStart') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickGameStart($messageArray);
                                 }
                             }
                             else if ($message == 'back') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $villageManagement->clickBackInWaiting($changedSocket, $messageArray);
                                 }
@@ -175,7 +176,7 @@ while (true) {
                         case ACTION:
                             if ($message == 'notification') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickNotification($messageArray);
                                 }
@@ -184,7 +185,7 @@ while (true) {
                         case NOTIFICATION:
                             if ($message == 'daytime') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickDaytime($messageArray);
                                 }
@@ -193,14 +194,14 @@ while (true) {
                         case DAYTIME:
                             if ($message == 'extension') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickExtension($messageArray);
                                 }
                             }
                             else if ($message == 'talksEnd') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickTalksEnd($messageArray);
                                 }
@@ -209,7 +210,7 @@ while (true) {
                         case EXECUTION:
                             if ($message == 'result') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickResult($messageArray);
                                 }
@@ -218,14 +219,14 @@ while (true) {
                         case RESULT:
                             if ($message == 'nextNight') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickNextNight($messageArray);
                                 }
                             }
                             else if ($message == 'exit') {
                                 $villageId = $messageArray->villageId;
-                                $village = getVillage($villageId);
+                                $village = $villageManagement->getVillage($villageId);
                                 if ($village != null) {
                                     $village->clickExit($messageArray);
                                 }
@@ -356,5 +357,5 @@ function perform_handshaking($receved_header,$client_conn, $host, $port)
 
 //ログを出力
 function outputLog($log) {
-    echo $log;
+    echo "$log\n";
 }

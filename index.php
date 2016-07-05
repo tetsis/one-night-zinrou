@@ -64,7 +64,7 @@
 
 <!-- Participation -->
 <div id ="participation">
-<div class="scrn_villageName"></div><br/>
+<div id="scrn_villageName"></div><br/>
 
 あなたの名前を入力してください<br/>
 <input type="text" id="txt_participantName"><br/><br/>
@@ -172,7 +172,7 @@
 
 
 <!-- Notification -->
-<div id="action">
+<div id="notification">
 <div id="scrn_notification"></div>
 
 <input type="button" id="btn_daytime" value="昼のフェーズへ"><br/>

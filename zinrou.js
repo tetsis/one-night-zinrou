@@ -1029,6 +1029,7 @@ function displayTop() {
 //村作成画面を表示
 function displayMaking() {
     console.log('ENTER displayMaking');
+    spectatorFlag = true;
     selectButton('btn_spectatorYes');
     notSelectButton('btn_spectatorNo');
     document.getElementById('btn_decideInMaking').disabled = false;

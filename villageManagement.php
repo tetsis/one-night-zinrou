@@ -96,7 +96,7 @@ class VillageManagement {
             $fp = fopen('zinrou.conf', 'w');
             if ($fp) {
                 if (flock($fp, LOCK_EX)) {
-                    fputs($fp, "$currentId");
+                    fputs($fp, $this->currentId);
                     flock($fp, LOCK_UN);
                 }
                 else {
@@ -105,11 +105,11 @@ class VillageManagement {
             }
 
             //村を作成する
-            $village = new Village($currentId, $name, $password, $spectatorFlag);
+            $village = new Village($this->currentId, $name, $password, $spectatorFlag);
             $village->participantArray[] = $socket;
             $village->numberOfParticipant = 1;
             $this->villageArray[] = $village;
-            $this->goToParticipationFromMaking($socket, $currentId, $name, $spectatorFlag);
+            $this->goToParticipationFromMaking($socket, $this->currentId, $name, $spectatorFlag);
         }
     }
 
@@ -142,7 +142,7 @@ class VillageManagement {
 
     //socketで「決定」をクリック
     public function clickDecideInLobby($socket, $messageArray) {
-        outputLog('ENTER clickDecideInLobby, messageArray: '. $messageArray);
+        outputLog('ENTER clickDecideInLobby');
         $villageId = $messageArray->villageId;
         $password = $messageArray->password;
         $village = $this->getVillage($villageId);
@@ -207,7 +207,7 @@ class VillageManagement {
     ////Participation////
     //socketで「戻る」をクリック
     public function clickBackInParticipation($socket, $messageArray) {
-        outputLog('ENTER clickBackInParticipation, messageArray: '. $messageArray);
+        outputLog('ENTER clickBackInParticipation');
         $village = getVillage($villageId);
         if ($village != null) {
             $foundSocket = array_search($socket, $village->participantArray);
@@ -235,7 +235,7 @@ class VillageManagement {
     ////Waiting////
     //socketで「戻る」をクリック
     public function clickBackInWaiting($socket, $messageArray) {
-        outputLog('ENTER clickBackInWaiting, messageArray: '. $messageArray);
+        outputLog('ENTER clickBackInWaiting');
         $villageId = $messageArray->villageId;
         $attribute = $messageArray->attribute;
         $id = $messageArray->id;
@@ -299,7 +299,7 @@ class VillageManagement {
 
     //socketからデータの応答
     public function replyData($socket, $messageArray) {
-        outputLog('ENTER replyData, messageArray: '. $messageArray);
+        outputLog('ENTER replyData');
         $villageId = $messageArray->villageId;
         $attribute = $messageArray->attribute;
         $id = $messageArray->id;
@@ -389,7 +389,7 @@ class VillageManagement {
     public function goToTopFromConnection($socket) {
         outputLog('ENTER goToTopFromConnection');
         $this->deleteData($socket);
-        $this->displayTop();
+        $this->displayTop($socket);
     }
 
     //socketを待機画面に遷移
