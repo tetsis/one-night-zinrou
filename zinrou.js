@@ -67,7 +67,7 @@ positionArray = [
 //汎用関数
 //stateの画面を表示
 function displayState(state) {
-    console.log('ENTER displayState, state' + state);
+    console.log('ENTER displayState, state: ' + state);
     document.getElementById('top').style.display = 'none';
     document.getElementById('making').style.display = 'none';
     document.getElementById('lobby').style.display = 'none';
@@ -229,10 +229,10 @@ window.addEventListener('load',
                 var message = messageArray['message'];
                 switch(state) {
                     case STATE.CONNECTION:
-                        if (message == 'queryData') {
+                        if (message == 'query') {
                             queryData();
                         }
-                        else if (message == 'deleteData') {
+                        else if (message == 'delete') {
                             deleteData();
                         }
                         break;
