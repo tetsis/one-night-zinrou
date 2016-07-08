@@ -42,6 +42,7 @@ var resultOfFortunetellerArray;
 var resultOfThiefArray;
 var numberOfPlayer;
 var numberOfPositionArray;
+var numberOfLeft;
 var talkingTime;
 var remaingTime;
 var selectionId;
@@ -753,11 +754,7 @@ function clickTalkingTime(incrementOrDecrement) {
 //「ゲーム開始」をクリック
 function clickGameStart() {
     console.log('ENTER clickGameStart');
-    var sum = 0;
-    for (var i = 0; i < positionArray.length; i++) {
-        sum += numberOfPositionArray[positionArray[i]];
-    }
-    if (sum != (numberOfPlayer + 2)) {
+    if (numberOfLeft >= 1) {
         alert('役職人数の配分を行ってください');
     }
     else if (talkingTime == 0) {
@@ -1162,6 +1159,7 @@ function initInWaiting(messageArray) {
     playerArray = [];
     numberOfPlayer = 0;
     numberOfPositionArray = [];
+    numberOfLeft = 0;
     talkingTime = 0;
     document.getElementById('box_playerListInWaiting').textContent = null;
     document.getElementById('box_spectatorListInWaiting').textContent = null;
@@ -1217,6 +1215,8 @@ function addParticipant(messageArray) {
             element.id = 'scrn_playerListInWaiting' + id;
             element.innerHTML = name;
             box.appendChild(element);
+            numberOfLeft++;
+            document.getElementById('scrn_left').innerHTML = numberOfLeft + '人';
             break;
         case ATTRIBUTE.SPECTATOR:
             box = document.getElementById('box_spectatorListInWaiting');
@@ -1252,6 +1252,8 @@ function delParticipant(messageArray) {
                 if (element != null) {
                     box.removeChild(element);
                 }
+                numberOfLeft--;
+                document.getElementById('scrn_left').innerHTML = numberOfLeft + '人';
             }
             break;
         case ATTRIBUTE.SPECTATOR:
@@ -1275,12 +1277,14 @@ function setNumberOfPositionInWaiting(messageArray) {
     var positionString = getPositionNameInEnglish(position);
     divId = 'scrn_numberOf' + positionString + 'InWaiting';
     document.getElementById(divId).innerHTML = number + '人';
+    var sum = 0;
+    for (var i = 0; i < positionArray.length; i++) {
+        sum += numberOfPositionArray[positionArray[i]];
+    }
+    numberOfLeft = numberOfPlayer + 2 - sum;
+    document.getElementById('scrn_left').innerHTML = numberOfLeft + '人';
     if (attribute == ATTRIBUTE.PLAYER) {
-        var sum = 0;
-        for (var i = 0; i < positionArray.length; i++) {
-            sum += numberOfPositionArray[positionArray[i]];
-        }
-        if (sum >= numberOfPlayer + 2 ) {
+        if (numberOfLeft <= 0) {
             document.getElementById('btn_incrementOfNumberOfVillager').disabled = true;
             document.getElementById('btn_incrementOfNumberOfWerewolf').disabled = true;
             document.getElementById('btn_incrementOfNumberOfFortuneteller').disabled = true;
