@@ -40,7 +40,7 @@ class VillageManagement {
     //socketを村作成画面に遷移
     public function goToMakingFromTop($socket) {
         outputLog('ENTER goToMakingFromTop');
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>MAKING, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>MAKING, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
@@ -48,14 +48,14 @@ class VillageManagement {
     public function goToLobbyFromTop($socket) {
         outputLog('ENTER goToLobbyFromTop');
         $this->updateVillageList($socket);
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
     //socketにトップ画面を表示
     public function displayTop($socket) {
         outputLog('ENTER displayTop');
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>TOP, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>TOP, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
@@ -71,7 +71,7 @@ class VillageManagement {
         $flag = false;
         foreach ($this->villageArray as $i) {
             if ($i->name == $name) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>MAKING, 'message'=>'reject')));
+                $txData = json_encode(array('type'=>'system', 'state'=>MAKING, 'message'=>'reject'));
                 sendMessage($txData, $socket);
                 $flag = true;
                 break;
@@ -156,15 +156,15 @@ class VillageManagement {
             if ($correctFlag == true) {
                 $village->participantArray[] = $socket;
                 $village->numberOfParticipant++;
-                $village->goToParticipationFromLobby($socket, $villageId, $villageName, $spectatorFlag);
+                $this->goToParticipationFromLobby($socket, $villageId, $village->villageName, $village->spectatorFlag);
             }
             else {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'reject')));
+                $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'reject'));
                 sendMessage($txData, $socket);
             }
         }
         else {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'delete')));
+                $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'delete'));
                 sendMessage($txData, $socket);
         }
     }
@@ -197,7 +197,7 @@ class VillageManagement {
                 if ($i->password !== '') {
                     $passwordFlag = true;
                 }
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'add', 'villageId'=>$i->id, 'villageName'=>$i->name, 'passwordFlag'=>$passwordFlag)));
+                $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'add', 'villageId'=>$i->id, 'villageName'=>$i->name, 'passwordFlag'=>$passwordFlag));
                 sendMessage($txData, $socket);
             }
         }
@@ -269,11 +269,11 @@ class VillageManagement {
                 }
                 else {
                     foreach ($village->playerArray as $i) {
-                        $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>PLAYER, 'id'=>$i->id)));
+                        $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>PLAYER, 'id'=>$i->id));
                         sendMessage($txData, $socket);
                     }
                     foreach ($village->spectatorArray as $i) {
-                        $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>SPECTATOR, 'id'=>$i->id)));
+                        $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>SPECTATOR, 'id'=>$i->id));
                         sendMessage($txData, $socket);
                     }
                 }
@@ -293,7 +293,7 @@ class VillageManagement {
     //socketにデータを要求
     public function queryData($socket) {
         outputLog('ENTER queryData');
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>CONNECTION, 'message'=>'query')));
+        $txData = json_encode(array('type'=>'system', 'state'=>CONNECTION, 'message'=>'query'));
         sendMessage($txData, $socket);
     }
 
@@ -381,7 +381,7 @@ class VillageManagement {
     //データを消去
     public function deleteData($socket) {
         outputLog('ENTER deleteData');
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>CONNECTION, 'message'=>'delete')));
+        $txData = json_encode(array('type'=>'system', 'state'=>CONNECTION, 'message'=>'delete'));
         sendMessage($txData, $socket);
     }
 

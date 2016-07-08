@@ -85,7 +85,7 @@ class Village {
     //村参加画面を表示
     public function displayParticipation($socket, $villageId, $villageName, $spectatorFlag) {
         outputLog('ENTER displayParticipation, villageId: '. $villageId. ', villageName: '. $villageName. ', spectatorFlag: '. $spectatorFlag);
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>PARTICIPATION, 'message'=>'display', 'villageId'=>$villageId, 'villageName'=>$villageName, 'spectatorFlag'=>$spectatorFlag)));
+        $txData = json_encode(array('type'=>'system', 'state'=>PARTICIPATION, 'message'=>'display', 'villageId'=>$villageId, 'villageName'=>$villageName, 'spectatorFlag'=>$spectatorFlag));
         sendMessage($txData, $socket);
     }
 
@@ -105,7 +105,7 @@ class Village {
                 }
             }
             if ($flag == true) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>PARTICIPATION, 'message'=>'reject')));
+                $txData = json_encode(array('type'=>'system', 'state'=>PARTICIPATION, 'message'=>'reject'));
                 sendMessage($txData, $socket);
             }
             else {
@@ -113,21 +113,23 @@ class Village {
                 switch ($attribute) {
                     case PLAYER:
                         //プレイヤーを作成
-                        $player = new player($this->currentplayerid, $name, $socket);
+                        $player = new player($this->currentPlayerId, $name, $socket);
                         $this->playerArray[] = $player;
-                        $this->currentplayerid++;
                         $this->goToWaitingFromParticipation($socket, $attribute, $this->currentPlayerId);
+                        $this->currentPlayerId++;
+                        break;
                     case SPECTATOR:
                         //観戦者を作成
                         $spectator = new Spectator($this->currentSpectatorId, $name, $socket);
                         $this->spectatorArray[] = $spectator;
-                        $this->currentSpectatorId++;
                         $this->goToWaitingFromParticipation($socket, $attribute, $this->currentSpectatorId);
+                        $this->currentSpectatorId++;
+                        break;
                 }
             }
         }
         else {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>PARTICIPATION, 'message'=>'alreadyStarted')));
+                $txData = json_encode(array('type'=>'system', 'state'=>PARTICIPATION, 'message'=>'alreadyStarted'));
                 sendMessage($txData, $socket);
         }
     }
@@ -141,11 +143,11 @@ class Village {
         $number = $messageArray->number;
         $numberOfPositionArray[$position] = $number;
         foreach ($this->playerArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setNumberOfPosition', 'position'=>$position, 'number'=>$number)));
+            $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setNumberOfPosition', 'position'=>$position, 'number'=>$number));
             sendMessage($txData, $i->socket);
         }
         foreach ($this->spectatorArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setNumberOfPosition', 'position'=>$position, 'number'=>$number)));
+            $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setNumberOfPosition', 'position'=>$position, 'number'=>$number));
             sendMessage($txData, $i->socket);
         }
     }
@@ -156,11 +158,11 @@ class Village {
         $time = $messageArray->time;
         $talkingTime = $time;
         foreach ($this->playerArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setTalkingTime', 'time'=>$time)));
+            $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setTalkingTime', 'time'=>$time));
             sendMessage($txData, $i->socket);
         }
         foreach ($this->spectatorArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setTalkingTime', 'time'=>$time)));
+            $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setTalkingTime', 'time'=>$time));
             sendMessage($txData, $i->socket);
         }
     }
@@ -173,11 +175,11 @@ class Village {
         if ($player != null) {
             $player->gameStartFlag = true;
             foreach ($this->playerArray as $i) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setGameStart', 'id'=>$id)));
+                $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setGameStart', 'id'=>$id));
                 sendMessage($txData, $i->socket);
             }
             foreach ($this->spectatorArray as $i) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setGameStart', 'id'=>$id)));
+                $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setGameStart', 'id'=>$id));
                 sendMessage($txData, $i->socket);
             }
 
@@ -187,7 +189,7 @@ class Village {
                     $sum++;
                 }
             }
-            if ($sum == count($playerArray)) {
+            if ($sum == count($this->playerArray)) {
                 $this->startGame();
                 foreach ($this->playerArray as $i) {
                     $this->goToActionFromWaiting($i->socket, $i->id);
@@ -234,30 +236,30 @@ class Village {
     //待機画面を表示
     public function displayWaiting($socket, $attribute, $id) {
         outputLog('ENTER displayWaiting, attribute: '. $attribute. ', id: '. $id);
-        global $positionArray;
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'init', 'villageId'=>$this->villageId, 'villageName'=>$this->villageName, 'id'=>$id, 'position'=>$player->position)));
+        $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'init', 'villageId'=>$this->id, 'villageName'=>$this->name, 'id'=>$id, 'attribute'=>$attribute));
         sendMessage($txData, $socket);
         foreach ($this->playerArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'add', 'attribute'=>PLAYER, 'id'=>$i->id, 'name'=>$i->name)));
+            $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'add', 'attribute'=>PLAYER, 'id'=>$i->id, 'name'=>$i->name));
             sendMessage($txData, $socket);
         }
         foreach ($this->spectatorArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'add', 'attribute'=>SPECTATOR, 'id'=>$i->id, 'name'=>$i->name)));
+            $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'add', 'attribute'=>SPECTATOR, 'id'=>$i->id, 'name'=>$i->name));
             sendMessage($txData, $socket);
         }
-        foreach ($this->positionArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setNumberOfPosition', 'position'=> $i, 'id'=>$this->numberOfPositionArray[$i])));
+        global $positionArray;
+        foreach ($positionArray as $i) {
+            $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setNumberOfPosition', 'position'=> $i, 'number'=>$this->numberOfPositionArray[$i]));
             sendMessage($txData, $socket);
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setTalkingTime', 'time'=> $this->talkingTime)));
+        $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setTalkingTime', 'time'=> $this->talkingTime));
         sendMessage($txData, $socket);
         foreach ($this->playerArray as $i) {
             if ($i->gameStartFlag == true) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setGameStart', 'id'=>$i->id)));
+                $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setGameStart', 'id'=>$i->id));
                 sendMessage($txData, $socket);
             }
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
@@ -275,14 +277,14 @@ class Village {
                 if ($player->position == FORTUNETELLER) {
                     $this->resultOfFortunetellerArray[] = array('id' => $id, 'selectionId' => $selectionId);
                     foreach ($this->spectatorArray as $i) {
-                        $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfFortuneteller', 'id'=>$id, 'selectionId'=>$selectionId)));
+                        $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfFortuneteller', 'id'=>$id, 'selectionId'=>$selectionId));
                         sendMessage($txData, $i->socket);
                     }
                 }
                 else if ($player->position == THIEF) {
                     $this->resultOfThiefArray[] = array('id' => $id, 'selectionId' => $selectionId);
                     foreach ($this->spectatorArray as $i) {
-                        $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfThief', 'id'=>$id, 'selectionId'=>$selectionId)));
+                        $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfThief', 'id'=>$id, 'selectionId'=>$selectionId));
                         sendMessage($txData, $i->socket);
                     }
                 }
@@ -301,17 +303,17 @@ class Village {
     public function displayAction($socket, $id) {
         outputLog('ENTER displayAction, id: '. $id);
         $player = $this->getPlayer($id);
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>ACTION, 'message'=>'init', 'villageId'=>$this->villageId, 'id'=>$id, 'position'=>$player->position)));
+        $txData = json_encode(array('type'=>'system', 'state'=>ACTION, 'message'=>'init', 'villageId'=>$this->id, 'id'=>$id, 'position'=>$player->position));
         sendMessage($txData, $socket);
         if ($player->position == FORTUNETELLER || $player->position == THIEF) {
-            foreach ($playerArray as $i) {
+            foreach ($this->playerArray as $i) {
                 if ($i->id != $id) {
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>ACTION, 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name)));
+                    $txData = json_encode(array('type'=>'system', 'state'=>ACTION, 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name));
                     sendMessage($txData, $socket);
                 }
             }
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>ACTION, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>ACTION, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
@@ -354,7 +356,7 @@ class Village {
     public function displayNotification($socket, $id) {
         outputLog('ENTER displayNotification, id: '. $id);
         $player = $this->getPlayer($id);
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'init', 'villageId'=>$this->villageId, 'id'=>$id, 'position'=>$player->position)));
+        $txData = json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'init', 'villageId'=>$this->id, 'id'=>$id, 'position'=>$player->position));
         sendMessage($txData, $socket);
         switch ($player->position) {
             case WEREWOLF:
@@ -366,7 +368,7 @@ class Village {
                 }
                 if (empty($buddyName) == false) {
                     foreach ($buddyName as $i) {
-                        $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setBuddy', 'name'=>$i)));
+                        $txData = json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setBuddy', 'name'=>$i));
                         sendMessage($txData, $socket);
                     }
                 }
@@ -374,23 +376,23 @@ class Village {
             case FORTUNETELLER:
                 if ($player->selectionId != -1) {
                     $selectionPlayer = $this->getPlayer($player->selectionId);
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position)));
+                    $txData = json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position));
                     sendMessage($txData, $socket);
                 }
                 else {
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setResultOfField', 'position1'=>$this->fieldPosition1, 'position2'=>$this->fieldPosition2)));
+                    $txData = json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setResultOfField', 'position1'=>$this->fieldPosition1, 'position2'=>$this->fieldPosition2));
                     sendMessage($txData, $socket);
                 }
                 break;
             case THIEF:
                 if ($player->selectionId != -1) {
                     $selectionPlayer = $this->getPlayer($player->selectionId);
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position)));
+                    $txData = json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position));
                     sendMessage($txData, $socket);
                 }
                 break;
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
@@ -405,25 +407,25 @@ class Village {
     //夜の画面を表示
     public function displayNight($socket) {
         outputLog('ENTER displayNight');
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'init')));
+        $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'init'));
         sendMessage($txData, $socket);
         foreach ($this->playerArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setPositionOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position)));
+            $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setPositionOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position));
             sendMessage($txData, $socket);
             if ($i->position == FORTUNETELLER) {
                 if ($i->actionFlag == true) {
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+                    $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId));
                     sendMessage($txData, $socket);
                 }
             }
             else if ($i->position == THIEF) {
                 if ($i->actionFlag == true) {
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+                    $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId));
                     sendMessage($txData, $socket);
                 }
             }
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
@@ -434,11 +436,11 @@ class Village {
         outputLog('ENTER clickExtension');
         $endingTime = new DateTime('+1 minutes');
             foreach ($this->playerArray as $i) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1)));
+                $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1));
                 sendMessage($txData, $i->socket);
             }
         foreach ($this->spectatorArray as $i) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1)));
+                $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1));
                 sendMessage($txData, $i->socket);
         }
     }
@@ -451,11 +453,11 @@ class Village {
         if ($player != null) {
             $player->talksEndFlag = true;
             foreach ($this->playerArray as $i) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalksEnd', 'id'=>$id)));
+                $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalksEnd', 'id'=>$id));
                 sendMessage($txData, $i->socket);
             }
             foreach ($this->spectatorArray as $i) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalksEnd', 'id'=>$id)));
+                $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalksEnd', 'id'=>$id));
                 sendMessage($txData, $i->socket);
             }
 
@@ -465,7 +467,7 @@ class Village {
                     $sum++;
                 }
             }
-            if ($sum == count($playerArray)) {
+            if ($sum == count($this->playerArray)) {
                 $this->state = EXECUTION;
                 foreach ($this->playerArray as $i) {
                     $this->goToExecutionFromDaytime($i->socket, PLAYER, $i->id);
@@ -486,44 +488,44 @@ class Village {
     //昼の画面を表示
     public function displayDaytime($socket, $attribute, $id) {
         outputLog('ENTER displayDaytime, attribute: '. $attribute. ', id: '. $id);
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'init', 'villageId'=>$this->villageId, 'attribute'=>$attribute, 'id'=>$id)));
+        $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id));
         sendMessage($txData, $socket);
         foreach ($this->playerArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name)));
+            $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name));
             sendMessage($txData, $socket);
         }
         foreach ($this->spectatorArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setSpectator', 'id'=>$i->id, 'name'=>$i->name)));
+            $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setSpectator', 'id'=>$i->id, 'name'=>$i->name));
             sendMessage($txData, $socket);
         }
         global $positionArray;
         foreach ($positionArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setNumberOfPosition', 'position'=>$i, 'number'=>$this->numberOfPositionArray[$i])));
+            $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setNumberOfPosition', 'position'=>$i, 'number'=>$this->numberOfPositionArray[$i]));
             sendMessage($txData, $socket);
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>$this->talkingTime)));
+        $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>$this->talkingTime));
         sendMessage($txData, $socket);
         foreach ($this->playerArray as $i) {
             if ($i->talksEndFlag == true) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'talksEnd', 'id'=>$i->id)));
+                $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'talksEnd', 'id'=>$i->id));
                 sendMessage($txData, $socket);
             }
         }
         if ($attribute == SPECTATOR) {
             foreach ($this->playerArray as $i) {
-                $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setPositionOfPlayer', 'id'=>$i->id, 'position'=>$i->position)));
+                $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setPositionOfPlayer', 'id'=>$i->id, 'position'=>$i->position));
                 sendMessage($txData, $socket);
                 if ($i->position == FORTUNETELLER) {
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+                    $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId));
                     sendMessage($txData, $socket);
                 }
                 else if ($i->position == THIEF) {
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+                    $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId));
                     sendMessage($txData, $socket);
                 }
             }
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
@@ -546,7 +548,7 @@ class Village {
                     $sum++;
                 }
             }
-            if ($sum == count($playerArray)) {
+            if ($sum == count($this->playerArray)) {
                 $this->judgeWinner();
                 foreach ($this->playerArray as $i) {
                     $i->winnerOrLoser = isWinner($i->position, $this->winnerSide);
@@ -572,17 +574,17 @@ class Village {
     //吊る人選択画面を表示
     public function displayExecution($socket, $attribute, $id) {
         outputLog('ENTER displayExecution, attribute: '. $attribute. ', id: '. $id);
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'init', 'villageId'=>$this->villageId, 'attribute'=>$attribute, 'id'=>$id)));
+        $txData = json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id));
         sendMessage($txData, $socket);
         if ($attribute == PLAYER) {
             foreach ($this->playerArray as $i) {
                 if ($i->id != $id) {
-                    $txData = mask(json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name)));
+                    $txData = json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name));
                     sendMessage($txData, $socket);
                 }
             }
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>EXECUTION, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
@@ -590,10 +592,10 @@ class Village {
     public function judgeWinner() {
         outputLog('ENTER judgeWinner');
         //怪盗が交換した後の役職に設定
-        foreach ($playerArray as $i) {
+        foreach ($this->playerArray as $i) {
             if ($i->position == THIEF) {
                 if ($i->selectionId != -1) {
-                    foreach ($playerArray as $j) {
+                    foreach ($this->playerArray as $j) {
                         $swap = $j->position;
                         $j->position = $i->position;
                         $i->position = $swap;
@@ -605,13 +607,13 @@ class Village {
         //最も多く指名されたプレイヤーを抜き出す
         $hangingArray = array();
         $max = 0;
-        foreach ($playerArray as $i) {
+        foreach ($this->playerArray as $i) {
             if ($i->hangingNumber > $max) {
                 $max = $i->hangingNumber;
             }
         }
         $maxPlayerArray = array();
-        foreach ($playerArray as $i) {
+        foreach ($this->playerArray as $i) {
             if ($i->hangingNumber == $max) {
                 $maxPlayerArray[] = $i;
             }
@@ -621,7 +623,7 @@ class Village {
         if ($max == 1) {
             //プレイヤーの中に人狼はいる？
             $flag = false;
-            foreach ($playerArray as $i) {
+            foreach ($this->playerArray as $i) {
                 if ($i->position == WEREWOLF) {
                     $flag = true;
                     break;
@@ -770,10 +772,10 @@ class Village {
     public function clickExit() {
         outputLog('ENTER clickExit');
         $this->state = WAITING;
-        foreach ($playerArray as $i) {
+        foreach ($this->playerArray as $i) {
             $this->goToWaitingFromResult($i->socket, PLAYER, $i->id);
         }
-        foreach ($spectatorArray as $i) {
+        foreach ($this->spectatorArray as $i) {
             $this->goToWaitingFromResult($i->socket, SPECTATOR, $i->id);
         }
     }
@@ -799,26 +801,26 @@ class Village {
     //結果発表画面を表示
     public function displayResult($socket, $attribute, $id) {
         outputLog('ENTER displayResult, attribute: '. $attribute. ', id: '. $id);
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'init', 'villageId'=>$villageId, 'attribute'=>$attribute, 'side'=>$this->winnerSide)));
+        $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'init', 'villageId'=>$id, 'attribute'=>$attribute, 'side'=>$this->winnerSide));
         sendMessage($txData, $socket);
         if ($attribute == PLAYER) {
             $player = $this->getPlayer($id);
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setWinnerOrLoser', 'winnerOrLoser'=>$player->winnerOrLoser)));
+            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setWinnerOrLoser', 'winnerOrLoser'=>$player->winnerOrLoser));
             sendMessage($txData, $socket);
         }
-        foreach ($playerArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position, 'point'=>$i->point)));
+        foreach ($this->playerArray as $i) {
+            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position, 'point'=>$i->point));
             sendMessage($txData, $socket);
         }
         foreach ($resultOfFortunetellerArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId));
             sendMessage($txData, $socket);
         }
         foreach ($resultOfThiefArray as $i) {
-            $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId)));
+            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId));
             sendMessage($txData, $socket);
         }
-        $txData = mask(json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'display')));
+        $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 }

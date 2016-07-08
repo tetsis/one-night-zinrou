@@ -224,6 +224,7 @@ window.addEventListener('load',
         //#### Message received from server?
         websocket.onmessage = function(ev) {
             var messageArray = JSON.parse(ev.data); //PHP sends Json data
+            console.log('RECEIVE ' + JSON.stringify(messageArray));
             var type = messageArray['type'];
             if (type == 'system') {
                 state = messageArray['state'];
@@ -484,6 +485,7 @@ function clickLobby() {
         message: 'lobby'
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 //「村を作成」をクリック
@@ -497,6 +499,7 @@ function clickMaking() {
         message: 'making'
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 
@@ -537,6 +540,7 @@ function clickDecideInMaking() {
             spectatorFlag: spectatorFlag
         };
         websocket.send(JSON.stringify(messageArray));
+        console.log('SEND ' + JSON.stringify(messageArray));
     }
 }
 
@@ -551,6 +555,7 @@ function clickBackInMaking() {
         message: 'back'
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 
@@ -568,6 +573,7 @@ function clickSelectionInLobby(id, flag) {
 
     buttonId = 'btn_village' + selectedVillageId;
     selectButton(buttonId);
+    document.getElementById('btn_decideInLobby').disabled = false;
 }
 
 //「更新」をクリック
@@ -584,6 +590,7 @@ function clickUpdateInLobby() {
         message: 'update'
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 //「決定」をクリック
@@ -609,6 +616,7 @@ function clickDecideInLobby() {
                 password: password
             };
             websocket.send(JSON.stringify(messageArray));
+            console.log('SEND ' + JSON.stringify(messageArray));
         }
     }
 }
@@ -624,6 +632,7 @@ function clickBackInLobby() {
         message: 'back'
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 
@@ -646,6 +655,7 @@ function clickParticipationAsPlayer() {
             name: name
         };
         websocket.send(JSON.stringify(messageArray));
+        console.log('SEND ' + JSON.stringify(messageArray));
     }
 }
 
@@ -667,6 +677,7 @@ function clickParticipationAsSpectator() {
             name: name
         };
         websocket.send(JSON.stringify(messageArray));
+        console.log('SEND ' + JSON.stringify(messageArray));
     }
 }
 
@@ -682,22 +693,24 @@ function clickBackInParticipation() {
         villageId: villageId
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 
 ////Waiting////
 //役職の人数をクリック
-function clickNumberOfPosition(position, incrementOrDecrement) {
+function clickNumberOfPosition(incrementOrDecrement, position) {
     console.log('ENTER clickNumberOfPosition, position: ' + position + ', incrementOrDecrement: ' + incrementOrDecrement);
     var buttonId;
     var positionString = getPositionNameInEnglish(position);
     if (incrementOrDecrement == true) {
-        buttonId = 'btn_incrementOf' + positionString;
+        buttonId = 'btn_incrementOfNumberOf' + positionString;
+        console.log('buttonId = ' + buttonId)
         document.getElementById(buttonId).disabled = true;
         numberOfPositionArray[position]++;
     }
     else {
-        buttonId = 'btn_decrementOf' + positionString;
+        buttonId = 'btn_decrementOfNumberOf' + positionString;
         document.getElementById(buttonId).disabled = true;
         numberOfPositionArray[position]--;
     }
@@ -711,6 +724,7 @@ function clickNumberOfPosition(position, incrementOrDecrement) {
         number: numberOfPositionArray[position]
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 //話し合い時間をクリック
@@ -730,9 +744,10 @@ function clickTalkingTime(incrementOrDecrement) {
         state: STATE.WAITING,
         message: 'setTalkingTime',
         villageId: villageId,
-        talkingTime: talkingTime
+        time: talkingTime
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 //「ゲーム開始」をクリック
@@ -759,6 +774,7 @@ function clickGameStart() {
             id: id
         };
         websocket.send(JSON.stringify(messageArray));
+        console.log('SEND ' + JSON.stringify(messageArray));
     }
 }
 
@@ -776,6 +792,7 @@ function clickBackInWaiting() {
         id: id
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 
@@ -818,6 +835,7 @@ function clickNotification() {
             selectionId: selectionId
         };
         websocket.send(JSON.stringify(messageArray));
+        console.log('SEND ' + JSON.stringify(messageArray));
     }
 }
 
@@ -836,6 +854,7 @@ function clickDaytime() {
         id: id
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 
@@ -853,6 +872,7 @@ function clickExtension() {
         id: id
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 //「話し合い終了」をクリック
@@ -868,6 +888,7 @@ function clickTalksEnd() {
         id: id
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 //「役職確認」をクリック
@@ -938,6 +959,7 @@ function clickResult() {
             selectionId: selectionId
         };
         websocket.send(JSON.stringify(messageArray));
+        console.log('SEND ' + JSON.stringify(messageArray));
     }
 }
 
@@ -955,6 +977,7 @@ function clickNextNight() {
         villageId: villageId
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 //「終了」をクリック
@@ -969,6 +992,7 @@ function clickExitInResult() {
         villageId: villageId
     };
     websocket.send(JSON.stringify(messageArray));
+    console.log('SEND ' + JSON.stringify(messageArray));
 }
 
 
@@ -994,6 +1018,7 @@ function queryData() {
             id: id
         };
         websocket.send(JSON.stringify(messageArray));
+        console.log('SEND ' + JSON.stringify(messageArray));
     }
     else {
         //サーバに送信
@@ -1003,6 +1028,7 @@ function queryData() {
             message: 'none'
         };
         websocket.send(JSON.stringify(messageArray));
+        console.log('SEND ' + JSON.stringify(messageArray));
     }
 }
 
@@ -1059,13 +1085,13 @@ function displayLobby() {
 
 //村を追加
 function addVillage(messageArray) {
-    console.log('ENTER addVillage, messageArray: ' + messageArray);
+    console.log('ENTER addVillage, messageArray: ' + JSON.stringify(messageArray));
     villageId = messageArray['villageId'];
     villageName = messageArray['villageName'];
     var passwordFlag = messageArray['passwordFlag'];
-    var box = document.getElementById('box_selectionInLobby');
+    var box = document.getElementById('box_villageList');
     var element = document.createElement('input');
-    element.id = 'btn_village' + id;
+    element.id = 'btn_village' + villageId;
     element.type = 'button';
     element.value = villageName;
     element.addEventListener('click', function(){clickSelectionInLobby(villageId, passwordFlag)}, false);
@@ -1092,7 +1118,7 @@ function rejectPassword() {
 ////Participation////
 //村参加画面を表示
 function displayParticipation(messageArray) {
-    console.log('ENTER displayParticipation, messageArray: ' + messageArray);
+    console.log('ENTER displayParticipation, messageArray: ' + JSON.stringify(messageArray));
     villageId = messageArray['villageId'];
     villageName = messageArray['villageName'];
     spectatorFlag = messageArray['spectatorFlag'];
@@ -1132,7 +1158,7 @@ function alreadyStarted() {
 ////Waiting////
 //初期化
 function initInWaiting(messageArray) {
-    console.log('ENTER initInWaiting, messageArray: ' + messageArray);
+    console.log('ENTER initInWaiting, messageArray: ' + JSON.stringify(messageArray));
     playerArray = [];
     numberOfPlayer = 0;
     numberOfPositionArray = [];
@@ -1175,7 +1201,7 @@ function displayWaiting() {
 
 //参加者を追加
 function addParticipant(messageArray) {
-    console.log('ENTER addParticipant, messageArray: ' + messageArray);
+    console.log('ENTER addParticipant, messageArray: ' + JSON.stringify(messageArray));
     var box;
     var element;
     var attribute = messageArray['attribute'];
@@ -1204,7 +1230,7 @@ function addParticipant(messageArray) {
 
 //参加者を削除
 function delParticipant(messageArray) {
-    console.log('ENTER delParticipant, messageArray: ' + messageArray);
+    console.log('ENTER delParticipant, messageArray: ' + JSON.stringify(messageArray));
     var box;
     var element;
     var attribute = messageArray['attribute'];
@@ -1240,7 +1266,7 @@ function delParticipant(messageArray) {
 
 //役職の人数を設定
 function setNumberOfPositionInWaiting(messageArray) {
-    console.log('ENTER setNumberOfPositionInWaiting, messageArray: ' + messageArray);
+    console.log('ENTER setNumberOfPositionInWaiting, messageArray: ' + JSON.stringify(messageArray));
     var divId;
     var buttonId;
     var position = messageArray['position'];
@@ -1295,9 +1321,10 @@ function setNumberOfPositionInWaiting(messageArray) {
 
 //話し合い時間を設定
 function setTalkingTimeInWaiting(messageArray) {
-    console.log('ENTER setTalkingTimeInWaiting, messageArray: ' + messageArray);
+    console.log('ENTER setTalkingTimeInWaiting, messageArray: ' + JSON.stringify(messageArray));
     var time = messageArray['time'];
     talkingTime = time;
+    console.log('time = ' + time);
     document.getElementById('scrn_talkingTimeInWaiting').innerHTML = time;
     if (attribute == ATTRIBUTE.PLAYER) {
         document.getElementById('btn_incrementOfTalkingTime').disabled = false;
@@ -1312,7 +1339,7 @@ function setTalkingTimeInWaiting(messageArray) {
 
 //「ゲーム開始」をクリックしたプレイヤーがいた
 function setGameStart(messageArray) {
-    console.log('ENTER setGameStart, messageArray: ' + messageArray);
+    console.log('ENTER setGameStart, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var elementId = 'scrn_playerListInWaiting' + id;
     selectedElement(elementId);
@@ -1322,7 +1349,7 @@ function setGameStart(messageArray) {
 ////Action////
 //初期化
 function initInAction(messageArray) {
-    console.log('ENTER initInAction, messageArray: ' + messageArray);
+    console.log('ENTER initInAction, messageArray: ' + JSON.stringify(messageArray));
     selectionId = -1;
     document.getElementById('box_selectionInAction').textContent = null;
     villageId = messageArray['villageId'];
@@ -1358,7 +1385,7 @@ function displayAction() {
 
 //選択するプレイヤーを追加
 function setPlayerInAction(messageArray) {
-    console.log('ENTER setPlayerInAction, messageArray: ' + messageArray);
+    console.log('ENTER setPlayerInAction, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
     var box = document.getElementById('box_selectionInAction');
@@ -1375,7 +1402,7 @@ function setPlayerInAction(messageArray) {
 ////Notification////
 //初期化
 function initInNotification(messageArray) {
-    console.log('ENTER initInNotification, messageArray: ' + messageArray);
+    console.log('ENTER initInNotification, messageArray: ' + JSON.stringify(messageArray));
     buddyNameArray = [];
     selectionName = '';
     selectionPosition = -1;
@@ -1438,21 +1465,21 @@ function displayNotification() {
 
 //結果を設定
 function setResult(messageArray) {
-    console.log('ENTER setResult, messageArray: ' + messageArray);
+    console.log('ENTER setResult, messageArray: ' + JSON.stringify(messageArray));
     selectionName = messageArray['name'];
     selectionPosition = messageArray['position'];
 }
 
 //場の役職を設定
 function setResultOfField(messageArray) {
-    console.log('ENTER setResultOfField, messageArray: ' + messageArray);
+    console.log('ENTER setResultOfField, messageArray: ' + JSON.stringify(messageArray));
     position1 = messageArray['position1'];
     position2 = messageArray['position2'];
 }
 
 //仲間を設定
 function setBuddy(messageArray) {
-    console.log('ENTER setBuddy, messageArray: ' + messageArray);
+    console.log('ENTER setBuddy, messageArray: ' + JSON.stringify(messageArray));
     var name = messageArray['name'];
     buddyNameArray.push(name);
 }
@@ -1476,7 +1503,7 @@ function displayNight() {
 
 //プレイヤーの役職を設定
 function setPositionOfPlayerInNight(messageArray) {
-    console.log('ENTER setPositionOfPlayerInNight, messageArray: ' + messageArray);
+    console.log('ENTER setPositionOfPlayerInNight, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
     var position = messageArray['position'];
@@ -1492,7 +1519,7 @@ function setPositionOfPlayerInNight(messageArray) {
 
 //占い結果を設定
 function setResultOfFortunetellerInNight(messageArray) {
-    console.log('ENTER setResultOfFortunetellerInNight, messageArray: ' + messageArray);
+    console.log('ENTER setResultOfFortunetellerInNight, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
     var fortunetellerName = getPlayer(id).name;
@@ -1511,7 +1538,7 @@ function setResultOfFortunetellerInNight(messageArray) {
 
 //交換結果を設定
 function setResultOfThiefInNight(messageArray) {
-    console.log('ENTER setResultOfThiefInNight, messageArray: ' + messageArray);
+    console.log('ENTER setResultOfThiefInNight, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
     var thiefName = getPlayer(id).name;
@@ -1532,7 +1559,7 @@ function setResultOfThiefInNight(messageArray) {
 ////Daytime////
 //初期化
 function initInDaytime(messageArray) {
-    console.log('ENTER initInDaytime, messageArray: ' + messageArray);
+    console.log('ENTER initInDaytime, messageArray: ' + JSON.stringify(messageArray));
     playerArray = [];
     numberOfPositionArray = [];
     talkingTime = 3;
@@ -1562,7 +1589,7 @@ function displayDaytime() {
 
 //プレイヤーを設定
 function setPlayerInDaytime(messageArray) {
-    console.log('ENTER setPlayerInDaytime, messageArray: ' + messageArray);
+    console.log('ENTER setPlayerInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
     var player = {id: id, name: name, position: -1};
@@ -1576,7 +1603,7 @@ function setPlayerInDaytime(messageArray) {
 
 //観戦者を設定
 function setSpectatorInDaytime(messageArray) {
-    console.log('ENTER setSpectatorInDaytime, messageArray: ' + messageArray);
+    console.log('ENTER setSpectatorInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
     var box = document.getElementById('box_spectatorListInDaytime');
@@ -1588,7 +1615,7 @@ function setSpectatorInDaytime(messageArray) {
 
 //役職の人数を設定
 function setNumberOfPositionInDaytime(messageArray) {
-    console.log('ENTER setNumberOfPositionInDaytime, messageArray: ' + messageArray);
+    console.log('ENTER setNumberOfPositionInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var position = messageArray['position'];
     var number = messageArray['number'];
     numberOfPositionArray[position] = number;
@@ -1599,7 +1626,7 @@ function setNumberOfPositionInDaytime(messageArray) {
 
 //話し合い時間を設定
 function setTalkingTimeInDaytime(messageArray) {
-    console.log('ENTER setTalkingTimeInDaytime, messageArray: ' + messageArray);
+    console.log('ENTER setTalkingTimeInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var time = messageArray['time'];
     talkingTime = time;
     remaingTime = 60 * time;
@@ -1608,7 +1635,7 @@ function setTalkingTimeInDaytime(messageArray) {
 
 //「話し合い終了」をクリックしたプレイヤーがいた
 function setTalksEnd(messageArray) {
-    console.log('ENTER setTalksEnd, messageArray: ' + messageArray);
+    console.log('ENTER setTalksEnd, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var elementId = 'scrn_playerListInDaytime' + id;
     selectedElement(elementId);
@@ -1616,7 +1643,7 @@ function setTalksEnd(messageArray) {
 
 //プレイヤーの役職を設定
 function setPositionOfPlayerInDaytime(messageArray) {
-    console.log('ENTER setPositionOfPlayerInDaytime, messageArray: ' + messageArray);
+    console.log('ENTER setPositionOfPlayerInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var position = messageArray['position'];
     for (var i = 0; i < playerArray.length; i++) {
@@ -1629,7 +1656,7 @@ function setPositionOfPlayerInDaytime(messageArray) {
 
 //占い結果を設定
 function setResultOfFortunetellerInDaytime(messageArray) {
-    console.log('ENTER setResultOfFortunetellerInDaytime, messageArray: ' + messageArray);
+    console.log('ENTER setResultOfFortunetellerInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
     var array = {id: id, selectionId: selectionId};
@@ -1638,7 +1665,7 @@ function setResultOfFortunetellerInDaytime(messageArray) {
 
 //交換結果を設定
 function setResultOfThiefInDaytime(messageArray) {
-    console.log('ENTER setResultOfThiefInDaytime, messageArray: ' + messageArray);
+    console.log('ENTER setResultOfThiefInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
     var array = {id: id, selectionId: selectionId};
@@ -1649,7 +1676,7 @@ function setResultOfThiefInDaytime(messageArray) {
 ////Execution////
 //初期化
 function initInExecution(messageArray) {
-    console.log('ENTER initInExecution, messageArray: ' + messageArray);
+    console.log('ENTER initInExecution, messageArray: ' + JSON.stringify(messageArray));
     selectionId = -1;
     document.getElementById('box_selectionInExecution').textContent = null;
     villageId = messageArray['villageId'];
@@ -1676,7 +1703,7 @@ function displayExecution() {
 
 //選択するプレイヤーを設定
 function setPlayerInExecution(messageArray) {
-    console.log('ENTER setPlayerInExecution, messageArray: ' + messageArray);
+    console.log('ENTER setPlayerInExecution, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
     var box = document.getElementById('box_selectionInExecution');
@@ -1693,7 +1720,7 @@ function setPlayerInExecution(messageArray) {
 ////Result////
 //初期化
 function initInResult(messageArray) {
-    console.log('ENTER initInResult, messageArray: ' + messageArray);
+    console.log('ENTER initInResult, messageArray: ' + JSON.stringify(messageArray));
     playerArray = [];
     resultOfFortunetellerArray = [];
     resultOfThiefArray = [];
@@ -1737,7 +1764,7 @@ function displayResult() {
 
 //勝ち負けを設定
 function setWinnerOrLoser(messageArray) {
-    console.log('ENTER setWinnerOrLoser, messageArray: ' + messageArray);
+    console.log('ENTER setWinnerOrLoser, messageArray: ' + JSON.stringify(messageArray));
     var winnerOrLoser = messageArray['winnerOrLoser'];
     var winnerOrLoserString = '';
     if (winnerOrLoser == true) {
@@ -1751,7 +1778,7 @@ function setWinnerOrLoser(messageArray) {
 
 //プレイヤーの結果を設定
 function setResultOfPlayerInResult(messageArray) {
-    console.log('ENTER setResultOfPlayerInResult, messageArray: ' + messageArray);
+    console.log('ENTER setResultOfPlayerInResult, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
     var position = messageArray['position'];
@@ -1768,7 +1795,7 @@ function setResultOfPlayerInResult(messageArray) {
 
 //占い結果を表示
 function setResultOfFortunetellerInResult(messageArray) {
-    console.log('ENTER setResultOfFortunetellerInResult, messageArray: ' + messageArray);
+    console.log('ENTER setResultOfFortunetellerInResult, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
     var fortunetellerName = getPlayer(id).name;
@@ -1787,7 +1814,7 @@ function setResultOfFortunetellerInResult(messageArray) {
 
 //交換結果を設定
 function setResultOfThiefInResult(messageArray) {
-    console.log('ENTER setResultOfThiefInResult, messageArray: ' + messageArray);
+    console.log('ENTER setResultOfThiefInResult, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
     var thiefName = getPlayer(id).name;

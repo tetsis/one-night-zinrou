@@ -85,8 +85,9 @@ while (true) {
         while(socket_recv($changedSocket, $buf, 1024, 0) >= 1)
         {
             $received_text = unmask($buf); //unmask data
+            outputLog('RECEIVE '. $received_text);
             $messageArray = json_decode($received_text); //json decode 
-            outputLog(var_dump($messageArray));
+            //outputMessage($messageArray, false);
             if ($messageArray !== null) {
                 $type = $messageArray->type;
                 if ($type == 'system') {
@@ -277,7 +278,9 @@ socket_close($socket);
 
 function sendMessage($msg, $socket)
 {
-    @socket_write($socket, $msg, strlen($msg));
+    outputLog('SEND '. $msg);
+    $txData = mask($msg);
+    @socket_write($socket, $txData, strlen($txData));
     return true;
 }
 

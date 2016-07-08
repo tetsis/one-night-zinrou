@@ -1,18 +1,18 @@
 * {
-    font-size: 50px;
+    font-size: 20px;
 }
 
 input {
-    font-size: 100px;
+    font-size: 50px;
 }
 
 input[type="text"] {
     width: 90%;
-    padding: 50px 0px;
+    padding: 20px 0px;
 }
 
 input[type="button"] {
-    padding: 50px;
+    padding: 20px;
 }
 
 body {
