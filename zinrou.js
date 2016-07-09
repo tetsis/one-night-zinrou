@@ -1,34 +1,3 @@
-var STATE = {
-    'CONNECTION': 0,
-    'TOP': 1,
-    'MAKING': 2,
-    'LOBBY': 3,
-    'PARTICIPATION': 4,
-    'WAITING': 5,
-    'CONFIGURE': 6,
-    'ACTION': 7,
-    'NOTIFICATION': 8,
-    'NIGHT': 9,
-    'DAYTIME': 10,
-    'EXECUTION': 11,
-    'RESULT': 12
-};
-
-var POSITION = {
-    'VILLAGER': 0,
-    'WEREWOLF': 1,
-    'FORTUNETELLER': 2,
-    'THIEF': 3,
-    'MADMAN': 4,
-    'HANGING': 5,
-    'PEACE': 6
-};
-
-var ATTRIBUTE = {
-    'PLAYER': 0,
-    'SPECTATOR': 1
-};
-
 var state;
 var spectatorFlag;
 var selectedVillageId;
@@ -59,12 +28,12 @@ resultOfThiefArray = [];
 numberOfPositionArray = [];
 buddyNameArray = [];
 positionArray = [
-    POSITION.VILLAGER,
-    POSITION.WEREWOLF,
-    POSITION.FORTUNETELLER,
-    POSITION.THIEF,
-    POSITION.MADMAN,
-    POSITION.HANGING
+    'VILLAGER',
+    'WEREWOLF',
+    'FORTUNETELLER',
+    'THIEF',
+    'MADMAN',
+    'HANGING'
 ];
 
 //汎用関数
@@ -83,37 +52,37 @@ function displayState(state) {
     document.getElementById('execution').style.display = 'none';
     document.getElementById('result').style.display = 'none';
     switch (state) {
-        case STATE.TOP:
+        case 'TOP':
             document.getElementById('top').style.display = 'block';
             break;
-        case STATE.MAKING:
+        case 'MAKING':
             document.getElementById('making').style.display = 'block';
             break;
-        case STATE.LOBBY:
+        case 'LOBBY':
             document.getElementById('lobby').style.display = 'block';
             break;
-        case STATE.PARTICIPATION:
+        case 'PARTICIPATION':
             document.getElementById('participation').style.display = 'block';
             break;
-        case STATE.WAITING:
+        case 'WAITING':
             document.getElementById('waiting').style.display = 'block';
             break;
-        case STATE.ACTION:
+        case 'ACTION':
             document.getElementById('action').style.display = 'block';
             break;
-        case STATE.NOTIFICATION:
+        case 'NOTIFICATION':
             document.getElementById('notification').style.display = 'block';
             break;
-        case STATE.NIGHT:
+        case 'NIGHT':
             document.getElementById('night').style.display = 'block';
             break;
-        case STATE.DAYTIME:
+        case 'DAYTIME':
             document.getElementById('daytime').style.display = 'block';
             break;
-        case STATE.EXECUTION:
+        case 'EXECUTION':
             document.getElementById('execution').style.display = 'block';
             break;
-        case STATE.RESULT:
+        case 'RESULT':
             document.getElementById('result').style.display = 'block';
             break;
     }
@@ -165,22 +134,22 @@ function updateTimer() {
 function getPositionNameInJapanese(position) {
     var positionString = '';
     switch (position) {
-        case POSITION.VILLAGER:
+        case 'VILLAGER':
             positionString = '村人';
             break;
-        case POSITION.WEREWOLF:
+        case 'WEREWOLF':
             positionString = '人狼';
             break;
-        case POSITION.FORTUNETELLER:
+        case 'FORTUNETELLER':
             positionString = '占い師';
             break;
-        case POSITION.THIEF:
+        case 'THIEF':
             positionString = '怪盗';
             break;
-        case POSITION.MADMAN:
+        case 'MADMAN':
             positionString = '狂人';
             break;
-        case POSITION.HANGING:
+        case 'HANGING':
             positionString = 'てるてる';
             break;
     }
@@ -192,22 +161,22 @@ function getPositionNameInJapanese(position) {
 function getPositionNameInEnglish(position) {
     var positionString = '';
     switch (position) {
-        case POSITION.VILLAGER:
+        case 'VILLAGER':
             positionString = 'Villager';
             break;
-        case POSITION.WEREWOLF:
+        case 'WEREWOLF':
             positionString = 'Werewolf';
             break;
-        case POSITION.FORTUNETELLER:
+        case 'FORTUNETELLER':
             positionString = 'Fortuneteller';
             break;
-        case POSITION.THIEF:
+        case 'THIEF':
             positionString = 'Thief';
             break;
-        case POSITION.MADMAN:
+        case 'MADMAN':
             positionString = 'Madman';
             break;
-        case POSITION.HANGING:
+        case 'HANGING':
             positionString = 'Hanging';
             break;
     }
@@ -246,7 +215,7 @@ window.addEventListener('load',
                 state = messageArray['state'];
                 var message = messageArray['message'];
                 switch(state) {
-                    case STATE.CONNECTION:
+                    case 'CONNECTION':
                         if (message == 'query') {
                             queryData();
                         }
@@ -254,12 +223,12 @@ window.addEventListener('load',
                             deleteData();
                         }
                         break;
-                    case STATE.TOP:
+                    case 'TOP':
                         if (message == 'display') {
                             displayTop();
                         }
                         break;
-                    case STATE.MAKING:
+                    case 'MAKING':
                         if (message == 'display') {
                             displayMaking();
                         }
@@ -267,7 +236,7 @@ window.addEventListener('load',
                             rejectVillageName();
                         }
                         break;
-                    case STATE.LOBBY:
+                    case 'LOBBY':
                         if (message == 'display') {
                             displayLobby();
                         }
@@ -284,7 +253,7 @@ window.addEventListener('load',
                             rejectPassword();
                         }
                         break;
-                    case STATE.PARTICIPATION:
+                    case 'PARTICIPATION':
                         if (message == 'display') {
                             displayParticipation(messageArray);
                         }
@@ -295,7 +264,7 @@ window.addEventListener('load',
                             alreadyStarted();
                         }
                         break;
-                    case STATE.WAITING:
+                    case 'WAITING':
                         if (message == 'init') {
                             initInWaiting(messageArray);
                         }
@@ -318,7 +287,7 @@ window.addEventListener('load',
                             setGameStart(messageArray);
                         }
                         break;
-                    case STATE.ACTION:
+                    case 'ACTION':
                         if (message == 'init') {
                             initInAction(messageArray);
                         }
@@ -329,7 +298,7 @@ window.addEventListener('load',
                             setPlayerInAction(messageArray);
                         }
                         break;
-                    case STATE.NOTIFICATION:
+                    case 'NOTIFICATION':
                         if (message == 'init') {
                             initInNotification(messageArray);
                         }
@@ -346,7 +315,7 @@ window.addEventListener('load',
                             setBuddy(messageArray);
                         }
                         break;
-                    case STATE.NIGHT:
+                    case 'NIGHT':
                         if (message == 'init') {
                             initInNight();
                         }
@@ -363,7 +332,7 @@ window.addEventListener('load',
                             setResultOfThiefInNight(messageArray);
                         }
                         break;
-                    case STATE.DAYTIME:
+                    case 'DAYTIME':
                         if (message == 'init') {
                             initInDaytime(messageArray);
                         }
@@ -395,7 +364,7 @@ window.addEventListener('load',
                             setResultOfThiefInDaytime(messageArray);
                         }
                         break;
-                    case STATE.EXECUTION:
+                    case 'EXECUTION':
                         if (message == 'init') {
                             initInExecution(messageArray);
                         }
@@ -406,7 +375,7 @@ window.addEventListener('load',
                             setPlayerInExecution(messageArray);
                         }
                         break;
-                    case STATE.RESULT:
+                    case 'RESULT':
                         if (message == 'init') {
                             initInResult(messageArray);
                         }
@@ -451,18 +420,18 @@ window.addEventListener('load',
         document.getElementById('btn_backInParticipation').addEventListener('click', clickBackInParticipation, false);
 
         ////Waiting////
-        document.getElementById('btn_decrementOfNumberOfVillager').addEventListener('click', function(){clickNumberOfPosition(false, POSITION.VILLAGER)}, false);
-        document.getElementById('btn_incrementOfNumberOfVillager').addEventListener('click', function(){clickNumberOfPosition(true, POSITION.VILLAGER)}, false);
-        document.getElementById('btn_decrementOfNumberOfWerewolf').addEventListener('click', function(){clickNumberOfPosition(false, POSITION.WEREWOLF)}, false);
-        document.getElementById('btn_incrementOfNumberOfWerewolf').addEventListener('click', function(){clickNumberOfPosition(true, POSITION.WEREWOLF)}, false);
-        document.getElementById('btn_decrementOfNumberOfFortuneteller').addEventListener('click', function(){clickNumberOfPosition(false, POSITION.FORTUNETELLER)}, false);
-        document.getElementById('btn_incrementOfNumberOfFortuneteller').addEventListener('click', function(){clickNumberOfPosition(true, POSITION.FORTUNETELLER)}, false);
-        document.getElementById('btn_decrementOfNumberOfThief').addEventListener('click', function(){clickNumberOfPosition(false, POSITION.THIEF)}, false);
-        document.getElementById('btn_incrementOfNumberOfThief').addEventListener('click', function(){clickNumberOfPosition(true, POSITION.THIEF)}, false);
-        document.getElementById('btn_decrementOfNumberOfMadman').addEventListener('click', function(){clickNumberOfPosition(false, POSITION.MADMAN)}, false);
-        document.getElementById('btn_incrementOfNumberOfMadman').addEventListener('click', function(){clickNumberOfPosition(true, POSITION.MADMAN)}, false);
-        document.getElementById('btn_decrementOfNumberOfHanging').addEventListener('click', function(){clickNumberOfPosition(false, POSITION.HANGING)}, false);
-        document.getElementById('btn_incrementOfNumberOfHanging').addEventListener('click', function(){clickNumberOfPosition(true, POSITION.HANGING)}, false);
+        document.getElementById('btn_decrementOfNumberOfVillager').addEventListener('click', function(){clickNumberOfPosition(false, 'VILLAGER')}, false);
+        document.getElementById('btn_incrementOfNumberOfVillager').addEventListener('click', function(){clickNumberOfPosition(true, 'VILLAGER')}, false);
+        document.getElementById('btn_decrementOfNumberOfWerewolf').addEventListener('click', function(){clickNumberOfPosition(false, 'WEREWOLF')}, false);
+        document.getElementById('btn_incrementOfNumberOfWerewolf').addEventListener('click', function(){clickNumberOfPosition(true, 'WEREWOLF')}, false);
+        document.getElementById('btn_decrementOfNumberOfFortuneteller').addEventListener('click', function(){clickNumberOfPosition(false, 'FORTUNETELLER')}, false);
+        document.getElementById('btn_incrementOfNumberOfFortuneteller').addEventListener('click', function(){clickNumberOfPosition(true, 'FORTUNETELLER')}, false);
+        document.getElementById('btn_decrementOfNumberOfThief').addEventListener('click', function(){clickNumberOfPosition(false, 'THIEF')}, false);
+        document.getElementById('btn_incrementOfNumberOfThief').addEventListener('click', function(){clickNumberOfPosition(true, 'THIEF')}, false);
+        document.getElementById('btn_decrementOfNumberOfMadman').addEventListener('click', function(){clickNumberOfPosition(false, 'MADMAN')}, false);
+        document.getElementById('btn_incrementOfNumberOfMadman').addEventListener('click', function(){clickNumberOfPosition(true, 'MADMAN')}, false);
+        document.getElementById('btn_decrementOfNumberOfHanging').addEventListener('click', function(){clickNumberOfPosition(false, 'HANGING')}, false);
+        document.getElementById('btn_incrementOfNumberOfHanging').addEventListener('click', function(){clickNumberOfPosition(true, 'HANGING')}, false);
         document.getElementById('btn_decrementOfTalkingTime').addEventListener('click', function(){clickTalkingTime(false)}, false);
         document.getElementById('btn_incrementOfTalkingTime').addEventListener('click', function(){clickTalkingTime(true)}, false);
         document.getElementById('btn_gameStart').addEventListener('click', clickGameStart, false);
@@ -500,7 +469,7 @@ function clickLobby() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.TOP,
+        state: 'TOP',
         message: 'lobby'
     };
     websocket.send(JSON.stringify(messageArray));
@@ -514,7 +483,7 @@ function clickMaking() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.TOP,
+        state: 'TOP',
         message: 'making'
     };
     websocket.send(JSON.stringify(messageArray));
@@ -552,7 +521,7 @@ function clickDecideInMaking() {
         //サーバに送信
         var messageArray = {
             type: 'system',
-            state: STATE.MAKING,
+            state: 'MAKING',
             message: 'decide',
             name: name,
             password: password,
@@ -570,7 +539,7 @@ function clickBackInMaking() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.MAKING,
+        state: 'MAKING',
         message: 'back'
     };
     websocket.send(JSON.stringify(messageArray));
@@ -605,7 +574,7 @@ function clickUpdateInLobby() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.LOBBY,
+        state: 'LOBBY',
         message: 'update'
     };
     websocket.send(JSON.stringify(messageArray));
@@ -629,7 +598,7 @@ function clickDecideInLobby() {
             //サーバに送信
             var messageArray = {
                 type: 'system',
-                state: STATE.LOBBY,
+                state: 'LOBBY',
                 message: 'decide',
                 villageId: selectedVillageId,
                 password: password
@@ -647,7 +616,7 @@ function clickBackInLobby() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.LOBBY,
+        state: 'LOBBY',
         message: 'back'
     };
     websocket.send(JSON.stringify(messageArray));
@@ -668,7 +637,7 @@ function clickParticipationAsPlayer() {
         //サーバに送信
         var messageArray = {
             type: 'system',
-            state: STATE.PARTICIPATION,
+            state: 'PARTICIPATION',
             message: 'participateAsPlayer',
             villageId: villageId,
             name: name
@@ -690,7 +659,7 @@ function clickParticipationAsSpectator() {
         //サーバに送信
         var messageArray = {
             type: 'system',
-            state: STATE.PARTICIPATION,
+            state: 'PARTICIPATION',
             message: 'participateAsSpectator',
             villageId: villageId,
             name: name
@@ -707,7 +676,7 @@ function clickBackInParticipation() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.PARTICIPATION,
+        state: 'PARTICIPATION',
         message: 'back',
         villageId: villageId
     };
@@ -736,7 +705,7 @@ function clickNumberOfPosition(incrementOrDecrement, position) {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.WAITING,
+        state: 'WAITING',
         message: 'setNumberOfPosition',
         villageId: villageId,
         position: position,
@@ -760,7 +729,7 @@ function clickTalkingTime(incrementOrDecrement) {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.WAITING,
+        state: 'WAITING',
         message: 'setTalkingTime',
         villageId: villageId,
         time: talkingTime
@@ -783,7 +752,7 @@ function clickGameStart() {
         //サーバに送信
         var messageArray = {
             type: 'system',
-            state: STATE.WAITING,
+            state: 'WAITING',
             message: 'gameStart',
             villageId: villageId,
             id: id
@@ -800,7 +769,7 @@ function clickBackInWaiting() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.WAITING,
+        state: 'WAITING',
         message: 'back',
         villageId: villageId,
         attribute: attribute,
@@ -835,7 +804,7 @@ function clickSelectionInAction(selectionId) {
 //「次へ」をクリック
 function clickNotification() {
     console.log('ENTER clickNotification');
-    if (((position == POSITION.FORTUNETELLER) || (position == POSITION.THIEF)) && selectionId == -1) {
+    if (((position == 'FORTUNETELLER') || (position == 'THIEF')) && selectionId == -1) {
         alert('プレイヤーを選択してください');
     }
     else {
@@ -843,7 +812,7 @@ function clickNotification() {
         //サーバに送信
         var messageArray = {
             type: 'system',
-            state: STATE.ACTION,
+            state: 'ACTION',
             message: 'notification',
             villageId: villageId,
             id: id,
@@ -863,7 +832,7 @@ function clickDaytime() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.NOTIFICATION,
+        state: 'NOTIFICATION',
         message: 'daytime',
         villageId: villageId,
         id: id
@@ -881,7 +850,7 @@ function clickExtension() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.DAYTIME,
+        state: 'DAYTIME',
         message: 'extension',
         villageId: villageId,
         id: id
@@ -897,7 +866,7 @@ function clickTalksEnd() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.DAYTIME,
+        state: 'DAYTIME',
         message: 'talksEnd',
         villageId: villageId,
         id: id
@@ -971,7 +940,7 @@ function clickResult() {
         //サーバに送信
         var messageArray = {
             type: 'system',
-            state: STATE.EXECUTION,
+            state: 'EXECUTION',
             message: 'result',
             villageId: villageId,
             id: id,
@@ -991,7 +960,7 @@ function clickNextNight() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.RESULT,
+        state: 'RESULT',
         message: 'nextNight',
         villageId: villageId
     };
@@ -1006,7 +975,7 @@ function clickExitInResult() {
     //サーバに送信
     var messageArray = {
         type: 'system',
-        state: STATE.RESULT,
+        state: 'RESULT',
         message: 'exit',
         villageId: villageId
     };
@@ -1030,7 +999,7 @@ function queryData() {
         //サーバに送信
         var messageArray = {
             type: 'system',
-            state: STATE.CONNECTION,
+            state: 'CONNECTION',
             message: 'reply',
             villageId: villageId,
             attribute: attribute,
@@ -1043,7 +1012,7 @@ function queryData() {
         //サーバに送信
         var messageArray = {
             type: 'system',
-            state: STATE.CONNECTION,
+            state: 'CONNECTION',
             message: 'none'
         };
         websocket.send(JSON.stringify(messageArray));
@@ -1066,7 +1035,7 @@ function displayTop() {
     console.log('ENTER displayTop');
     document.getElementById('btn_lobby').disabled = false;
     document.getElementById('btn_making').disabled = false;
-    displayState(STATE.TOP);
+    displayState('TOP');
 }
 
 
@@ -1079,7 +1048,7 @@ function displayMaking() {
     notSelectButton('btn_spectatorNo');
     document.getElementById('btn_decideInMaking').disabled = false;
     document.getElementById('btn_backInMaking').disabled = false;
-    displayState(STATE.MAKING);
+    displayState('MAKING');
 }
 
 //村名重複により拒否
@@ -1100,7 +1069,7 @@ function displayLobby() {
     document.getElementById('btn_updateInLobby').disabled = false;
     document.getElementById('btn_decideInLobby').disabled = true;
     document.getElementById('btn_backInLobby').disabled = false;
-    displayState(STATE.LOBBY);
+    displayState('LOBBY');
 }
 
 //村を追加
@@ -1157,7 +1126,7 @@ function displayParticipation(messageArray) {
     }
     document.getElementById('btn_participationAsPlayer').disabled = false;
     document.getElementById('btn_backInParticipation').disabled = false;
-    displayState(STATE.PARTICIPATION);
+    displayState('PARTICIPATION');
 }
 
 //参加者名重複により拒否
@@ -1196,10 +1165,10 @@ function initInWaiting(messageArray) {
     attribute = messageArray['attribute'];
     id = messageArray['id'];
     switch (attribute) {
-        case ATTRIBUTE.PLAYER:
+        case 'PLAYER':
             document.getElementById('btn_gameStart').disabled = false;
             break;
-        case ATTRIBUTE.SPECTATOR:
+        case 'SPECTATOR':
             document.getElementById('btn_gameStart').disabled = true;
             document.getElementById('btn_decrementOfNumberOfVillager').disabled = true;
             document.getElementById('btn_incrementOfNumberOfVillager').disabled = true;
@@ -1223,7 +1192,7 @@ function initInWaiting(messageArray) {
 //待機画面を表示
 function displayWaiting() {
     console.log('ENTER displayWaiting');
-    displayState(STATE.WAITING);
+    displayState('WAITING');
 }
 
 //参加者を追加
@@ -1235,7 +1204,7 @@ function addParticipant(messageArray) {
     var id = messageArray['id'];
     var name = messageArray['name'];
     switch (attribute) {
-        case ATTRIBUTE.PLAYER:
+        case 'PLAYER':
             var player = {id: id, name: name};
             playerArray.push(player);
             numberOfPlayer++;
@@ -1247,7 +1216,7 @@ function addParticipant(messageArray) {
             numberOfLeft++;
             document.getElementById('scrn_left').innerHTML = numberOfLeft + '人';
             break;
-        case ATTRIBUTE.SPECTATOR:
+        case 'SPECTATOR':
             box = document.getElementById('box_spectatorListInWaiting');
             element = document.createElement('div');
             element.id = 'scrn_spectatorListInWaiting' + id;
@@ -1265,7 +1234,7 @@ function delParticipant(messageArray) {
     var attribute = messageArray['attribute'];
     var id = messageArray['id'];
     switch (attribute) {
-        case ATTRIBUTE.PLAYER:
+        case 'PLAYER':
             var number = -1;
             for (var i = 0; i < playerArray.length; i++) {
                 if (playerArray[i].id == id) {
@@ -1285,7 +1254,7 @@ function delParticipant(messageArray) {
                 document.getElementById('scrn_left').innerHTML = numberOfLeft + '人';
             }
             break;
-        case ATTRIBUTE.SPECTATOR:
+        case 'SPECTATOR':
             box = document.getElementById('box_spectatorListInWaiting');
             element = document.getElementById('scrn_spectatorListInWaiting' + id);
             if (element != null) {
@@ -1312,7 +1281,7 @@ function setNumberOfPositionInWaiting(messageArray) {
     }
     numberOfLeft = numberOfPlayer + 2 - sum;
     document.getElementById('scrn_left').innerHTML = numberOfLeft + '人';
-    if (attribute == ATTRIBUTE.PLAYER) {
+    if (attribute == 'PLAYER') {
         if (numberOfLeft <= 0) {
             document.getElementById('btn_incrementOfNumberOfVillager').disabled = true;
             document.getElementById('btn_incrementOfNumberOfWerewolf').disabled = true;
@@ -1325,14 +1294,14 @@ function setNumberOfPositionInWaiting(messageArray) {
             document.getElementById('btn_incrementOfNumberOfVillager').disabled = false;
             document.getElementById('btn_incrementOfNumberOfWerewolf').disabled = false;
             document.getElementById('btn_incrementOfNumberOfFortuneteller').disabled = false;
-            if (numberOfPositionArray[POSITION.THIEF] >= 1) {
+            if (numberOfPositionArray['THIEF'] >= 1) {
                 document.getElementById('btn_incrementOfNumberOfThief').disabled = true;
             }
             else {
                 document.getElementById('btn_incrementOfNumberOfThief').disabled = false;
             }
             document.getElementById('btn_incrementOfNumberOfMadman').disabled = false;
-            if (numberOfPositionArray[POSITION.HANGING] >= 1) {
+            if (numberOfPositionArray['HANGING'] >= 1) {
                 document.getElementById('btn_incrementOfNumberOfHanging').disabled = true;
             }
             else {
@@ -1359,7 +1328,7 @@ function setTalkingTimeInWaiting(messageArray) {
     talkingTime = time;
     console.log('time = ' + time);
     document.getElementById('scrn_talkingTimeInWaiting').innerHTML = time;
-    if (attribute == ATTRIBUTE.PLAYER) {
+    if (attribute == 'PLAYER') {
         document.getElementById('btn_incrementOfTalkingTime').disabled = false;
         if (time <= 1) {
             document.getElementById('btn_decrementOfTalkingTime').disabled = true;
@@ -1390,32 +1359,32 @@ function initInAction(messageArray) {
     id = messageArray['id'];
     position = messageArray['position'];
     switch (position) {
-        case POSITION.VILLAGER:
+        case 'VILLAGER':
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは村人です';
             document.getElementById('box_OK').style.display = 'block';
             document.getElementById('box_selectionInAction').style.display = 'none';
             break;
-        case POSITION.WEREWOLF:
+        case 'WEREWOLF':
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは人狼です';
             document.getElementById('box_OK').style.display = 'block';
             document.getElementById('box_selectionInAction').style.display = 'none';
             break;
-        case POSITION.FORTUNETELLER:
+        case 'FORTUNETELLER':
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは占い師です<br/>占うプレイヤーを選んでください';
             document.getElementById('box_OK').style.display = 'none';
             document.getElementById('box_selectionInAction').style.display = 'block';
             break;
-        case POSITION.THIEF:
+        case 'THIEF':
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは怪盗です<br/>役職を交換するプレイヤーを選んでください';
             document.getElementById('box_OK').style.display = 'none';
             document.getElementById('box_selectionInAction').style.display = 'block';
             break;
-        case POSITION.MADMAN:
+        case 'MADMAN':
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは狂人です';
             document.getElementById('box_OK').style.display = 'block';
             document.getElementById('box_selectionInAction').style.display = 'none';
             break;
-        case POSITION.HANGING:
+        case 'HANGING':
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたはてるてるです';
             document.getElementById('box_OK').style.display = 'block';
             document.getElementById('box_selectionInAction').style.display = 'none';
@@ -1427,7 +1396,7 @@ function initInAction(messageArray) {
 //行動画面を表示
 function displayAction() {
     console.log('ENTER displayAction');
-    displayState(STATE.ACTION);
+    displayState('ACTION');
 }
 
 //選択するプレイヤーを追加
@@ -1466,10 +1435,10 @@ function displayNotification() {
     console.log('ENTER displayNotification');
     var resultString = '';
     switch (position) {
-        case POSITION.VILLAGER:
+        case 'VILLAGER':
             resultString += '仲間の村人と一緒に村を守りましょう';
             break;
-        case POSITION.WEREWOLF:
+        case 'WEREWOLF':
             resultString += '仲間の人狼は<br/>';
             if (buddyNameArray.length >= 1) {
                 for (var i = 0; i < buddyNameArray.length; i++) {
@@ -1480,7 +1449,7 @@ function displayNotification() {
                 resultString += 'いませんでした';
             }
             break;
-        case POSITION.FORTUNETELLER:
+        case 'FORTUNETELLER':
             if (selectionPosition == -1) {
                 var position1String = getPositionNameInJapanese(position1);
                 var position2String = getPositionNameInJapanese(position2);
@@ -1491,7 +1460,7 @@ function displayNotification() {
                 resultString += selectionName + 'は' + positionString + 'です';
             }
             break;
-        case POSITION.THIEF:
+        case 'THIEF':
             if (selectionPosition == -1) {
                 resultString += '誰とも役職を交換しませんでした';
             }
@@ -1500,15 +1469,15 @@ function displayNotification() {
                 resultString += selectionName + 'の' + positionString + 'と役職を交換しました';
             }
             break;
-        case POSITION.MADMAN:
+        case 'MADMAN':
                 resultString += '村を混乱に陥れて人狼が有利になるように行動しましょう';
             break;
-        case POSITION.HANGING:
+        case 'HANGING':
                 resultString += '村人から吊られるように行動しましょう';
             break;
     }
     document.getElementById('scrn_notification').innerHTML = resultString;
-    displayState(STATE.NOTIFICATION);
+    displayState('NOTIFICATION');
 }
 
 //結果を設定
@@ -1546,7 +1515,7 @@ function initInNight() {
 //夜の画面を表示
 function displayNight() {
     console.log('ENTER displayNight');
-    displayState(STATE.NIGHT);
+    displayState('NIGHT');
 }
 
 //プレイヤーの役職を設定
@@ -1622,11 +1591,11 @@ function initInDaytime(messageArray) {
     attribute = messageArray['attribute'];
     id = messageArray['id'];
     switch (attribute) {
-        case ATTRIBUTE.PLAYER:
+        case 'PLAYER':
             document.getElementById('btn_talksEnd').disabled = false;
             document.getElementById('btn_confirmation').disabled = true;
             break;
-        case ATTRIBUTE.SPECTATOR:
+        case 'SPECTATOR':
             document.getElementById('btn_talksEnd').disabled = true;
             document.getElementById('btn_confirmation').disabled = false;
             break;
@@ -1636,7 +1605,7 @@ function initInDaytime(messageArray) {
 //昼の画面を表示
 function displayDaytime() {
     console.log('ENTER displayDaytime');
-    displayState(STATE.DAYTIME);
+    displayState('DAYTIME');
 }
 
 //プレイヤーを設定
@@ -1735,11 +1704,11 @@ function initInExecution(messageArray) {
     attribute = messageArray['attribute'];
     id = messageArray['id'];
     switch (attribute) {
-        case ATTRIBUTE.PLAYER:
+        case 'PLAYER':
             document.getElementById('scrn_execution').innerHTML = '吊る人を選択してください';
             document.getElementById('btn_result').disabled = false;
             break;
-        case ATTRIBUTE.SPECTATOR:
+        case 'SPECTATOR':
             document.getElementById('scrn_execution').innerHTML = 'プレイヤーが吊る人を選択しています';
             document.getElementById('btn_result').disabled = true;
             break;
@@ -1750,7 +1719,7 @@ function initInExecution(messageArray) {
 //吊る人選択画面を表示
 function displayExecution() {
     console.log('ENTER displayExecution');
-    displayState(STATE.EXECUTION);
+    displayState('EXECUTION');
 }
 
 //選択するプレイヤーを設定
@@ -1785,26 +1754,26 @@ function initInResult(messageArray) {
     side = messageArray['side'];
     var sideString = '';
     switch (side) {
-        case POSITION.VILLAGER:
+        case 'VILLAGER':
             sideString = '勝者は村人サイドです';
             break;
-        case POSITION.WEREWOLF:
+        case 'WEREWOLF':
             sideString = '勝者は人狼サイドです';
             break;
-        case POSITION.HANGING:
+        case 'HANGING':
             sideString = '勝者はてるてるサイドです';
             break;
-        case POSITION.PEACE:
+        case 'PEACE':
             sideString = '平和村です';
             break;
     }
     document.getElementById('scrn_winnerSide').innerHTML = sideString;
     switch (attribute) {
-        case ATTRIBUTE.PLAYER:
+        case 'PLAYER':
             document.getElementById('btn_nextNight').disabled = false;
             document.getElementById('scrn_winnerOrLoser').style.display = 'block';
             break;
-        case ATTRIBUTE.SPECTATOR:
+        case 'SPECTATOR':
             document.getElementById('btn_nextNight').disabled = true;
             document.getElementById('scrn_winnerOrLoser').style.display = 'none';
             break;
@@ -1827,7 +1796,7 @@ function displayResult() {
         }
         box.appendChild(element);
     }
-    displayState(STATE.RESULT);
+    displayState('RESULT');
 }
 
 //勝ち負けを設定

@@ -70,14 +70,14 @@ class VillageManagement {
     //socketを村作成画面に遷移
     public function goToMakingFromTop($socket) {
         outputLog('ENTER goToMakingFromTop');
-        $txData = json_encode(array('type'=>'system', 'state'=>MAKING, 'message'=>'display'));
+        $txData = json_encode(array('type'=>'system', 'state'=>'MAKING', 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
     //socketをロビー画面に遷移
     public function goToLobbyFromTop($socket) {
         outputLog('ENTER goToLobbyFromTop');
-        $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'display'));
+        $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'display'));
         sendMessage($txData, $socket);
         $this->updateVillageList($socket);
     }
@@ -85,7 +85,7 @@ class VillageManagement {
     //socketにトップ画面を表示
     public function displayTop($socket) {
         outputLog('ENTER displayTop');
-        $txData = json_encode(array('type'=>'system', 'state'=>TOP, 'message'=>'display'));
+        $txData = json_encode(array('type'=>'system', 'state'=>'TOP', 'message'=>'display'));
         sendMessage($txData, $socket);
     }
 
@@ -101,7 +101,7 @@ class VillageManagement {
         $flag = false;
         foreach ($this->villageArray as $i) {
             if ($i->name == $name) {
-                $txData = json_encode(array('type'=>'system', 'state'=>MAKING, 'message'=>'reject'));
+                $txData = json_encode(array('type'=>'system', 'state'=>'MAKING', 'message'=>'reject'));
                 sendMessage($txData, $socket);
                 $flag = true;
                 break;
@@ -163,12 +163,12 @@ class VillageManagement {
                 $this->goToParticipationFromLobby($socket, $villageId, $village->getName(), $village->getSpectatorFlag());
             }
             else {
-                $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'reject'));
+                $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'reject'));
                 sendMessage($txData, $socket);
             }
         }
         else {
-                $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'delete'));
+                $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'delete'));
                 sendMessage($txData, $socket);
         }
     }
@@ -197,18 +197,18 @@ class VillageManagement {
         outputLog('ENTER updateVillageList');
         $flag = false;
         foreach ($this->villageArray as $i) {
-            if (($i->state == PARTICIPATION) || ($i->state == WAITING)) {
+            if (($i->state == 'PARTICIPATION') || ($i->state == 'WAITING')) {
                 $flag = true;
                 $passwordFlag = false;
                 if ($i->password !== '') {
                     $passwordFlag = true;
                 }
-                $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'add', 'villageId'=>$i->id, 'villageName'=>$i->name, 'passwordFlag'=>$passwordFlag));
+                $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'add', 'villageId'=>$i->id, 'villageName'=>$i->name, 'passwordFlag'=>$passwordFlag));
                 sendMessage($txData, $socket);
             }
         }
         if ($flag == false) {
-                $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'notExit'));
+                $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'notExit'));
                 sendMessage($txData, $socket);
         }
     }
@@ -248,10 +248,10 @@ class VillageManagement {
         $village = $this->getVillage($villageId);
         if ($village !== null) {
             switch ($attribute) {
-                case PLAYER:
+                case 'PLAYER':
                     removePlayer($id);
                     break;
-                case SPECTATOR:
+                case 'SPECTATOR':
                     removeSpectator($id);
                     break;
             }
@@ -263,11 +263,11 @@ class VillageManagement {
                 else {
                     //他の参加者に通知
                     foreach ($village->playerArray as $i) {
-                        $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>PLAYER, 'id'=>$i->id));
+                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'PLAYER', 'id'=>$i->id));
                         sendMessage($txData, $i->socket);
                     }
                     foreach ($village->spectatorArray as $i) {
-                        $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>SPECTATOR, 'id'=>$i->id));
+                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'SPECTATOR', 'id'=>$i->id));
                         sendMessage($txData, $i->socket);
                     }
                 }
@@ -287,7 +287,7 @@ class VillageManagement {
     //socketにデータを要求
     public function queryData($socket) {
         outputLog('ENTER queryData');
-        $txData = json_encode(array('type'=>'system', 'state'=>CONNECTION, 'message'=>'query'));
+        $txData = json_encode(array('type'=>'system', 'state'=>'CONNECTION', 'message'=>'query'));
         sendMessage($txData, $socket);
     }
 
@@ -302,7 +302,7 @@ class VillageManagement {
         if ($village !== null) {
             $flag = false;
             switch ($attribute) {
-                case PLAYER:
+                case 'PLAYER':
                     foreach ($village->playerArray as $i) {
                         if ($i->id == $id) {
                             $i->socket = $socket;
@@ -311,7 +311,7 @@ class VillageManagement {
                         }
                     }
                     break;
-                case SPECTATOR:
+                case 'SPECTATOR':
                     foreach ($village->spectatorArray as $i) {
                         if ($i->id == $id) {
                             $i->socket = $socket;
@@ -323,12 +323,12 @@ class VillageManagement {
             }
             if ($flag == true) {
                 switch ($village->state) {
-                    case WAITING:
+                    case 'WAITING':
                         $this->goToWaitingFromConnection($socket, $villageId, $attribute, $id);
                         break;
-                    case NIGHT:
+                    case 'NIGHT':
                         switch ($attribute) {
-                            case PLAYER:
+                            case 'PLAYER':
                                 foreach ($village->playerArray as $i) {
                                     if ($i->id == $id) {
                                         if ($i->actionFlag == true) {
@@ -341,18 +341,18 @@ class VillageManagement {
                                     }
                                 }
                                 break;
-                            case SPECTATOR:
+                            case 'SPECTATOR':
                                 $this->goToNightFromConnection($socket, $villageId, $id);
                                 break;
                         }
                         break;
-                    case DAYTIME:
+                    case 'DAYTIME':
                         $this->goToDaytimeFromConnection($socket, $villageId, $attribute, $id);
                         break;
-                    case EXECUTION:
+                    case 'EXECUTION':
                         $this->goToExecutionFromConnection($socket, $villageId, $attribute, $id);
                         break;
-                    case RESULT:
+                    case 'RESULT':
                         $this->goToResultFromConnection($socket, $villageId, $attribute);
                         break;
                 }
@@ -375,7 +375,7 @@ class VillageManagement {
     //データを消去
     public function deleteData($socket) {
         outputLog('ENTER deleteData');
-        $txData = json_encode(array('type'=>'system', 'state'=>CONNECTION, 'message'=>'delete'));
+        $txData = json_encode(array('type'=>'system', 'state'=>'CONNECTION', 'message'=>'delete'));
         sendMessage($txData, $socket);
     }
 

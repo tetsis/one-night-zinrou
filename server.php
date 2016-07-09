@@ -1,31 +1,6 @@
 <?php
 
-define('CONNECTION', 0);
-define('TOP', 1);
-define('MAKING', 2);
-define('LOBBY', 3);
-define('PARTICIPATION', 4);
-define('WAITING', 5);
-define('CONFIGURE', 6);
-define('ACTION', 7);
-define('NOTIFICATION', 8);
-define('NIGHT', 9);
-define('DAYTIME', 10);
-define('EXECUTION', 11);
-define('RESULT', 12);
-
-define('VILLAGER', 0);
-define('WEREWOLF', 1);
-define('FORTUNETELLER', 2);
-define('THIEF', 3);
-define('MADMAN', 4);
-define('HANGING', 5);
-define('PEACE', 6);
-
-define('PLAYER', 0);
-define('SPECTATOR', 1);
-
-$positionArray = array(VILLAGER, WEREWOLF, FORTUNETELLER, THIEF, MADMAN, HANGING);
+$positionArray = array('VILLAGER', 'WEREWOLF', 'FORTUNETELLER', 'THIEF', 'MADMAN', 'HANGING');
 
 require_once('villageManagement.php');
 require_once('village.php');
@@ -95,7 +70,7 @@ while (true) {
                     $state = $messageArray->state;
                     $message = $messageArray->message;
                     switch ($state) {
-                        case TOP:
+                        case 'TOP':
                             if ($message == 'lobby') {
                                 $villageManagement->clickLobby($changedSocket);
                             }
@@ -103,7 +78,7 @@ while (true) {
                                 $villageManagement->clickMaking($changedSocket);
                             }
                             break;
-                        case MAKING:
+                        case 'MAKING':
                             if ($message == 'decide') {
                                 $villageManagement->clickDecideInMaking($changedSocket, $messageArray);
                             }
@@ -111,7 +86,7 @@ while (true) {
                                 $villageManagement->clickBackInMaking($changedSocket);
                             }
                             break;
-                        case LOBBY:
+                        case 'LOBBY':
                             if ($message == 'update') {
                                 $villageManagement->clickUpdate($changedSocket);
                             }
@@ -122,7 +97,7 @@ while (true) {
                                 $villageManagement->clickBackInLobby($changedSocket);
                             }
                             break;
-                        case PARTICIPATION:
+                        case 'PARTICIPATION':
                             if ($message == 'participateAsPlayer') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
@@ -145,7 +120,7 @@ while (true) {
                                 }
                             }
                             break;
-                        case WAITING:
+                        case 'WAITING':
                             if ($message == 'setNumberOfPosition') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
@@ -175,7 +150,7 @@ while (true) {
                                 }
                             }
                             break;
-                        case ACTION:
+                        case 'ACTION':
                             if ($message == 'notification') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
@@ -184,7 +159,7 @@ while (true) {
                                 }
                             }
                             break;
-                        case NOTIFICATION:
+                        case 'NOTIFICATION':
                             if ($message == 'daytime') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
@@ -193,7 +168,7 @@ while (true) {
                                 }
                             }
                             break;
-                        case DAYTIME:
+                        case 'DAYTIME':
                             if ($message == 'extension') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
@@ -209,7 +184,7 @@ while (true) {
                                 }
                             }
                             break;
-                        case EXECUTION:
+                        case 'EXECUTION':
                             if ($message == 'result') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
@@ -218,7 +193,7 @@ while (true) {
                                 }
                             }
                             break;
-                        case RESULT:
+                        case 'RESULT':
                             if ($message == 'nextNight') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
@@ -234,7 +209,7 @@ while (true) {
                                 }
                             }
                             break;
-                        case CONNECTION:
+                        case 'CONNECTION':
                             if ($message == 'reply') {
                                 $villageManagement->replyData($changedSocket, $messageArray);
                             }
