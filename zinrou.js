@@ -1502,6 +1502,7 @@ function displayNotification() {
                 resultString += '村人から吊られるように行動しましょう';
             break;
     }
+    document.getElementById('scrn_notification').innerHTML = resultString;
     displayState(STATE.NOTIFICATION);
 }
 

@@ -230,7 +230,6 @@ class Village {
         global $positionArray;
         foreach ($positionArray as $i) {
             for ($j = 0; $j < $this->numberOfPositionArray[$i]; $j++) {
-                echo "position = $i\n";
                 $currentPositionArray[] = $i;
             }
         }
