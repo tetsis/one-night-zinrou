@@ -156,7 +156,7 @@ class VillageManagement {
             if ($correctFlag == true) {
                 $village->participantArray[] = $socket;
                 $village->numberOfParticipant++;
-                $this->goToParticipationFromLobby($socket, $villageId, $village->villageName, $village->spectatorFlag);
+                $this->goToParticipationFromLobby($socket, $villageId, $village->name, $village->spectatorFlag);
             }
             else {
                 $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'reject'));
