@@ -163,7 +163,7 @@
 <div id="action">
 <div id="scrn_yourPosition"></div>
 <br/>
-<input type="button" id="btn_OK" value="OK"><br/>
+<div id="box_OK"><input type="button" id="btn_OK" value="OK"></div>
 <div id="box_selectionInAction"></div>
 <input type="button" id="btn_notification" value="次へ"><br/>
 </div>

@@ -1387,23 +1387,36 @@ function initInAction(messageArray) {
     switch (position) {
         case POSITION.VILLAGER:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは村人です';
+            document.getElementById('box_OK').style.display = 'block';
+            document.getElementById('box_selectionInAction').style = 'none';
             break;
         case POSITION.WEREWOLF:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは人狼です';
+            document.getElementById('box_OK').style.display = 'block';
+            document.getElementById('box_selectionInAction').style = 'none';
             break;
         case POSITION.FORTUNETELLER:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは占い師です<br/>占うプレイヤーを選んでください';
+            document.getElementById('box_OK').style.display = 'none';
+            document.getElementById('box_selectionInAction').style = 'block';
             break;
         case POSITION.THIEF:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは怪盗です<br/>役職を交換するプレイヤーを選んでください';
+            document.getElementById('box_OK').style.display = 'none';
+            document.getElementById('box_selectionInAction').style = 'block';
             break;
         case POSITION.MADMAN:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは狂人です';
+            document.getElementById('box_OK').style.display = 'block';
+            document.getElementById('box_selectionInAction').style = 'none';
             break;
         case POSITION.HANGING:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたはてるてるです';
+            document.getElementById('box_OK').style.display = 'block';
+            document.getElementById('box_selectionInAction').style = 'none';
             break;
     }
+    document.getElementById('btn_notification').disabled = true;
 }
 
 //行動画面を表示

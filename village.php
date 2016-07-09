@@ -228,18 +228,13 @@ class Village {
         outputLog('ENTER startGame');
         $currentPositionArray = array();
         global $positionArray;
-        var_dump($this->numberOfPositionArray);
         foreach ($positionArray as $i) {
             for ($j = 0; $j < $this->numberOfPositionArray[$i]; $j++) {
                 echo "position = $i\n";
                 $currentPositionArray[] = $i;
             }
         }
-        echo "before\n";
-        var_dump($currentPositionArray);
         shuffle($currentPositionArray);
-        echo "after\n";
-        var_dump($currentPositionArray);
         foreach ($this->playerArray as $i) {
             $i->position = array_shift($currentPositionArray);
         }
