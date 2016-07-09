@@ -50,6 +50,7 @@ var selectionName;
 var selectionPosition;
 var buddyNameArray;
 var positionArray;
+var timer;
 
 playerArray = [];
 resultOfFortunetellerArray = [];
@@ -143,7 +144,21 @@ function notSelectedElement(elementId) {
 
 //タイマーを更新
 function updateTimer() {
-    //ここから
+    var screen = document.getElementById('scrn_remainingTime');
+    var button = document.getElementById('btn_extension');
+    if (remaingTime > 0) {
+        remaingTime--;
+        var minute = (int) (remaingTime / 60);
+        var second = remaingTime % 60;
+        button.style.display = 'none';
+        screen.innerHTML = minute + ' : ' + second;
+        screen.style.display = 'block';
+    }
+    else {
+        screen.style.display = 'none';
+        button.style.display = 'block';
+        clearInterval(timer);
+    }
 }
 
 //役職IDから役職名（日本語）を取得
@@ -1634,7 +1649,7 @@ function setTalkingTimeInDaytime(messageArray) {
     var time = messageArray['time'];
     talkingTime = time;
     remaingTime = 60 * time;
-    setInterval(updateTimer, 1000);
+    timer = setInterval(updateTimer, 1000);
 }
 
 //「話し合い終了」をクリックしたプレイヤーがいた
