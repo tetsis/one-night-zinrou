@@ -641,7 +641,7 @@ class Village {
                 $this->judgeWinner();
                 foreach ($this->playerArray as $i) {
                     $i->winnerOrLoser = $this->isWinner($i->position, $this->winnerSide);
-                    $i->point = $this->getPoint($i->position, $this->winnerSide);
+                    $i->point += $this->getPoint($i->position, $this->winnerSide);
                 }
                 $this->state = 'RESULT';
                 foreach ($this->playerArray as $i) {
@@ -681,6 +681,7 @@ class Village {
     public function judgeWinner() {
         outputLog('ENTER judgeWinner');
         //怪盗が交換した後の役職に設定
+        var_dump($this->playerArray);
         foreach ($this->playerArray as $i) {
             if ($i->position == 'THIEF') {
                 if ($i->selectionId != -1) {
@@ -707,6 +708,7 @@ class Village {
                 $maxPlayerArray[] = $i;
             }
         }
+        var_dump($maxPlayerArray);
 
         //maxは1？
         if ($max == 1) {
@@ -858,6 +860,7 @@ class Village {
             $i->daytimeFlag = false;
             $i->talksEndFlag = false;
             $i->resultFlag = false;
+            $i->hangingNumber = 0;
             $this->goToActionFromResult($i->socket, $i->id);
         }
         foreach ($this->spectatorArray as $i) {
@@ -871,11 +874,15 @@ class Village {
         $this->id = $this->villageManagement->getCurrentId();
         $this->state = 'WAITING';
         foreach ($this->playerArray as $i) {
+            $i->point = 0;
             $i->gameStartFlag = false;
             $i->actionFlag = false;
             $i->daytimeFlag = false;
             $i->talksEndFlag = false;
             $i->resultFlag = false;
+            $i->hangingNumber = 0;
+        }
+        foreach ($this->playerArray as $i) {
             $this->goToWaitingFromResult($i->socket, 'PLAYER', $i->id);
         }
         foreach ($this->spectatorArray as $i) {

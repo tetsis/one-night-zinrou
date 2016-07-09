@@ -1,7 +1,7 @@
 <?php
 class VillageManagement {
-    private $villageArray = array();
-    private $currentId;
+    public $villageArray = array();
+    public $currentId;
     //public $socketInLobbyArray = array();
 
     //コンストラクタ
