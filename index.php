@@ -161,9 +161,7 @@
 
 <!-- Action -->
 <div id="action">
-あなたの役職は
-<div id="yourPosition"></div>
-です。
+<div id="scrn_yourPosition"></div>
 <br/>
 <input type="button" id="btn_OK" value="OK"><br/>
 <div id="box_selectionInAction"></div>

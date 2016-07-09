@@ -1392,10 +1392,10 @@ function initInAction(messageArray) {
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは人狼です';
             break;
         case POSITION.FORTUNETELLER:
-            document.getElementById('scrn_yourPosition').innerHTML = 'あなたは占い師です\n占うプレイヤーを選んでください';
+            document.getElementById('scrn_yourPosition').innerHTML = 'あなたは占い師です<br/>占うプレイヤーを選んでください';
             break;
         case POSITION.THIEF:
-            document.getElementById('scrn_yourPosition').innerHTML = 'あなたは怪盗です\n役職を交換するプレイヤーを選んでください';
+            document.getElementById('scrn_yourPosition').innerHTML = 'あなたは怪盗です<br/>役職を交換するプレイヤーを選んでください';
             break;
         case POSITION.MADMAN:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは狂人です';

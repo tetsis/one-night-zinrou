@@ -148,7 +148,7 @@ class Village {
         outputLog('ENTER clickNumberOfPosition');
         $position = $messageArray->position;
         $number = $messageArray->number;
-        $numberOfPositionArray[$position] = $number;
+        $this->numberOfPositionArray[$position] = $number;
         //参加者に通知
         foreach ($this->playerArray as $i) {
             $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setNumberOfPosition', 'position'=>$position, 'number'=>$number));
@@ -228,12 +228,18 @@ class Village {
         outputLog('ENTER startGame');
         $currentPositionArray = array();
         global $positionArray;
+        var_dump($this->numberOfPositionArray);
         foreach ($positionArray as $i) {
             for ($j = 0; $j < $this->numberOfPositionArray[$i]; $j++) {
+                echo "position = $i\n";
                 $currentPositionArray[] = $i;
             }
         }
+        echo "before\n";
+        var_dump($currentPositionArray);
         shuffle($currentPositionArray);
+        echo "after\n";
+        var_dump($currentPositionArray);
         foreach ($this->playerArray as $i) {
             $i->position = array_shift($currentPositionArray);
         }
