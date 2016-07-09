@@ -125,21 +125,21 @@ while (true) {
                             if ($message == 'participateAsPlayer') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickParticipationAsPlayer($changedSocket, $messageArray);
                                 }
                             }
                             else if ($message == 'participateAsSpectator') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickParticipationAsSpectator($changedSocket, $messageArray);
                                 }
                             }
                             else if ($message == 'back') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $villageManagement->clickBackInParticipation($changedSocket, $messageArray);
                                 }
                             }
@@ -148,28 +148,28 @@ while (true) {
                             if ($message == 'setNumberOfPosition') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickNumberOfPosition($messageArray);
                                 }
                             }
                             else if ($message == 'setTalkingTime') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickTalkingTime($messageArray);
                                 }
                             }
                             else if ($message == 'gameStart') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickGameStart($messageArray);
                                 }
                             }
                             else if ($message == 'back') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $villageManagement->clickBackInWaiting($changedSocket, $messageArray);
                                 }
                             }
@@ -178,7 +178,7 @@ while (true) {
                             if ($message == 'notification') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickNotification($messageArray);
                                 }
                             }
@@ -187,7 +187,7 @@ while (true) {
                             if ($message == 'daytime') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickDaytime($messageArray);
                                 }
                             }
@@ -196,14 +196,14 @@ while (true) {
                             if ($message == 'extension') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickExtension($messageArray);
                                 }
                             }
                             else if ($message == 'talksEnd') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickTalksEnd($messageArray);
                                 }
                             }
@@ -212,7 +212,7 @@ while (true) {
                             if ($message == 'result') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickResult($messageArray);
                                 }
                             }
@@ -221,14 +221,14 @@ while (true) {
                             if ($message == 'nextNight') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickNextNight($messageArray);
                                 }
                             }
                             else if ($message == 'exit') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                if ($village != null) {
+                                if ($village !== null) {
                                     $village->clickExit($messageArray);
                                 }
                             }

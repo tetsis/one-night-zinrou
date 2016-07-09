@@ -181,7 +181,7 @@ class Village {
         outputLog('ENTER clickGameStart');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
-        if ($player != null) {
+        if ($player !== null) {
             $player->gameStartFlag = true;
             //参加者に通知
             foreach ($this->playerArray as $i) {
@@ -282,7 +282,7 @@ class Village {
         $player = $this->getPlayer($id);
         var_dump($player);
         echo('kita1');
-        if ($player != null) {
+        if ($player !== null) {
             echo('kita2');
             $player->actionFlag = true;
             if ($player->position == FORTUNETELLER || $player->position == THIEF) {
@@ -339,7 +339,7 @@ class Village {
         outputLog('ENTER clickDaytime');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
-        if ($player != null) {
+        if ($player !== null) {
             $player->daytimeFlag = true;
 
             $sum = 0;
@@ -467,7 +467,7 @@ class Village {
         outputLog('ENTER clickTalksEnd');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
-        if ($player != null) {
+        if ($player !== null) {
             $player->talksEndFlag = true;
             //参加者に通知
             foreach ($this->playerArray as $i) {
@@ -555,7 +555,7 @@ class Village {
         $id = $messageArray->id;
         $hangingId = $messageArray->hangingId;
         $player = $this->getPlayer($id);
-        if ($player != null) {
+        if ($player !== null) {
             $player->resultFlag = true;
             $player->hangingId = hangingId;
             $player->hangingNumber++;

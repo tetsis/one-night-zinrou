@@ -146,7 +146,7 @@ class VillageManagement {
         $villageId = $messageArray->villageId;
         $password = $messageArray->password;
         $village = $this->getVillage($villageId);
-        if ($village != null) {
+        if ($village !== null) {
             $correctFlag = true;
             if ($village->password != '') {
                 if ($village->password !== $password) {
@@ -216,7 +216,7 @@ class VillageManagement {
         outputLog('ENTER clickBackInParticipation');
         $villageId = $messageArray->villageId;
         $village = $this->getVillage($villageId);
-        if ($village != null) {
+        if ($village !== null) {
             $foundSocket = array_search($socket, $village->participantArray);
             echo($foundSocket);
             if ($foundSocket !== false) {
@@ -246,7 +246,7 @@ class VillageManagement {
         $attribute = $messageArray->attribute;
         $id = $messageArray->id;
         $village = $this->getVillage($villageId);
-        if ($village != null) {
+        if ($village !== null) {
             switch ($attribute) {
                 case PLAYER:
                     $player = $village->getPlayer($id);
@@ -312,7 +312,7 @@ class VillageManagement {
         $id = $messageArray->id;
 
         $village = $this->getVillage($villageId);
-        if ($village != null) {
+        if ($village !== null) {
             $flag = false;
             switch ($attribute) {
                 case PLAYER:
