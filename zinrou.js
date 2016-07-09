@@ -963,6 +963,10 @@ function clickResult() {
     }
     else {
         document.getElementById('btn_result').disabled = true;
+        var buttons = document.getElementById('box_selectionInExecution').childNodes;
+        for (var i = 0; i < buttons.length; i+=2) {
+            buttons[i].disabled = true;
+        }
         //サーバに送信
         var messageArray = {
             type: 'system',

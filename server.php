@@ -221,7 +221,6 @@ while (true) {
                             if ($message == 'nextNight') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                var_dump($village);
                                 if ($village !== null) {
                                     $village->clickNextNight($messageArray);
                                 }
@@ -229,7 +228,6 @@ while (true) {
                             else if ($message == 'exit') {
                                 $villageId = $messageArray->villageId;
                                 $village = $villageManagement->getVillage($villageId);
-                                var_dump($village);
                                 if ($village !== null) {
                                     $village->clickExit($messageArray);
                                 }
