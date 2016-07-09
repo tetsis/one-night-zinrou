@@ -496,7 +496,7 @@ class Village {
     //吊る人選択画面に遷移
     public function goToExecutionFromDaytime($socket, $attribute, $id) {
         outputLog('ENTER goToExecutionFromDaytime, attribute: '. $attribute. ', id: '. $id);
-        displayExecution($socket, $attribute, $id);
+        $this->displayExecution($socket, $attribute, $id);
     }
 
     //昼の画面を表示
@@ -553,8 +553,11 @@ class Village {
         $player = $this->getPlayer($id);
         if ($player !== null) {
             $player->resultFlag = true;
-            $player->hangingId = hangingId;
-            $player->hangingNumber++;
+            $player->hangingId = $hangingId;
+            $hangingPlayer = $this->getPlayer($hangingId);
+            if ($hangingPlayer !== null) {
+                $hangingPlayer->hangingNumber++;
+            }
 
             $sum = 0;
             foreach ($this->playerArray as $i) {
@@ -565,24 +568,24 @@ class Village {
             if ($sum == count($this->playerArray)) {
                 $this->judgeWinner();
                 foreach ($this->playerArray as $i) {
-                    $i->winnerOrLoser = isWinner($i->position, $this->winnerSide);
-                    $i->point = getPoint($i->position, $this->winnerSide);
+                    $i->winnerOrLoser = $this->isWinner($i->position, $this->winnerSide);
+                    $i->point = $this->getPoint($i->position, $this->winnerSide);
                 }
                 $this->state = RESULT;
                 foreach ($this->playerArray as $i) {
-                    $this->goToResultFromExecution($i->socket, PLAYER);
+                    $this->goToResultFromExecution($i->socket, PLAYER, $i->id);
                 }
                 foreach ($this->spectatorArray as $i) {
-                    $this->goToResultFromExecution($i->socket, SPECTATOR);
+                    $this->goToResultFromExecution($i->socket, SPECTATOR, $i->id);
                 }
             }
         }
     }
 
     //結果発表画面に遷移
-    public function goToResultFromExecution($socket, $attribute) {
-        outputLog('ENTER goToResultFromExecution, attribute: '. $attribute);
-        $this->displayResult($socket, $attribute);
+    public function goToResultFromExecution($socket, $attribute, $id) {
+        outputLog('ENTER goToResultFromExecution, attribute: '. $attribute. ', id: '. $id);
+        $this->displayResult($socket, $attribute, $id);
     }
 
     //吊る人選択画面を表示
@@ -826,12 +829,14 @@ class Village {
             $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position, 'point'=>$i->point));
             sendMessage($txData, $socket);
         }
-        foreach ($resultOfFortunetellerArray as $i) {
-            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId));
+        foreach ($this->resultOfFortunetellerArray as $i) {
+            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfFortuneteller', 'id'=>$i['id'], 'selectionId'=>$i['selectionId']));
+            var_dump($txData);
             sendMessage($txData, $socket);
         }
-        foreach ($resultOfThiefArray as $i) {
-            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId));
+        foreach ($this->resultOfThiefArray as $i) {
+            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfThief', 'id'=>$i['id'], 'selectionId'=>$i['selectionId']));
+            var_dump($txData);
             sendMessage($txData, $socket);
         }
         $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'display'));

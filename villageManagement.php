@@ -251,20 +251,20 @@ class VillageManagement {
                 case PLAYER:
                     $player = $village->getPlayer($id);
                     $foundPlayer = array_search($player, $village->playerArray);
-                    if ($foundPlayer != false) {
+                    if ($foundPlayer !== false) {
                         unset($village->playerArray[$foundPlayer]);
                     }
                     break;
                 case SPECTATOR:
                     $spectator = $village->getSpectator($id);
                     $foundSpectator = array_search($spectator, $village->spectatorArray);
-                    if ($foundSpectator != false) {
+                    if ($foundSpectator !== false) {
                         unset($village->spectatorArray[$foundSpectator]);
                     }
                     break;
             }
             $foundSocket = array_search($socket, $village->participantArray);
-            if ($foundSocket != false) {
+            if ($foundSocket !== false) {
                 unset($village->participantArray[$foundSocket]);
                 $village->numberOfParticipant--;
                 if ($village->numberOfParticipant <= 0) {

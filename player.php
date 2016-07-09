@@ -12,6 +12,8 @@ class Player {
     public $resultFlag;
     public $winnerOrLoser;
     public $selectionId;
+    public $hangingId;
+    public $hangingNumber;
 
     //コンストラクタ
     public function __construct($id, $name, $socket) {
@@ -27,6 +29,8 @@ class Player {
         $this->resultFlag = false;
         $this->winnerOrLoser = -1;
         $this->selectionId = -1;
+        $this->hangingId = -1;
+        $this->hangingNumber = 0;
     }
 }
 ?>

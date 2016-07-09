@@ -970,7 +970,7 @@ function clickResult() {
             message: 'result',
             villageId: villageId,
             id: id,
-            selectionId: selectionId
+            hangingId: selectionId
         };
         websocket.send(JSON.stringify(messageArray));
         console.log('SEND ' + JSON.stringify(messageArray));
@@ -1608,7 +1608,7 @@ function initInDaytime(messageArray) {
     talkingTime = 3;
     resultOfFortunetellerArray = [];
     resultOfThiefArray = [];
-    document.getElementById('scrn_remainingTime').style.display = 'block';
+    document.getElementById('scrn_remainingTime').style.display = 'none';
     document.getElementById('box_extension').style.display = 'none';
     document.getElementById('btn_extension').disabled = false;
     document.getElementById('box_playerListInDaytime').textContent = null;
@@ -1619,9 +1619,11 @@ function initInDaytime(messageArray) {
     switch (attribute) {
         case ATTRIBUTE.PLAYER:
             document.getElementById('btn_talksEnd').disabled = false;
+            document.getElementById('btn_confirmation').disabled = true;
             break;
         case ATTRIBUTE.SPECTATOR:
             document.getElementById('btn_talksEnd').disabled = true;
+            document.getElementById('btn_confirmation').disabled = false;
             break;
     }
 }
@@ -1835,6 +1837,9 @@ function setResultOfPlayerInResult(messageArray) {
     var element = document.createElement('div');
     element.id = 'scrn_playerListInResult' + id;
     element.innerHTML = name + ': ' + positionString + ': ' + point;
+    if (id == this.id) {
+        element.style.background = 'green';
+    }
     box.appendChild(element);
 }
 
