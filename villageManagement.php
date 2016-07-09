@@ -23,6 +23,36 @@ class VillageManagement {
         return null;
     }
 
+    //現在の村IDを取得する関数
+    public function getCurrentId() {
+        $fp = fopen('zinrou.conf', 'r');
+        if ($fp) {
+            if (flock($fp, LOCK_SH)) {
+                $str = fgets($fp);
+                $this->currentId = intval($str);
+                flock($fp, LOCK_UN);
+            }
+            else {
+                outputLog('ERROR: Cannot Read zinrou.conf');
+            }
+        }
+        fclose($fp);
+        $this->currentId++;
+        $fp = fopen('zinrou.conf', 'w');
+        if ($fp) {
+            if (flock($fp, LOCK_EX)) {
+                fputs($fp, $this->currentId);
+                flock($fp, LOCK_UN);
+            }
+            else {
+                outputLog('ERROR: Cannot Write zinrou.conf');
+            }
+        }
+        fclose($fp);
+
+        return $this->currentId;
+    }
+
 
     ////Top////
     //socketで「村を作成する」をクリック
@@ -78,38 +108,13 @@ class VillageManagement {
             }
         }
         if ($flag == false) {
-            $fp = fopen('zinrou.conf', 'r');
-            if ($fp) {
-                if (flock($fp, LOCK_SH)) {
-                    $str = fgets($fp);
-                    $this->currentId = intval($str);
-                    flock($fp, LOCK_UN);
-                }
-                else {
-                    echo "error: zinrou.confが読み込めません";
-                }
-            }
-            fclose($fp);
-
-            $this->currentId++;
-
-            $fp = fopen('zinrou.conf', 'w');
-            if ($fp) {
-                if (flock($fp, LOCK_EX)) {
-                    fputs($fp, $this->currentId);
-                    flock($fp, LOCK_UN);
-                }
-                else {
-                    echo "error: zinrou.confに書き込みません";
-                }
-            }
-
+            $id = getCurrentId();
             //村を作成する
-            $village = new Village($this->currentId, $name, $password, $spectatorFlag);
+            $village = new Village($id, $name, $password, $spectatorFlag);
             $village->participantArray[] = $socket;
             $village->numberOfParticipant = 1;
             $this->villageArray[] = $village;
-            $this->goToParticipationFromMaking($socket, $this->currentId, $name, $spectatorFlag);
+            $this->goToParticipationFromMaking($socket, $id, $name, $spectatorFlag);
         }
     }
 

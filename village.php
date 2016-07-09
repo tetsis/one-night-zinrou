@@ -776,6 +776,7 @@ class Village {
     //「次の夜へ」がクリックされた
     public function clickNextNight() {
         outputLog('ENTER clickNextNight');
+        $this->id = $villageManagement->getCurrentId();
         $this->startGame();
         foreach ($this->playerArray as $i) {
             $i->actionFlag = false;
@@ -792,8 +793,14 @@ class Village {
     //「終了」がクリックされた
     public function clickExit() {
         outputLog('ENTER clickExit');
+        $this->id = $villageManagement->getCurrentId();
         $this->state = WAITING;
         foreach ($this->playerArray as $i) {
+            $i->gameStartFlag = false;
+            $i->actionFlag = false;
+            $i->daytimeFlag = false;
+            $i->talksEndFlag = false;
+            $i->resultFlag = false;
             $this->goToWaitingFromResult($i->socket, PLAYER, $i->id);
         }
         foreach ($this->spectatorArray as $i) {
