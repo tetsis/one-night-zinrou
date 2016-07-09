@@ -110,6 +110,7 @@ class Village {
             }
             else {
                 $this->state = WAITING;
+                //他の参加者に通知
                 foreach ($this->playerArray as $i) {
                     $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'add', 'attribute'=>$attribute, 'id'=>$this->currentParticipantId, 'name'=>$name));
                     sendMessage($txData, $i->socket);
@@ -148,6 +149,7 @@ class Village {
         $position = $messageArray->position;
         $number = $messageArray->number;
         $numberOfPositionArray[$position] = $number;
+        //参加者に通知
         foreach ($this->playerArray as $i) {
             $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setNumberOfPosition', 'position'=>$position, 'number'=>$number));
             sendMessage($txData, $i->socket);
@@ -163,6 +165,7 @@ class Village {
         outputLog('ENTER clickTalkingTime');
         $time = $messageArray->time;
         $talkingTime = $time;
+        //参加者に通知
         foreach ($this->playerArray as $i) {
             $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setTalkingTime', 'time'=>$time));
             sendMessage($txData, $i->socket);
@@ -180,6 +183,7 @@ class Village {
         $player = $this->getPlayer($id);
         if ($player != null) {
             $player->gameStartFlag = true;
+            //参加者に通知
             foreach ($this->playerArray as $i) {
                 $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'setGameStart', 'id'=>$id));
                 sendMessage($txData, $i->socket);
@@ -282,6 +286,7 @@ class Village {
                 $selectionId = $messageArray->selectionId;
                 if ($player->position == FORTUNETELLER) {
                     $this->resultOfFortunetellerArray[] = array('id' => $id, 'selectionId' => $selectionId);
+                    //観戦者に通知
                     foreach ($this->spectatorArray as $i) {
                         $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfFortuneteller', 'id'=>$id, 'selectionId'=>$selectionId));
                         sendMessage($txData, $i->socket);
@@ -289,6 +294,7 @@ class Village {
                 }
                 else if ($player->position == THIEF) {
                     $this->resultOfThiefArray[] = array('id' => $id, 'selectionId' => $selectionId);
+                    //観戦者に通知
                     foreach ($this->spectatorArray as $i) {
                         $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfThief', 'id'=>$id, 'selectionId'=>$selectionId));
                         sendMessage($txData, $i->socket);
@@ -441,10 +447,11 @@ class Village {
     public function clickExtension($messageArray) {
         outputLog('ENTER clickExtension');
         $endingTime = new DateTime('+1 minutes');
-            foreach ($this->playerArray as $i) {
-                $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1));
-                sendMessage($txData, $i->socket);
-            }
+        //参加者に通知
+        foreach ($this->playerArray as $i) {
+            $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1));
+            sendMessage($txData, $i->socket);
+        }
         foreach ($this->spectatorArray as $i) {
                 $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalkingTime', 'time'=>1));
                 sendMessage($txData, $i->socket);
@@ -458,6 +465,7 @@ class Village {
         $player = $this->getPlayer($id);
         if ($player != null) {
             $player->talksEndFlag = true;
+            //参加者に通知
             foreach ($this->playerArray as $i) {
                 $txData = json_encode(array('type'=>'system', 'state'=>DAYTIME, 'message'=>'setTalksEnd', 'id'=>$id));
                 sendMessage($txData, $i->socket);
