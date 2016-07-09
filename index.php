@@ -189,7 +189,7 @@
 <div id="daytime">
 残り時間<br/>
 <div id="scrn_remainingTime"></div>
-<input type="button" id="btn_extension" value="延長"><br/>
+<div id="box_extension"><input type="button" id="btn_extension" value="延長"></div>
 
 <table>
     <tr>

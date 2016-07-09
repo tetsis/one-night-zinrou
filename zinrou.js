@@ -145,18 +145,17 @@ function notSelectedElement(elementId) {
 //タイマーを更新
 function updateTimer() {
     var screen = document.getElementById('scrn_remainingTime');
-    var button = document.getElementById('btn_extension');
     if (remaingTime > 0) {
         remaingTime--;
-        var minute = (int) (remaingTime / 60);
+        var minute = parseInt(remaingTime / 60);
         var second = remaingTime % 60;
-        button.style.display = 'none';
+        document.getElementById('box_extension').style.display = 'none';
         screen.innerHTML = minute + ' : ' + second;
         screen.style.display = 'block';
     }
     else {
         screen.style.display = 'none';
-        button.style.display = 'block';
+        document.getElementById('box_extension').style.display = 'block';
         clearInterval(timer);
     }
 }
@@ -1609,8 +1608,11 @@ function initInDaytime(messageArray) {
     talkingTime = 3;
     resultOfFortunetellerArray = [];
     resultOfThiefArray = [];
-    document.getElementById(box_playerListInDaytime).textContent = null;
-    document.getElementById(box_spectatorListInDaytime).textContent = null;
+    document.getElementById('scrn_remainingTime').style.display = 'block';
+    document.getElementById('box_extension').style.display = 'none';
+    document.getElementById('btn_extension').disabled = false;
+    document.getElementById('box_playerListInDaytime').textContent = null;
+    document.getElementById('box_spectatorListInDaytime').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
@@ -1620,7 +1622,6 @@ function initInDaytime(messageArray) {
             break;
         case ATTRIBUTE.SPECTATOR:
             document.getElementById('btn_talksEnd').disabled = true;
-            document.getElementById('btn_extension').style.display = 'none';
             break;
     }
 }

@@ -280,10 +280,7 @@ class Village {
         outputLog('ENTER clickNotification');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
-        var_dump($player);
-        echo('kita1');
         if ($player !== null) {
-            echo('kita2');
             $player->actionFlag = true;
             if ($player->position == FORTUNETELLER || $player->position == THIEF) {
                 $player->selectionId = $messageArray->selectionId;
@@ -371,7 +368,6 @@ class Village {
     public function displayNotification($socket, $id) {
         outputLog('ENTER displayNotification, id: '. $id);
         $player = $this->getPlayer($id);
-        var_dump($player);
         $txData = json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'init', 'villageId'=>$this->id, 'id'=>$id, 'position'=>$player->position));
         sendMessage($txData, $socket);
         switch ($player->position) {
