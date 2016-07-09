@@ -1776,6 +1776,7 @@ function initInResult(messageArray) {
     document.getElementById('box_resultOfThiefInResult').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
+    id = messageArray['id'];
     side = messageArray['side'];
     var sideString = '';
     switch (side) {

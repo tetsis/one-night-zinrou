@@ -778,6 +778,10 @@ class Village {
         outputLog('ENTER clickNextNight');
         $this->startGame();
         foreach ($this->playerArray as $i) {
+            $i->actionFlag = false;
+            $i->daytimeFlag = false;
+            $i->talksEndFlag = false;
+            $i->resultFlag = false;
             $this->goToActionFromResult($i->socket, $i->id);
         }
         foreach ($this->spectatorArray as $i) {
@@ -818,7 +822,7 @@ class Village {
     //結果発表画面を表示
     public function displayResult($socket, $attribute, $id) {
         outputLog('ENTER displayResult, attribute: '. $attribute. ', id: '. $id);
-        $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'init', 'villageId'=>$id, 'attribute'=>$attribute, 'side'=>$this->winnerSide));
+        $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id, 'side'=>$this->winnerSide));
         sendMessage($txData, $socket);
         if ($attribute == PLAYER) {
             $player = $this->getPlayer($id);
@@ -831,12 +835,10 @@ class Village {
         }
         foreach ($this->resultOfFortunetellerArray as $i) {
             $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfFortuneteller', 'id'=>$i['id'], 'selectionId'=>$i['selectionId']));
-            var_dump($txData);
             sendMessage($txData, $socket);
         }
         foreach ($this->resultOfThiefArray as $i) {
             $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfThief', 'id'=>$i['id'], 'selectionId'=>$i['selectionId']));
-            var_dump($txData);
             sendMessage($txData, $socket);
         }
         $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'display'));
