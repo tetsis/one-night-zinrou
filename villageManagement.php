@@ -47,9 +47,9 @@ class VillageManagement {
     //socketをロビー画面に遷移
     public function goToLobbyFromTop($socket) {
         outputLog('ENTER goToLobbyFromTop');
-        $this->updateVillageList($socket);
         $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'display'));
         sendMessage($txData, $socket);
+        $this->updateVillageList($socket);
     }
 
     //socketにトップ画面を表示
@@ -138,8 +138,6 @@ class VillageManagement {
     public function clickUpdate($socket) {
         outputLog('ENTER clickUpdate');
         $this->updateVillageList($socket);
-        $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'display'));
-        sendMessage($txData, $socket);
     }
 
     //socketで「決定」をクリック

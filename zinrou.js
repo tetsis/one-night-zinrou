@@ -274,6 +274,9 @@ window.addEventListener('load',
                         else if (message == 'add') {
                             addVillage(messageArray);
                         }
+                        else if (message == 'notExit') {
+                            notExitVillage();
+                        }
                         else if (message == 'delete') {
                             deleteVillage();
                         }
@@ -578,7 +581,7 @@ function clickBackInMaking() {
 ////Lobby////
 //村をクリック
 function clickSelectionInLobby(id, flag) {
-    console.log('ENTER clickSelectionInLobby');
+    console.log('ENTER clickSelectionInLobby, id: ' + id + ', flag: ' + flag);
     var buttonId;
     if (selectedVillageId != -1) {
         buttonId = 'btn_village' + selectedVillageId;
@@ -1089,6 +1092,7 @@ function rejectVillageName() {
 function displayLobby() {
     console.log('ENTER displayLobby');
     selectedVillageId = -1;
+    document.getElementById('box_villageList').textContent = null;
     document.getElementById('btn_updateInLobby').disabled = false;
     document.getElementById('btn_decideInLobby').disabled = true;
     document.getElementById('btn_backInLobby').disabled = false;
@@ -1109,6 +1113,12 @@ function addVillage(messageArray) {
     element.addEventListener('click', function(){clickSelectionInLobby(villageId, passwordFlag)}, false);
     box.appendChild(element);
     box.appendChild(document.createElement('br'));
+    document.getElementById('btn_updateInLobby').disabled = false;
+}
+
+//参加できる村がない
+function notExitVillage() {
+    console.log('ENTER notExitVillage');
     document.getElementById('btn_updateInLobby').disabled = false;
 }
 
