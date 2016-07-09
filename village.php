@@ -280,23 +280,26 @@ class Village {
         outputLog('ENTER clickNotification');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
+        var_dump($player);
+        echo('kita1');
         if ($player != null) {
+            echo('kita2');
             $player->actionFlag = true;
             if ($player->position == FORTUNETELLER || $player->position == THIEF) {
-                $selectionId = $messageArray->selectionId;
+                $player->selectionId = $messageArray->selectionId;
                 if ($player->position == FORTUNETELLER) {
-                    $this->resultOfFortunetellerArray[] = array('id' => $id, 'selectionId' => $selectionId);
+                    $this->resultOfFortunetellerArray[] = array('id' => $id, 'selectionId' => $player->selectionId);
                     //観戦者に通知
                     foreach ($this->spectatorArray as $i) {
-                        $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfFortuneteller', 'id'=>$id, 'selectionId'=>$selectionId));
+                        $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfFortuneteller', 'id'=>$id, 'selectionId'=>$player->selectionId));
                         sendMessage($txData, $i->socket);
                     }
                 }
                 else if ($player->position == THIEF) {
-                    $this->resultOfThiefArray[] = array('id' => $id, 'selectionId' => $selectionId);
+                    $this->resultOfThiefArray[] = array('id' => $id, 'selectionId' => $player->selectionId);
                     //観戦者に通知
                     foreach ($this->spectatorArray as $i) {
-                        $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfThief', 'id'=>$id, 'selectionId'=>$selectionId));
+                        $txData = json_encode(array('type'=>'system', 'state'=>NIGHT, 'message'=>'setResultOfThief', 'id'=>$id, 'selectionId'=>$player->selectionId));
                         sendMessage($txData, $i->socket);
                     }
                 }
