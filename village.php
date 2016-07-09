@@ -345,7 +345,7 @@ class Village {
                     $sum++;
                 }
             }
-            if ($sum == count($$this->playerArray)) {
+            if ($sum == count($this->playerArray)) {
                 $this->state = DAYTIME;
                 $this->endingTime = new DateTime('+'. $this->talkingTime. ' minutes');
                 foreach ($this->playerArray as $i) {
@@ -368,6 +368,7 @@ class Village {
     public function displayNotification($socket, $id) {
         outputLog('ENTER displayNotification, id: '. $id);
         $player = $this->getPlayer($id);
+        var_dump($player);
         $txData = json_encode(array('type'=>'system', 'state'=>NOTIFICATION, 'message'=>'init', 'villageId'=>$this->id, 'id'=>$id, 'position'=>$player->position));
         sendMessage($txData, $socket);
         switch ($player->position) {

@@ -835,7 +835,7 @@ function clickSelectionInAction(selectionId) {
 //「次へ」をクリック
 function clickNotification() {
     console.log('ENTER clickNotification');
-    if ((position == POSITION.FORTUNETELLER) || (position == POSITION.THIEF) && selectionId == -1) {
+    if (((position == POSITION.FORTUNETELLER) || (position == POSITION.THIEF)) && selectionId == -1) {
         alert('プレイヤーを選択してください');
     }
     else {
@@ -1380,6 +1380,7 @@ function setGameStart(messageArray) {
 function initInAction(messageArray) {
     console.log('ENTER initInAction, messageArray: ' + JSON.stringify(messageArray));
     selectionId = -1;
+    document.getElementById('btn_OK').disabled = false;
     document.getElementById('box_selectionInAction').textContent = null;
     villageId = messageArray['villageId'];
     id = messageArray['id'];
@@ -1388,35 +1389,35 @@ function initInAction(messageArray) {
         case POSITION.VILLAGER:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは村人です';
             document.getElementById('box_OK').style.display = 'block';
-            document.getElementById('box_selectionInAction').style = 'none';
+            document.getElementById('box_selectionInAction').style.display = 'none';
             break;
         case POSITION.WEREWOLF:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは人狼です';
             document.getElementById('box_OK').style.display = 'block';
-            document.getElementById('box_selectionInAction').style = 'none';
+            document.getElementById('box_selectionInAction').style.display = 'none';
             break;
         case POSITION.FORTUNETELLER:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは占い師です<br/>占うプレイヤーを選んでください';
             document.getElementById('box_OK').style.display = 'none';
-            document.getElementById('box_selectionInAction').style = 'block';
+            document.getElementById('box_selectionInAction').style.display = 'block';
             break;
         case POSITION.THIEF:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは怪盗です<br/>役職を交換するプレイヤーを選んでください';
             document.getElementById('box_OK').style.display = 'none';
-            document.getElementById('box_selectionInAction').style = 'block';
+            document.getElementById('box_selectionInAction').style.display = 'block';
             break;
         case POSITION.MADMAN:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたは狂人です';
             document.getElementById('box_OK').style.display = 'block';
-            document.getElementById('box_selectionInAction').style = 'none';
+            document.getElementById('box_selectionInAction').style.display = 'none';
             break;
         case POSITION.HANGING:
             document.getElementById('scrn_yourPosition').innerHTML = 'あなたはてるてるです';
             document.getElementById('box_OK').style.display = 'block';
-            document.getElementById('box_selectionInAction').style = 'none';
+            document.getElementById('box_selectionInAction').style.display = 'none';
             break;
     }
-    document.getElementById('btn_notification').disabled = true;
+    document.getElementById('btn_notification').disabled = true
 }
 
 //行動画面を表示
@@ -1465,10 +1466,10 @@ function displayNotification() {
             resultString += '仲間の村人と一緒に村を守りましょう';
             break;
         case POSITION.WEREWOLF:
-            resultString += '仲間の人狼は\n';
+            resultString += '仲間の人狼は<br/>';
             if (buddyNameArray.length >= 1) {
                 for (var i = 0; i < buddyNameArray.length; i++) {
-                    resultString += '・' + buddyNameArray[i] + '\n';
+                    resultString += '・' + buddyNameArray[i] + '<br/>';
                 }
             }
             else {

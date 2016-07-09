@@ -191,8 +191,10 @@ class VillageManagement {
     //socketに村情報のリストを更新する
     public function updateVillageList($socket) {
         outputLog('ENTER updateVillageList');
+        $flag = false;
         foreach ($this->villageArray as $i) {
             if (($i->state == PARTICIPATION) || ($i->state == WAITING)) {
+                $flag = true;
                 $passwordFlag = false;
                 if ($i->password !== '') {
                     $passwordFlag = true;
@@ -201,6 +203,10 @@ class VillageManagement {
                 sendMessage($txData, $socket);
             }
         }
+        if ($flag == false) {
+                $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'notExit'));
+                sendMessage($txData, $socket);
+        }
     }
 
 
@@ -208,17 +214,17 @@ class VillageManagement {
     //socketで「戻る」をクリック
     public function clickBackInParticipation($socket, $messageArray) {
         outputLog('ENTER clickBackInParticipation');
-        $village = getVillage($villageId);
+        $villageId = $messageArray->villageId;
+        $village = $this->getVillage($villageId);
         if ($village != null) {
             $foundSocket = array_search($socket, $village->participantArray);
-            if ($foundSocket != false) {
+            echo($foundSocket);
+            if ($foundSocket !== false) {
                 unset($village->participantArray[$foundSocket]);
                 $village->numberOfParticipant--;
                 if ($village->numberOfParticipant == 0) {
-                    echo "$this->villageArray";
                     $foundVillage = array_search($village, $this->villageArray);
                     unset($this->villageArray[$foundVillage]);
-                    echo "$this->villageArray";
                 }
             }
             $this->goToTopFromParticipation($socket);
