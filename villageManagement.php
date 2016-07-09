@@ -261,20 +261,21 @@ class VillageManagement {
             if ($foundSocket != false) {
                 unset($village->participantArray[$foundSocket]);
                 $village->numberOfParticipant--;
-                if ($village->numberOfParticipant == 0) {
+                if ($village->numberOfParticipant <= 0) {
                     echo "$this->villageArray";
                     $foundVillage = array_search($village, $this->villageArray);
                     unset($this->villageArray[$foundVillage]);
                     echo "$this->villageArray";
                 }
                 else {
+                    //他の参加者に通知
                     foreach ($village->playerArray as $i) {
                         $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>PLAYER, 'id'=>$i->id));
-                        sendMessage($txData, $socket);
+                        sendMessage($txData, $i->socket);
                     }
                     foreach ($village->spectatorArray as $i) {
                         $txData = json_encode(array('type'=>'system', 'state'=>WAITING, 'message'=>'del', 'attribute'=>SPECTATOR, 'id'=>$i->id));
-                        sendMessage($txData, $socket);
+                        sendMessage($txData, $i->socket);
                     }
                 }
                 $this->goToTopFromWaiting($socket);
