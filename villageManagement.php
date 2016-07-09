@@ -1,7 +1,7 @@
 <?php
 class VillageManagement {
-    public $villageArray = array();
-    public $currentId;
+    private $villageArray = array();
+    private $currentId;
     //public $socketInLobbyArray = array();
 
     //コンストラクタ
@@ -108,11 +108,10 @@ class VillageManagement {
             }
         }
         if ($flag == false) {
-            $id = getCurrentId();
+            $id = $this->getCurrentId();
             //村を作成する
-            $village = new Village($id, $name, $password, $spectatorFlag);
-            $village->participantArray[] = $socket;
-            $village->numberOfParticipant = 1;
+            $village = new Village($this, $id, $name, $password, $spectatorFlag);
+            $village->addParticipantArray($socket);
             $this->villageArray[] = $village;
             $this->goToParticipationFromMaking($socket, $id, $name, $spectatorFlag);
         }
@@ -153,15 +152,15 @@ class VillageManagement {
         $village = $this->getVillage($villageId);
         if ($village !== null) {
             $correctFlag = true;
-            if ($village->password != '') {
-                if ($village->password !== $password) {
+            $villagePassword = $village->getPassword();
+            if ($villagePassword != '') {
+                if ($villagePassword !== $password) {
                     $correctFlag = false;
                 }
             }
             if ($correctFlag == true) {
-                $village->participantArray[] = $socket;
-                $village->numberOfParticipant++;
-                $this->goToParticipationFromLobby($socket, $villageId, $village->name, $village->spectatorFlag);
+                $village->addParticipantArray($socket);
+                $this->goToParticipationFromLobby($socket, $villageId, $village->getName(), $village->getSpectatorFlag());
             }
             else {
                 $txData = json_encode(array('type'=>'system', 'state'=>LOBBY, 'message'=>'reject'));
@@ -222,12 +221,8 @@ class VillageManagement {
         $villageId = $messageArray->villageId;
         $village = $this->getVillage($villageId);
         if ($village !== null) {
-            $foundSocket = array_search($socket, $village->participantArray);
-            echo($foundSocket);
-            if ($foundSocket !== false) {
-                unset($village->participantArray[$foundSocket]);
-                $village->numberOfParticipant--;
-                if ($village->numberOfParticipant == 0) {
+            if ($village->removeParticipantArray() !== false) {
+                if ($village->getNumberOfParticipant() == 0) {
                     $foundVillage = array_search($village, $this->villageArray);
                     unset($this->villageArray[$foundVillage]);
                 }
@@ -254,29 +249,16 @@ class VillageManagement {
         if ($village !== null) {
             switch ($attribute) {
                 case PLAYER:
-                    $player = $village->getPlayer($id);
-                    $foundPlayer = array_search($player, $village->playerArray);
-                    if ($foundPlayer !== false) {
-                        unset($village->playerArray[$foundPlayer]);
-                    }
+                    removePlayer($id);
                     break;
                 case SPECTATOR:
-                    $spectator = $village->getSpectator($id);
-                    $foundSpectator = array_search($spectator, $village->spectatorArray);
-                    if ($foundSpectator !== false) {
-                        unset($village->spectatorArray[$foundSpectator]);
-                    }
+                    removeSpectator($id);
                     break;
             }
-            $foundSocket = array_search($socket, $village->participantArray);
-            if ($foundSocket !== false) {
-                unset($village->participantArray[$foundSocket]);
-                $village->numberOfParticipant--;
-                if ($village->numberOfParticipant <= 0) {
-                    echo "$this->villageArray";
+            if ($village->removeParticipantArray() !== false) {
+                if ($village->getNumberOfParticipant() <= 0) {
                     $foundVillage = array_search($village, $this->villageArray);
                     unset($this->villageArray[$foundVillage]);
-                    echo "$this->villageArray";
                 }
                 else {
                     //他の参加者に通知

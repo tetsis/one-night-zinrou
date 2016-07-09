@@ -8,9 +8,9 @@ class Village {
     public $playerArray = array();
     public $spectatorArray = array();
     public $participantArray = array();
-    public $numberOfParticipant = 0;
+    public $numberOfParticipant;
     public $numberOfPositionArray = array();
-    public $talkingTime = 0;
+    public $talkingTime;
     public $endingTime;
     public $state;
     public $winnerSide;
@@ -18,14 +18,17 @@ class Village {
     public $fieldPosition2;
     public $resultOfFortunetellerArray = array();
     public $resultOfThiefArray = array();
+    public $villageManagement;
 
     //コンストラクタ
-    public function __construct($id, $name, $password, $spectatorFlag) {
+    public function __construct(&$villageManagement, $id, $name, $password, $spectatorFlag) {
         outputLog('ENTER construct of Village');
+        $this->villageManagement = $villageManagement;
         $this->id = $id;
         $this->name = $name;
         $this->password = $password;
         $this->spectatorFlag = $spectatorFlag;
+        $this->numberOfParticipant = 0;
         global $positionArray;
         foreach ($positionArray as $i) {
             $this->numberOfPositionArray[$i] = 0;
@@ -48,6 +51,17 @@ class Village {
         return null;
     }
 
+    //プレイヤーを削除
+    public function removePlayer($id) {
+        $player = $this->getPlayer($id);
+        $foundPlayer = array_search($player, $this->playerArray);
+        if ($foundPlayer !== false) {
+            unset($this->playerArray[$foundPlayer]);
+            return true;
+        }
+        return false;
+    }
+
     //観戦者情報を取得
     public function getSpectator($spectatorId) {
         foreach ($this->spectatorArray as $i) {
@@ -58,6 +72,64 @@ class Village {
         }
 
         return null;
+    }
+
+    //観戦者を削除
+    public function removeSpectator($id) {
+        $spectator = $this->getSpectator($id);
+        $foundSpectator = array_search($spectator, $this->spectatorArray);
+        if ($foundSpectator !== false) {
+            unset($this->spectatorArray[$foundSpectator]);
+            return true;
+        }
+        return false;
+    }
+
+    //numberOfParticipantを増やす
+    //public function incrementNumberOfParticipant() {
+    //    $this->numberOfParticipant++;
+    //}
+
+    //numberOfParticipantを減らす
+    //public function decrementNumberOfParticipant() {
+    //    $this->numberOfParticipant--;
+    //}
+
+    //numberOfParticipantを取得
+    public function getNumberOfParticipant() {
+        return $this->numberOfParticipant;
+    }
+
+    //participantArrayに追加
+    public function addParticipantArray($socket) {
+        $this->participantArray[] = $socket;
+        $this->numberOfParticipant++;
+    }
+
+    //participantArrayから削除
+    public function removeParticipantArray($socket) {
+        $foundSocket = array_search($socket, $this->participantArray);
+        if ($foundSocket !== false) {
+            unset($village->participantArray[$foundSocket]);
+            $this->numberOfParticipant--;
+            return true;
+        }
+        return false;
+    }
+
+    //名前を取得
+    public function getName() {
+        return $this->name;
+    }
+
+    //パスワードを取得
+    public function getPassword() {
+        return $this->password;
+    }
+
+    //観戦者ありなしを取得
+    public function getSpectatorFlag() {
+        return $this->spectatorFlag;
     }
 
 
@@ -776,7 +848,9 @@ class Village {
     //「次の夜へ」がクリックされた
     public function clickNextNight() {
         outputLog('ENTER clickNextNight');
-        $this->id = $villageManagement->getCurrentId();
+        $this->id = $this->villageManagement->getCurrentId();
+        $resultOfFortunetellerArray = array();
+        $resultOfThiefArray = array();
         $this->startGame();
         foreach ($this->playerArray as $i) {
             $i->actionFlag = false;
@@ -793,7 +867,7 @@ class Village {
     //「終了」がクリックされた
     public function clickExit() {
         outputLog('ENTER clickExit');
-        $this->id = $villageManagement->getCurrentId();
+        $this->id = $this->villageManagement->getCurrentId();
         $this->state = WAITING;
         foreach ($this->playerArray as $i) {
             $i->gameStartFlag = false;
