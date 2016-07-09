@@ -311,7 +311,7 @@ window.addEventListener('load',
                         else if (message == 'setTalkingTime') {
                             setTalkingTimeInWaiting(messageArray);
                         }
-                        else if (message == 'gameStart') {
+                        else if (message == 'setGameStart') {
                             setGameStart(messageArray);
                         }
                         break;
