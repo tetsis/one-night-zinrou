@@ -724,7 +724,7 @@ class Village {
             }
             //いない場合は村人サイドの勝利
             else {
-                $this->winnerSide = VILLAGER;
+                $this->winnerSide = PEACE;
             }
         }
         else {
@@ -769,7 +769,7 @@ class Village {
             case VILLAGER:
             case FORTUNETELLER:
             case THIEF:
-                if ($winnerSide == VILLAGER) {
+                if (($winnerSide == VILLAGER) || ($winnerSide == PEACE)) {
                     $flag = true;
                 }
                 break;
@@ -794,6 +794,7 @@ class Village {
         $point = 0;
         switch ($winnerSide) {
             case VILLAGER:
+            case PEACE:
                 switch ($position) {
                     case FORTUNETELLER:
                         $point = 2;
@@ -849,8 +850,8 @@ class Village {
     public function clickNextNight() {
         outputLog('ENTER clickNextNight');
         $this->id = $this->villageManagement->getCurrentId();
-        $resultOfFortunetellerArray = array();
-        $resultOfThiefArray = array();
+        $this->resultOfFortunetellerArray = array();
+        $this->resultOfThiefArray = array();
         $this->startGame();
         foreach ($this->playerArray as $i) {
             $i->actionFlag = false;
@@ -911,7 +912,7 @@ class Village {
             sendMessage($txData, $socket);
         }
         foreach ($this->playerArray as $i) {
-            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position, 'point'=>$i->point));
+            $txData = json_encode(array('type'=>'system', 'state'=>RESULT, 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position, 'hangingId'=>$i->hangingId, 'point'=>$i->point));
             sendMessage($txData, $socket);
         }
         foreach ($this->resultOfFortunetellerArray as $i) {

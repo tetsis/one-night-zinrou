@@ -20,7 +20,8 @@ var POSITION = {
     'FORTUNETELLER': 2,
     'THIEF': 3,
     'MADMAN': 4,
-    'HANGING': 5
+    'HANGING': 5,
+    'PEACE': 6
 };
 
 var ATTRIBUTE = {
@@ -1793,6 +1794,9 @@ function initInResult(messageArray) {
         case POSITION.HANGING:
             sideString = '勝者はてるてるサイドです';
             break;
+        case POSITION.PEACE:
+            sideString = '平和村です';
+            break;
     }
     document.getElementById('scrn_winnerSide').innerHTML = sideString;
     switch (attribute) {
@@ -1811,6 +1815,18 @@ function initInResult(messageArray) {
 //結果発表画面を表示
 function displayResult() {
     console.log('ENTER displayResult');
+    for (var i = 0; i < playerArray.length; i++) {
+        var positionString = getPositionNameInJapanese(playerArray[i].position);
+        var hangingName = getPlayer(playerArray[i].hangingId).name;
+        var box = document.getElementById('box_playerListInResult');
+        var element = document.createElement('div');
+        element.id = 'scrn_playerListInResult' + playerArray[i].id;
+        element.innerHTML = '名前: '+ playerArray[i].name + ', 役職: ' + positionString + ', 吊ったプレイヤー: ' + hangingName + ', ポイント: ' + playerArray[i].point;
+        if (playerArray[i].id == this.id) {
+            element.style.background = 'green';
+        }
+        box.appendChild(element);
+    }
     displayState(STATE.RESULT);
 }
 
@@ -1834,18 +1850,10 @@ function setResultOfPlayerInResult(messageArray) {
     var id = messageArray['id'];
     var name = messageArray['name'];
     var position = messageArray['position'];
+    var hangingId = messageArray['hangingId'];
     var point = messageArray['point'];
-    var player = {id: id, name: name, position: position, point: point};
+    var player = {id: id, name: name, position: position, hangingId: hangingId, point: point};
     playerArray.push(player);
-    var positionString = getPositionNameInJapanese(position);
-    var box = document.getElementById('box_playerListInResult');
-    var element = document.createElement('div');
-    element.id = 'scrn_playerListInResult' + id;
-    element.innerHTML = name + ': ' + positionString + ': ' + point;
-    if (id == this.id) {
-        element.style.background = 'green';
-    }
-    box.appendChild(element);
 }
 
 //占い結果を表示

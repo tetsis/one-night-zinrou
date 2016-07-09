@@ -20,6 +20,7 @@ define('FORTUNETELLER', 2);
 define('THIEF', 3);
 define('MADMAN', 4);
 define('HANGING', 5);
+define('PEACE', 6);
 
 define('PLAYER', 0);
 define('SPECTATOR', 1);
