@@ -267,7 +267,7 @@ class VillageManagement {
                         sendMessage($txData, $i->socket);
                     }
                     foreach ($village->spectatorArray as $i) {
-                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'SPECTATOR', 'id'=>$iid));
+                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'SPECTATOR', 'id'=>$id));
                         sendMessage($txData, $i->socket);
                     }
                 }
@@ -353,7 +353,7 @@ class VillageManagement {
                         $this->goToExecutionFromConnection($socket, $villageId, $attribute, $id);
                         break;
                     case 'RESULT':
-                        $this->goToResultFromConnection($socket, $villageId, $attribute);
+                        $this->goToResultFromConnection($socket, $villageId, $attribute, $id);
                         break;
                 }
             }
@@ -391,7 +391,7 @@ class VillageManagement {
         outputLog('ENTER goToWaitingFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
-                //$i->displayWaiting();
+                $i->displayWaiting($socket, $attribute, $id);
             }
         }
     }
@@ -401,7 +401,7 @@ class VillageManagement {
         outputLog('ENTER goToActionFromConnection, villageId: '. $villageId. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
-                //$i->displayAction();
+                $i->displayAction($socket, $id);
             }
         }
     }
@@ -411,7 +411,7 @@ class VillageManagement {
         outputLog('ENTER goToNotificationFromConnection, villageId: '. $villageId. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
-                //$i->displayNotification();
+                $i->displayNotification($socket, $id);
             }
         }
     }
@@ -421,7 +421,7 @@ class VillageManagement {
         outputLog('ENTER goToNightFromConnection, villageId: '. $villageId. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
-                //$i->displayNight();
+                $i->displayNight($socket);
             }
         }
     }
@@ -431,7 +431,7 @@ class VillageManagement {
         outputLog('ENTER goToDaytimeFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
-                //$i->displayDaytime();
+                $i->displayDaytime($socket, $attribute, $id);
             }
         }
     }
@@ -441,17 +441,17 @@ class VillageManagement {
         outputLog('ENTER goToExecutionFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
-                //$i->displayExecution();
+                $i->displayExecution($socket, $attribute, $id);
             }
         }
     }
 
     //socketを結果発表画面に遷移
-    public function goToResultFromConnection($socket, $villageId, $attribute) {
-        outputLog('ENTER goToResultFromConnection, villageId: '. $villageId. ', attribute: '. $attribute);
+    public function goToResultFromConnection($socket, $villageId, $attribute, $id) {
+        outputLog('ENTER goToResultFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
-                //$i->displayResult();
+                $i->displayResult($socket, $attribute, $id);
             }
         }
     }

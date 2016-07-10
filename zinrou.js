@@ -195,6 +195,17 @@ function getPlayer(id) {
     return null;
 }
 
+//ローカルストレージに保存
+function setStorageData(villageId, attribute, id) {
+    var dataArray = {
+        villageId: villageId,
+        attribute: attribute,
+        id: id
+    };
+    var data = JSON.stringify(dataArray);
+    window.localStorage.setItem("data", data);
+}
+
 //ロード時の処理
 window.addEventListener('load',
     function (event) {
@@ -990,6 +1001,7 @@ function clickExitInResult() {
 //データを要求
 function queryData() {
     console.log('ENTER queryData');
+    //ローカルストレージから取得
     var data = window.localStorage.getItem("data");
     if (data != null) {
         var dataArray = JSON.parse(data);
@@ -1023,6 +1035,7 @@ function queryData() {
 //データを削除
 function deleteData() {
     console.log('ENTER deleteData');
+    //ローカルストレージから削除
     var data = window.localStorage.getItem("data");
     if (data != null) {
         window.localStorage.removeItem("data");
@@ -1187,6 +1200,8 @@ function initInWaiting(messageArray) {
             break;
     }
     document.getElementById('btn_backInWaiting').disabled = false;
+    //ローカルストレージに保存
+    setStorageData(villageId, attribute, id);
 }
 
 //待機画面を表示
@@ -1391,6 +1406,8 @@ function initInAction(messageArray) {
             break;
     }
     document.getElementById('btn_notification').disabled = true
+    //ローカルストレージに保存
+    setStorageData(villageId, attribute, id);
 }
 
 //行動画面を表示
@@ -1510,6 +1527,8 @@ function initInNight() {
     document.getElementById('box_playerListInNight').textContent = null;
     document.getElementById('box_resultOfFortunetellerInNight').textContent = null;
     document.getElementById('box_resultOfThiefInNight').textContent = null;
+    //ローカルストレージに保存
+    setStorageData(villageId, attribute, id);
 }
 
 //夜の画面を表示
