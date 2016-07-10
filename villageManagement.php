@@ -305,6 +305,8 @@ class VillageManagement {
                 case 'PLAYER':
                     foreach ($village->playerArray as $i) {
                         if ($i->id == $id) {
+                            $village->removeParticipantArray($i->socket);
+                            $village->addParticipantArray($socket);
                             $i->socket = $socket;
                             $flag = true;
                             break;
@@ -314,6 +316,8 @@ class VillageManagement {
                 case 'SPECTATOR':
                     foreach ($village->spectatorArray as $i) {
                         if ($i->id == $id) {
+                            $village->removeParticipantArray($i->socket);
+                            $village->addParticipantArray($socket);
                             $i->socket = $socket;
                             $flag = true;
                             break;
