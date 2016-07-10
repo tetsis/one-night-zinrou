@@ -226,7 +226,7 @@ class Village {
     public function clickTalkingTime($messageArray) {
         outputLog('ENTER clickTalkingTime');
         $time = $messageArray->time;
-        $talkingTime = $time;
+        $this->talkingTime = $time;
         //参加者に通知
         foreach ($this->playerArray as $i) {
             $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'setTalkingTime', 'time'=>$time));

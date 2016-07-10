@@ -874,6 +874,7 @@ function clickExtension() {
 function clickTalksEnd() {
     console.log('ENTER clickTalksEnd');
     document.getElementById('btn_talksEnd').disabled = true;
+    clearInterval(timer);
     //サーバに送信
     var messageArray = {
         type: 'system',
