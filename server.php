@@ -270,17 +270,6 @@ function sendMessage($messageArray, $socket)
     return true;
 }
 
-function sendMessage_all($msg)
-{
-    global $clients;
-    foreach($clients as $changedSocket)
-    {
-        @socket_write($changedSocket,$msg,strlen($msg));
-    }
-    return true;
-}
-
-
 //Unmask incoming framed message
 function unmask($text) {
     $length = ord($text[1]) & 127;
