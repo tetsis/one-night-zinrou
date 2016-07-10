@@ -6,7 +6,7 @@ class VillageManagement {
 
     //コンストラクタ
     function __construct() {
-        outputLog('ENTER construct of VillageManagement');
+        outputLog('ENTER: construct of VillageManagement');
         $villageArray = array();
 
     }
@@ -57,43 +57,43 @@ class VillageManagement {
     ////Top////
     //socketで「村を作成する」をクリック
     public function clickMaking($socket) {
-        outputLog('ENTER clickMaking');
+        outputLog('ENTER: clickMaking');
         $this->goToMakingFromTop($socket);
     }
 
     //socketで「村に参加する」をクリック
     public function clickLobby($socket) {
-        outputLog('ENTER clickLobby');
+        outputLog('ENTER: clickLobby');
         $this->goToLobbyFromTop($socket);
     }
 
     //socketを村作成画面に遷移
     public function goToMakingFromTop($socket) {
-        outputLog('ENTER goToMakingFromTop');
-        $txData = json_encode(array('type'=>'system', 'state'=>'MAKING', 'message'=>'display'));
-        sendMessage($txData, $socket);
+        outputLog('ENTER: goToMakingFromTop');
+        $messageArray = array('type'=>'system', 'state'=>'MAKING', 'message'=>'display');
+        sendMessage($messageArray, $socket);
     }
 
     //socketをロビー画面に遷移
     public function goToLobbyFromTop($socket) {
-        outputLog('ENTER goToLobbyFromTop');
-        $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'display'));
-        sendMessage($txData, $socket);
+        outputLog('ENTER: goToLobbyFromTop');
+        $messageArray = array('type'=>'system', 'state'=>'LOBBY', 'message'=>'display');
+        sendMessage($messageArray, $socket);
         $this->updateVillageList($socket);
     }
 
     //socketにトップ画面を表示
     public function displayTop($socket) {
-        outputLog('ENTER displayTop');
-        $txData = json_encode(array('type'=>'system', 'state'=>'TOP', 'message'=>'display'));
-        sendMessage($txData, $socket);
+        outputLog('ENTER: displayTop');
+        $messageArray = array('type'=>'system', 'state'=>'TOP', 'message'=>'display');
+        sendMessage($messageArray, $socket);
     }
 
 
     ////Making////
     //socketで「決定」をクリック
     public function clickDecideInMaking($socket, $messageArray) {
-        outputLog('ENTER clickDecideInMaking');
+        outputLog('ENTER: clickDecideInMaking');
         $name = $messageArray->name;
         $password = $messageArray->password;
         $spectatorFlag = $messageArray->spectatorFlag;
@@ -101,8 +101,8 @@ class VillageManagement {
         $flag = false;
         foreach ($this->villageArray as $i) {
             if ($i->name == $name) {
-                $txData = json_encode(array('type'=>'system', 'state'=>'MAKING', 'message'=>'reject'));
-                sendMessage($txData, $socket);
+                $messageArray = array('type'=>'system', 'state'=>'MAKING', 'message'=>'reject');
+                sendMessage($messageArray, $socket);
                 $flag = true;
                 break;
             }
@@ -119,20 +119,20 @@ class VillageManagement {
 
     //socketで「戻る」をクリック
     public function clickBackInMaking($socket) {
-        outputLog('ENTER clickBackInMaking');
+        outputLog('ENTER: clickBackInMaking');
         $this->goToTopFromMaking($socket);
     }
 
     //socketを村参加画面に遷移
     public function goToParticipationFromMaking($socket, $villageId, $villageName, $spectatorFlag) {
-        outputLog('ENTER goToParticipationFromMaking, villageId: '. $villageId. ', villageName: '. $villageName. ', spectatorFlag: '. $spectatorFlag);
+        outputLog('ENTER: goToParticipationFromMaking, villageId: '. $villageId. ', villageName: '. $villageName. ', spectatorFlag: '. $spectatorFlag);
         $village = $this->getVillage($villageId);
         $village->displayParticipation($socket, $villageId, $villageName, $spectatorFlag);
     }
 
     //socketをトップ画面に遷移
     public function goToTopFromMaking($socket) {
-        outputLog('ENTER goToTopFromMaking');
+        outputLog('ENTER: goToTopFromMaking');
         $this->displayTop($socket);
     }
 
@@ -140,13 +140,13 @@ class VillageManagement {
     ////Lobby////
     //socketで「更新」をクリック
     public function clickUpdate($socket) {
-        outputLog('ENTER clickUpdate');
+        outputLog('ENTER: clickUpdate');
         $this->updateVillageList($socket);
     }
 
     //socketで「決定」をクリック
     public function clickDecideInLobby($socket, $messageArray) {
-        outputLog('ENTER clickDecideInLobby');
+        outputLog('ENTER: clickDecideInLobby');
         $villageId = $messageArray->villageId;
         $password = $messageArray->password;
         $village = $this->getVillage($villageId);
@@ -163,38 +163,38 @@ class VillageManagement {
                 $this->goToParticipationFromLobby($socket, $villageId, $village->getName(), $village->getSpectatorFlag());
             }
             else {
-                $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'reject'));
-                sendMessage($txData, $socket);
+                $messageArray = array('type'=>'system', 'state'=>'LOBBY', 'message'=>'reject');
+                sendMessage($messageArray, $socket);
             }
         }
         else {
-                $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'delete'));
-                sendMessage($txData, $socket);
+                $messageArray = array('type'=>'system', 'state'=>'LOBBY', 'message'=>'delete');
+                sendMessage($messageArray, $socket);
         }
     }
 
     //socketで「戻る」をクリック
     public function clickBackInLobby($socket) {
-        outputLog('ENTER clickBackInLobby');
+        outputLog('ENTER: clickBackInLobby');
         $this->goToTopFromLobby($socket);
     }
 
     //socketを村参加画面に遷移
     public function goToParticipationFromLobby($socket, $villageId, $villageName, $spectatorFlag) {
-        outputLog('ENTER goToParticipationFromLobby, villageId: '. $villageId. ', villageName: '. $villageName. ', spectatorFlag: '. $spectatorFlag);
+        outputLog('ENTER: goToParticipationFromLobby, villageId: '. $villageId. ', villageName: '. $villageName. ', spectatorFlag: '. $spectatorFlag);
         $village = $this->getVillage($villageId);
         $village->displayParticipation($socket, $villageId, $villageName, $spectatorFlag);
     }
 
     //socketをトップ画面に遷移
     public function goToTopFromLobby($socket) {
-        outputLog('ENTER goToTopFromLobby');
+        outputLog('ENTER: goToTopFromLobby');
         $this->displayTop($socket);
     }
 
     //socketに村情報のリストを更新する
     public function updateVillageList($socket) {
-        outputLog('ENTER updateVillageList');
+        outputLog('ENTER: updateVillageList');
         $flag = false;
         foreach ($this->villageArray as $i) {
             if (($i->state == 'PARTICIPATION') || ($i->state == 'WAITING')) {
@@ -203,13 +203,13 @@ class VillageManagement {
                 if ($i->password !== '') {
                     $passwordFlag = true;
                 }
-                $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'add', 'villageId'=>$i->id, 'villageName'=>$i->name, 'passwordFlag'=>$passwordFlag));
-                sendMessage($txData, $socket);
+                $messageArray = array('type'=>'system', 'state'=>'LOBBY', 'message'=>'add', 'villageId'=>$i->id, 'villageName'=>$i->name, 'passwordFlag'=>$passwordFlag);
+                sendMessage($messageArray, $socket);
             }
         }
         if ($flag == false) {
-                $txData = json_encode(array('type'=>'system', 'state'=>'LOBBY', 'message'=>'notExit'));
-                sendMessage($txData, $socket);
+                $messageArray = array('type'=>'system', 'state'=>'LOBBY', 'message'=>'notExit');
+                sendMessage($messageArray, $socket);
         }
     }
 
@@ -217,7 +217,7 @@ class VillageManagement {
     ////Participation////
     //socketで「戻る」をクリック
     public function clickBackInParticipation($socket, $messageArray) {
-        outputLog('ENTER clickBackInParticipation');
+        outputLog('ENTER: clickBackInParticipation');
         $villageId = $messageArray->villageId;
         $village = $this->getVillage($villageId);
         if ($village !== null) {
@@ -233,7 +233,7 @@ class VillageManagement {
 
     //socketをトップ画面に遷移
     public function goToTopFromParticipation($socket) {
-        outputLog('ENTER goToTopFromParticipation');
+        outputLog('ENTER: goToTopFromParticipation');
         $this->displayTop($socket);
     }
 
@@ -241,7 +241,7 @@ class VillageManagement {
     ////Waiting////
     //socketで「戻る」をクリック
     public function clickBackInWaiting($socket, $messageArray) {
-        outputLog('ENTER clickBackInWaiting');
+        outputLog('ENTER: clickBackInWaiting');
         $villageId = $messageArray->villageId;
         $attribute = $messageArray->attribute;
         $id = $messageArray->id;
@@ -263,12 +263,12 @@ class VillageManagement {
                 else {
                     //他の参加者に通知
                     foreach ($village->playerArray as $i) {
-                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'PLAYER', 'id'=>$id));
-                        sendMessage($txData, $i->socket);
+                        $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'PLAYER', 'id'=>$id);
+                        sendMessage($messageArray, $i->socket);
                     }
                     foreach ($village->spectatorArray as $i) {
-                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'SPECTATOR', 'id'=>$id));
-                        sendMessage($txData, $i->socket);
+                        $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'SPECTATOR', 'id'=>$id);
+                        sendMessage($messageArray, $i->socket);
                     }
                 }
                 $this->goToTopFromWaiting($socket);
@@ -278,7 +278,7 @@ class VillageManagement {
 
     //socketをトップ画面に遷移
     public function goToTopFromWaiting($socket) {
-        outputLog('ENTER goToTopFromWaiting');
+        outputLog('ENTER: goToTopFromWaiting');
         $this->displayTop($socket);
     }
 
@@ -286,14 +286,14 @@ class VillageManagement {
     ////Connection////
     //socketにデータを要求
     public function queryData($socket) {
-        outputLog('ENTER queryData');
-        $txData = json_encode(array('type'=>'system', 'state'=>'CONNECTION', 'message'=>'query'));
-        sendMessage($txData, $socket);
+        outputLog('ENTER: queryData');
+        $messageArray = array('type'=>'system', 'state'=>'CONNECTION', 'message'=>'query');
+        sendMessage($messageArray, $socket);
     }
 
     //socketからデータの応答
     public function replyData($socket, $messageArray) {
-        outputLog('ENTER replyData');
+        outputLog('ENTER: replyData');
         $villageId = $messageArray->villageId;
         $attribute = $messageArray->attribute;
         $id = $messageArray->id;
@@ -372,27 +372,27 @@ class VillageManagement {
 
     //socketのデータはない
     public function noneData($socket) {
-        outputLog('ENTER noneData');
+        outputLog('ENTER: noneData');
         $this->goToTopFromConnection($socket);
     }
 
     //データを消去
     public function deleteData($socket) {
-        outputLog('ENTER deleteData');
-        $txData = json_encode(array('type'=>'system', 'state'=>'CONNECTION', 'message'=>'delete'));
-        sendMessage($txData, $socket);
+        outputLog('ENTER: deleteData');
+        $messageArray = array('type'=>'system', 'state'=>'CONNECTION', 'message'=>'delete');
+        sendMessage($messageArray, $socket);
     }
 
     //socketをトップ画面に遷移
     public function goToTopFromConnection($socket) {
-        outputLog('ENTER goToTopFromConnection');
+        outputLog('ENTER: goToTopFromConnection');
         $this->deleteData($socket);
         $this->displayTop($socket);
     }
 
     //socketを待機画面に遷移
     public function goToWaitingFromConnection($socket, $villageId, $attribute, $id) {
-        outputLog('ENTER goToWaitingFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
+        outputLog('ENTER: goToWaitingFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
                 $i->displayWaiting($socket, $attribute, $id);
@@ -402,7 +402,7 @@ class VillageManagement {
 
     //socketを行動画面に遷移
     public function goToActionFromConnection($socket, $villageId, $id) {
-        outputLog('ENTER goToActionFromConnection, villageId: '. $villageId. ', id: '. $id);
+        outputLog('ENTER: goToActionFromConnection, villageId: '. $villageId. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
                 $i->displayAction($socket, $id);
@@ -412,7 +412,7 @@ class VillageManagement {
 
     //socketを通知画面に遷移
     public function goToNotificationFromConnection($socket, $villageId, $id) {
-        outputLog('ENTER goToNotificationFromConnection, villageId: '. $villageId. ', id: '. $id);
+        outputLog('ENTER: goToNotificationFromConnection, villageId: '. $villageId. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
                 $i->displayNotification($socket, $id);
@@ -422,7 +422,7 @@ class VillageManagement {
 
     //socketを夜の画面に遷移
     public function goToNightFromConnection($socket, $villageId, $id) {
-        outputLog('ENTER goToNightFromConnection, villageId: '. $villageId. ', id: '. $id);
+        outputLog('ENTER: goToNightFromConnection, villageId: '. $villageId. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
                 $i->displayNight($socket);
@@ -432,7 +432,7 @@ class VillageManagement {
 
     //socketを昼の画面に遷移
     public function goToDaytimeFromConnection($socket, $villageId, $attribute, $id) {
-        outputLog('ENTER goToDaytimeFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
+        outputLog('ENTER: goToDaytimeFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
                 $i->displayDaytime($socket, $attribute, $id);
@@ -442,7 +442,7 @@ class VillageManagement {
 
     //socketを吊る人選択画面に遷移
     public function goToExecutionFromConnection($socket, $villageId, $attribute, $id) {
-        outputLog('ENTER goToExecutionFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
+        outputLog('ENTER: goToExecutionFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
                 $i->displayExecution($socket, $attribute, $id);
@@ -452,7 +452,7 @@ class VillageManagement {
 
     //socketを結果発表画面に遷移
     public function goToResultFromConnection($socket, $villageId, $attribute, $id) {
-        outputLog('ENTER goToResultFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
+        outputLog('ENTER: goToResultFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
             if ($i->id == $villageId) {
                 $i->displayResult($socket, $attribute, $id);

@@ -61,7 +61,7 @@ while (true) {
         while(socket_recv($changedSocket, $buf, 1024, 0) >= 1)
         {
             $received_text = unmask($buf); //unmask data
-            outputLog('RECEIVE '. $received_text);
+            outputLog('RECEIVE: '. $received_text);
             $messageArray = json_decode($received_text); //json decode 
             //outputMessage($messageArray, false);
             if ($messageArray !== null) {
@@ -252,10 +252,21 @@ while (true) {
 // close the listening socket
 socket_close($socket);
 
+/*
 function sendMessage($msg, $socket)
 {
     outputLog('SEND '. $msg);
     $txData = mask($msg);
+    @socket_write($socket, $txData, strlen($txData));
+    return true;
+}
+*/
+
+function sendMessage($messageArray, $socket)
+{
+    $message = json_encode($messageArray);
+    outputLog('SEND: '. $message);
+    $txData = mask($message);
     @socket_write($socket, $txData, strlen($txData));
     return true;
 }
