@@ -85,16 +85,6 @@ class Village {
         return false;
     }
 
-    //numberOfParticipantを増やす
-    //public function incrementNumberOfParticipant() {
-    //    $this->numberOfParticipant++;
-    //}
-
-    //numberOfParticipantを減らす
-    //public function decrementNumberOfParticipant() {
-    //    $this->numberOfParticipant--;
-    //}
-
     //numberOfParticipantを取得
     public function getNumberOfParticipant() {
         return $this->numberOfParticipant;
@@ -110,7 +100,7 @@ class Village {
     public function removeParticipantArray($socket) {
         $foundSocket = array_search($socket, $this->participantArray);
         if ($foundSocket !== false) {
-            unset($village->participantArray[$foundSocket]);
+            unset($this->participantArray[$foundSocket]);
             $this->numberOfParticipant--;
             return true;
         }

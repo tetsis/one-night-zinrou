@@ -221,8 +221,8 @@ class VillageManagement {
         $villageId = $messageArray->villageId;
         $village = $this->getVillage($villageId);
         if ($village !== null) {
-            if ($village->removeParticipantArray() !== false) {
-                if ($village->getNumberOfParticipant() == 0) {
+            if ($village->removeParticipantArray($socket) !== false) {
+                if ($village->getNumberOfParticipant() <= 0) {
                     $foundVillage = array_search($village, $this->villageArray);
                     unset($this->villageArray[$foundVillage]);
                 }
@@ -249,13 +249,13 @@ class VillageManagement {
         if ($village !== null) {
             switch ($attribute) {
                 case 'PLAYER':
-                    removePlayer($id);
+                    $village->removePlayer($id);
                     break;
                 case 'SPECTATOR':
-                    removeSpectator($id);
+                    $village->removeSpectator($id);
                     break;
             }
-            if ($village->removeParticipantArray() !== false) {
+            if ($village->removeParticipantArray($socket) !== false) {
                 if ($village->getNumberOfParticipant() <= 0) {
                     $foundVillage = array_search($village, $this->villageArray);
                     unset($this->villageArray[$foundVillage]);
@@ -263,11 +263,11 @@ class VillageManagement {
                 else {
                     //他の参加者に通知
                     foreach ($village->playerArray as $i) {
-                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'PLAYER', 'id'=>$i->id));
+                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'PLAYER', 'id'=>$id));
                         sendMessage($txData, $i->socket);
                     }
                     foreach ($village->spectatorArray as $i) {
-                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'SPECTATOR', 'id'=>$i->id));
+                        $txData = json_encode(array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'SPECTATOR', 'id'=>$iid));
                         sendMessage($txData, $i->socket);
                     }
                 }
