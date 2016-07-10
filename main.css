@@ -5,16 +5,16 @@
 */
 
 input {
-    font-size: 20px;
+    font-size: 40px;
 }
 
 input[type="text"] {
     width: 90%;
-    padding: 20px 0px;
+    padding: 10px 0px;
 }
 
 input[type="button"] {
-    padding: 20px;
+    padding: 10px;
 }
 
 body {
@@ -23,7 +23,7 @@ body {
 }
 
 div {
-    border: solid;
+    font-size: 40px;
     text-align: center;
 }
 
@@ -33,13 +33,4 @@ table {
 
 td {
     vertical-align: top;
-}
-
-.border {
-    border: solid;
-}
-
-.participant {
-    font-size: 50px;
-    padding: 10px;
 }

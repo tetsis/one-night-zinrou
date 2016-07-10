@@ -1,2 +1,2 @@
-# zinrou
-仁狼 -Zinrou-
+# One Night Zinrou
+ワンナイト人狼

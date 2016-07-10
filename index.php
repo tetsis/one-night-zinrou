@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewpoint" content="width=device-width">
-    <title>仁狼 -Zinrou-</title>
+    <title>ワンナイト人狼</title>
     <link rel="stylesheet" type="text/css" href="main.css">
     <script type="text/javascript" src="zinrou.js"></script>
 </head>
@@ -12,7 +12,7 @@
 <!-- Top -->
 <div id="top">
 <div>
-<h1>仁狼 -Zinrou-</h1>
+<h1>ワンナイト人狼</h1>
 </div>
 
 <input type="button" id="btn_lobby" value="村に参加"><br/><br/>
@@ -143,7 +143,8 @@
         <td></td>
     </tr>
 </table>
-
+<br/>
+<br/>
 話し合い時間
 <br/>
 <table>
@@ -153,7 +154,8 @@
         <td><input type="button" id="btn_incrementOfTalkingTime" value="＋"></td>
     </tr>
 </table>
-
+<br/>
+<br/>
 <input type="button" id="btn_gameStart" value="ゲーム開始"><br/><br/>
 <input type="button" id="btn_backInWaiting" value="村を出る"><br/>
 </div>
@@ -165,6 +167,8 @@
 <br/>
 <div id="box_OK"><input type="button" id="btn_OK" value="OK"></div>
 <div id="box_selectionInAction"></div>
+<br/>
+<br/>
 <input type="button" id="btn_notification" value="次へ"><br/>
 </div>
 
@@ -172,15 +176,20 @@
 <!-- Notification -->
 <div id="notification">
 <div id="scrn_notification"></div>
-
+<br/>
+<br/>
 <input type="button" id="btn_daytime" value="昼のフェーズへ"><br/>
 </div>
 
 
 <!-- Night -->
 <div id="night">
-<div id="box_playerInNight"></div>
+<div id="box_playerListInNight"></div>
+<br/>
+<br/>
 <div id="box_resultOfFortunetellerInNight"></div>
+<br/>
+<br/>
 <div id="box_resultOfThiefInNight"></div>
 </div>
 
@@ -190,7 +199,8 @@
 残り時間<br/>
 <div id="scrn_remainingTime"></div>
 <div id="box_extension"><input type="button" id="btn_extension" value="延長"></div>
-
+<br/>
+<br/>
 <table>
     <tr>
         <td>
@@ -209,7 +219,8 @@
         </td>
     </tr>
 </table>
-
+<br/>
+<br/>
 役職<br/>
 <table>
     <tr>
@@ -231,8 +242,9 @@
         <td><div id="scrn_numberOfHangingInDaytime"></div></td>
     </tr>
 </table>
-
-<input type="button" id="btn_talksEnd" value="話し合い終了"><br/>
+<br/>
+<br/>
+<input type="button" id="btn_talksEnd" value="話し合い終了"><br/><br/>
 <input type="button" id="btn_confirmation" value="役職確認"><br/>
 </div>
 
@@ -240,7 +252,10 @@
 <!-- Execution -->
 <div id="execution">
 <div id="scrn_execution"></div>
+<br/>
 <div id="box_selectionInExecution"></div>
+<br/>
+<br/>
 <input type="button" id="btn_result" value="結果発表へ"><br/>
 </div>
 
@@ -248,14 +263,18 @@
 <!-- Result -->
 <div id="result">
 <div class="scrn_villageName"></div>
+<br/>
 <div id="scrn_winnerOrLoser"></div>
+<br/>
 <div id="scrn_winnerSide"></div>
-
+<br/>
 <div id="box_playerListInResult"></div>
+<br/>
 <div id="box_resultOfFortunetellerInResult"></div>
+<br/>
 <div id="box_resultOfThiefInResult"></div>
-
-<input type="button" id="btn_nextNight" value="次の夜へ"><br/>
+<br/>
+<input type="button" id="btn_nextNight" value="次の夜へ"><br/><br/>
 <input type="button" id="btn_exitInResult" value="終了"><br/>
 </div>
 </body>

@@ -882,7 +882,8 @@ function clickConfirmation() {
     console.log('ENTER: clickConfirmation');
     var popupString = '役職確認\n';
     for (var i = 0; i < playerArray.length; i++) {
-        popupString += playerArray[i].name + 'の役職は' + playerArray[i].position + 'です\n';
+        var positionString = getPositionNameInJapanese(playerArray[i].position);
+        popupString += playerArray[i].name + 'の役職は' + positionString + 'です\n';
     }
     popupString += '\n';
     popupString += '占い結果\n';
@@ -1327,7 +1328,7 @@ function setTalkingTimeInWaiting(messageArray) {
     console.log('ENTER: setTalkingTimeInWaiting, messageArray: ' + JSON.stringify(messageArray));
     var time = messageArray['time'];
     talkingTime = time;
-    document.getElementById('scrn_talkingTimeInWaiting').innerHTML = time;
+    document.getElementById('scrn_talkingTimeInWaiting').innerHTML = time + ' 分';
     if (attribute == 'PLAYER') {
         document.getElementById('btn_incrementOfTalkingTime').disabled = false;
         if (time <= 1) {
@@ -1794,9 +1795,9 @@ function displayResult() {
         var box = document.getElementById('box_playerListInResult');
         var element = document.createElement('div');
         element.id = 'scrn_playerListInResult' + playerArray[i].id;
-        element.innerHTML = '名前: '+ playerArray[i].name + ', 役職: ' + positionString + ', 吊ったプレイヤー: ' + hangingName + ', ポイント: ' + playerArray[i].point;
+        element.innerHTML = '名前: '+ playerArray[i].name + '<br/>役職: ' + positionString + ', 吊った相手: ' + hangingName + ', ポイント: ' + playerArray[i].point;
         if (playerArray[i].id == this.id) {
-            element.style.background = 'green';
+            element.style.background = 'skyblue';
         }
         box.appendChild(element);
     }

@@ -671,7 +671,6 @@ class Village {
     public function judgeWinner() {
         outputLog('ENTER: judgeWinner');
         //怪盗が交換した後の役職に設定
-        var_dump($this->playerArray);
         foreach ($this->playerArray as $i) {
             if ($i->position == 'THIEF') {
                 if ($i->selectionId != -1) {
@@ -698,8 +697,6 @@ class Village {
                 $maxPlayerArray[] = $i;
             }
         }
-        var_dump($maxPlayerArray);
-
         //maxは1？
         if ($max == 1) {
             //プレイヤーの中に人狼はいる？
