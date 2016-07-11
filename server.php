@@ -62,7 +62,6 @@ while (true) {
             $received_text = unmask($buf); //unmask data
             outputLog('RECEIVE: '. $received_text);
             $messageArray = json_decode($received_text); //json decode 
-            //outputMessage($messageArray, false);
             if ($messageArray !== null) {
                 $type = $messageArray->type;
                 if ($type == 'system') {
@@ -70,150 +69,144 @@ while (true) {
                     $message = $messageArray->message;
                     switch ($state) {
                         case 'TOP':
-                            if ($message == 'lobby') {
-                                $villageManagement->clickLobby($changedSocket);
-                            }
-                            else if ($message == 'making') {
-                                $villageManagement->clickMaking($changedSocket);
+                            switch ($message) {
+                                case 'lobby':
+                                    $villageManagement->clickLobby($changedSocket);
+                                    break;
+                                case 'making':
+                                    $villageManagement->clickMaking($changedSocket);
+                                    break;
                             }
                             break;
                         case 'MAKING':
-                            if ($message == 'decide') {
-                                $villageManagement->clickDecideInMaking($changedSocket, $messageArray);
-                            }
-                            if ($message == 'back') {
-                                $villageManagement->clickBackInMaking($changedSocket);
+                            switch ($message) {
+                                case 'decide':
+                                    $villageManagement->clickDecideInMaking($changedSocket, $messageArray);
+                                    break;
+                                case 'back':
+                                    $villageManagement->clickBackInMaking($changedSocket);
+                                    break;
                             }
                             break;
                         case 'LOBBY':
-                            if ($message == 'update') {
-                                $villageManagement->clickUpdate($changedSocket);
-                            }
-                            else if ($message == 'decide') {
-                                $villageManagement->clickDecideInLobby($changedSocket, $messageArray);
-                            }
-                            else if ($message == 'back') {
-                                $villageManagement->clickBackInLobby($changedSocket);
+                            switch ($message) {
+                                case 'update':
+                                    $villageManagement->clickUpdate($changedSocket);
+                                    break;
+                                case 'decide':
+                                    $villageManagement->clickDecideInLobby($changedSocket, $messageArray);
+                                    break;
+                                case 'back':
+                                    $villageManagement->clickBackInLobby($changedSocket);
+                                    break;
                             }
                             break;
                         case 'PARTICIPATION':
-                            if ($message == 'participateAsPlayer') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickParticipationAsPlayer($changedSocket, $messageArray);
-                                }
-                            }
-                            else if ($message == 'participateAsSpectator') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickParticipationAsSpectator($changedSocket, $messageArray);
-                                }
-                            }
-                            else if ($message == 'back') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $villageManagement->clickBackInParticipation($changedSocket, $messageArray);
+                            $villageId = $messageArray->villageId;
+                            $village = $villageManagement->getVillage($villageId);
+                            if ($village !== null) {
+                                switch ($message) {
+                                    case 'participateAsPlayer':
+                                        $village->clickParticipationAsPlayer($changedSocket, $messageArray);
+                                        break;
+                                    case 'participateAsSpectator':
+                                        $village->clickParticipationAsSpectator($changedSocket, $messageArray);
+                                        break;
+                                    case 'back':
+                                        $villageManagement->clickBackInParticipation($changedSocket, $messageArray);
+                                        break;
                                 }
                             }
                             break;
                         case 'WAITING':
-                            if ($message == 'setNumberOfPosition') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickNumberOfPosition($messageArray);
-                                }
-                            }
-                            else if ($message == 'setTalkingTime') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickTalkingTime($messageArray);
-                                }
-                            }
-                            else if ($message == 'gameStart') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickGameStart($messageArray);
-                                }
-                            }
-                            else if ($message == 'back') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $villageManagement->clickBackInWaiting($changedSocket, $messageArray);
+                            $villageId = $messageArray->villageId;
+                            $village = $villageManagement->getVillage($villageId);
+                            if ($village !== null) {
+                                switch ($message) {
+                                    case 'setNumberOfPosition':
+                                        $village->clickNumberOfPosition($messageArray);
+                                        break;
+                                    case 'setTalkingTime':
+                                        $village->clickTalkingTime($messageArray);
+                                        break;
+                                    case 'gameStart':
+                                        $village->clickGameStart($messageArray);
+                                        break;
+                                    case 'back':
+                                        $villageManagement->clickBackInWaiting($changedSocket, $messageArray);
+                                        break;
                                 }
                             }
                             break;
                         case 'ACTION':
-                            if ($message == 'notification') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickNotification($messageArray);
+                            $villageId = $messageArray->villageId;
+                            $village = $villageManagement->getVillage($villageId);
+                            if ($village !== null) {
+                                switch ($message) {
+                                    case 'notification':
+                                        $village->clickNotification($messageArray);
+                                        break;
                                 }
                             }
                             break;
                         case 'NOTIFICATION':
-                            if ($message == 'daytime') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickDaytime($messageArray);
+                            $villageId = $messageArray->villageId;
+                            $village = $villageManagement->getVillage($villageId);
+                            if ($village !== null) {
+                                switch ($message) {
+                                    case 'daytime':
+                                        $village->clickDaytime($messageArray);
+                                        break;
                                 }
                             }
                             break;
                         case 'DAYTIME':
-                            if ($message == 'extension') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickExtension($messageArray);
-                                }
-                            }
-                            else if ($message == 'talksEnd') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickTalksEnd($messageArray);
+                            $villageId = $messageArray->villageId;
+                            $village = $villageManagement->getVillage($villageId);
+                            if ($village !== null) {
+                                switch ($message) {
+                                    case 'extension':
+                                        $village->clickExtension($messageArray);
+                                        break;
+                                    case 'talksEnd':
+                                        $village->clickTalksEnd($messageArray);
+                                        break;
                                 }
                             }
                             break;
                         case 'EXECUTION':
-                            if ($message == 'result') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickResult($messageArray);
+                            $villageId = $messageArray->villageId;
+                            $village = $villageManagement->getVillage($villageId);
+                            if ($village !== null) {
+                                switch ($message) {
+                                    case 'result':
+                                        $village->clickResult($messageArray);
+                                        break;
                                 }
                             }
                             break;
                         case 'RESULT':
-                            if ($message == 'nextNight') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickNextNight($messageArray);
-                                }
-                            }
-                            else if ($message == 'exit') {
-                                $villageId = $messageArray->villageId;
-                                $village = $villageManagement->getVillage($villageId);
-                                if ($village !== null) {
-                                    $village->clickExit($messageArray);
+                            $villageId = $messageArray->villageId;
+                            $village = $villageManagement->getVillage($villageId);
+                            if ($village !== null) {
+                                switch ($message) {
+                                    case 'nextNight':
+                                        $village->clickNextNight($messageArray);
+                                        break;
+                                    case 'exit':
+                                        $village->clickExit($messageArray);
+                                        break;
                                 }
                             }
                             break;
                         case 'CONNECTION':
-                            if ($message == 'reply') {
-                                $villageManagement->replyData($changedSocket, $messageArray);
-                            }
-                            else if ($message == 'none') {
-                                $villageManagement->noneData($changedSocket);
+                            switch ($message) {
+                                case 'reply':
+                                    $villageManagement->replyData($changedSocket, $messageArray);
+                                    break;
+                                case 'none':
+                                    $villageManagement->noneData($changedSocket);
+                                    break;
                             }
                             break;
                     }
@@ -236,15 +229,11 @@ while (true) {
                     unset($i->participantArray[$foundSocket]);
                     $i->numberOfParticipant--;
                     if ($i->numberOfParticipant == 0) {
-                        echo "$villageManagement->villageArray";
                         $foundVillage = array_search($i, $villageManagement->villageArray);
                         unset($villageManagement->villageArray[$foundVillage]);
-                        echo "$villageManagement->villageArray";
                     }
                 }
             }
-            $response = mask(json_encode(array('type'=>'system', 'message'=>$ip.' disconnected')));
-            //sendMessage_all($response);
         }
     }
 }
@@ -328,7 +317,7 @@ function perform_handshaking($receved_header,$client_conn, $host, $port)
         "Upgrade: websocket\r\n" .
         "Connection: Upgrade\r\n" .
         "WebSocket-Origin: $host\r\n" .
-        "WebSocket-Location: ws://$host:$port/server.php\r\n".
+        "WebSocket-Location: ws://$host:$port\r\n".
         "Sec-WebSocket-Accept:$secAccept\r\n\r\n";
     socket_write($client_conn,$upgrade,strlen($upgrade));
 }

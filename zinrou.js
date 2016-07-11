@@ -220,8 +220,8 @@ window.addEventListener('load',
     function (event) {
         console.log('ENTER: addEventListener');
         displayState(-1);
-        //var wsUri = "ws://www.tetsis.com:9000/server.php";
-        var wsUri = "ws://www.tetsis-net:9000/server.php";
+        var hostname = window.location.hostname;
+        var wsUri = 'ws://' + hostname + ':9000';
         websocket = new WebSocket(wsUri);
 
         websocket.onopen = function(ev) {};
