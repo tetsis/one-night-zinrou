@@ -23,9 +23,9 @@
 <!-- Making -->
 <div id ="making">
 村の名前を入力してください<br/>
-<input type="text" id="txt_villageName"><br/><br/>
+<input type="text" maxlength="20" id="txt_villageName"><br/><br/>
 必要ならパスワードを設定してください<br/>
-<input type="text" id="txt_villagePassword"><br/><br/>
+<input type="text" maxlength="20" id="txt_villagePassword"><br/><br/>
 
 観戦モード<br/>
 <table>
@@ -67,7 +67,7 @@
 <div id="scrn_villageName"></div><br/>
 
 あなたの名前を入力してください<br/>
-<input type="text" id="txt_participantName"><br/><br/>
+<input type="text" maxlength="20" id="txt_participantName"><br/><br/>
 <input type="button" id="btn_participationAsPlayer" value="プレイヤー参加"><br/><br/>
 <input type="button" id="btn_participationAsSpectator" value="観戦者参加"><br/><br/>
 <input type="button" id="btn_backInParticipation" value="戻る"><br/>
