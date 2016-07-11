@@ -227,8 +227,8 @@ class VillageManagement {
                     unset($this->villageArray[$foundVillage]);
                 }
             }
-            $this->goToTopFromParticipation($socket);
         }
+        $this->goToTopFromParticipation($socket);
     }
 
     //socketをトップ画面に遷移
@@ -271,9 +271,9 @@ class VillageManagement {
                         sendMessage($messageArray, $i->socket);
                     }
                 }
-                $this->goToTopFromWaiting($socket);
             }
         }
+        $this->goToTopFromWaiting($socket);
     }
 
     //socketをトップ画面に遷移
