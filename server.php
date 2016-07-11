@@ -7,11 +7,16 @@ require_once('village.php');
 require_once('player.php');
 require_once('spectator.php');
 
-$villageManagement = new VillageManagement();
 
-$host = 'www.tetsis-net'; //host
+if ($argc < 2) {
+    echo("引数の指定がありません\n");
+    exit(1);
+}
+$host = $argv[1]; //host
 $port = '9000'; //port
 $null = NULL; //null var
+
+$villageManagement = new VillageManagement();
 
 //Create TCP/IP sream socket
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
