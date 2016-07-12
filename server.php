@@ -329,5 +329,6 @@ function perform_handshaking($receved_header,$client_conn, $host, $port)
 
 //ログを出力
 function outputLog($log) {
-    echo "$log\n";
+    error_log($log. "\n", 3, '/var/log/zinrou.log');
+    //echo "$log\n";
 }
