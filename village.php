@@ -155,46 +155,52 @@ class Village {
     public function participateInVillage($socket, $attribute, $name) {
         outputLog('ENTER: participateInVillage, attribute: '. $attribute. ', name: '. $name);
         if (($this->state == 'PARTICIPATION') || ($this->state == 'WAITING')) {
-            $flag = false;
-            foreach ($this->playerArray as $i) {
-                if ($i->name == $name) {
-                    $flag = true;
-                }
-            }
-            foreach ($this->spectatorArray as $i) {
-                if ($i->name == $name) {
-                    $flag = true;
-                }
-            }
-            if ($flag == true) {
-                $messageArray = array('type'=>'system', 'state'=>'PARTICIPATION', 'message'=>'reject');
+            if (count($this->playerArray) >= 7) {
+                $messageArray = array('type'=>'system', 'state'=>'PARTICIPATION', 'message'=>'exceedNumberOfPlayer');
                 sendMessage($messageArray, $socket);
             }
             else {
-                $this->state = 'WAITING';
-                //他の参加者に通知
+                $flag = false;
                 foreach ($this->playerArray as $i) {
-                    $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'add', 'attribute'=>$attribute, 'id'=>$this->currentParticipantId, 'name'=>$name);
-                    sendMessage($messageArray, $i->socket);
+                    if ($i->name == $name) {
+                        $flag = true;
+                    }
                 }
                 foreach ($this->spectatorArray as $i) {
-                    $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'add', 'attribute'=>$attribute, 'id'=>$this->currentParticipantId, 'name'=>$name);
-                    sendMessage($messageArray, $i->socket);
+                    if ($i->name == $name) {
+                        $flag = true;
+                    }
                 }
-                switch ($attribute) {
-                    case 'PLAYER':
-                        //プレイヤーを作成
-                        $player = new player($this->currentParticipantId, $name, $socket);
-                        $this->playerArray[] = $player;
-                        break;
-                    case 'SPECTATOR':
-                        //観戦者を作成
-                        $spectator = new Spectator($this->currentParticipantId, $name, $socket);
-                        $this->spectatorArray[] = $spectator;
-                        break;
+                if ($flag == true) {
+                    $messageArray = array('type'=>'system', 'state'=>'PARTICIPATION', 'message'=>'reject');
+                    sendMessage($messageArray, $socket);
                 }
-                $this->goToWaitingFromParticipation($socket, $attribute, $this->currentParticipantId);
-                $this->currentParticipantId++;
+                else {
+                    $this->state = 'WAITING';
+                    //他の参加者に通知
+                    foreach ($this->playerArray as $i) {
+                        $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'add', 'attribute'=>$attribute, 'id'=>$this->currentParticipantId, 'name'=>$name);
+                        sendMessage($messageArray, $i->socket);
+                    }
+                    foreach ($this->spectatorArray as $i) {
+                        $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'add', 'attribute'=>$attribute, 'id'=>$this->currentParticipantId, 'name'=>$name);
+                        sendMessage($messageArray, $i->socket);
+                    }
+                    switch ($attribute) {
+                        case 'PLAYER':
+                            //プレイヤーを作成
+                            $player = new player($this->currentParticipantId, $name, $socket);
+                            $this->playerArray[] = $player;
+                            break;
+                        case 'SPECTATOR':
+                            //観戦者を作成
+                            $spectator = new Spectator($this->currentParticipantId, $name, $socket);
+                            $this->spectatorArray[] = $spectator;
+                            break;
+                    }
+                    $this->goToWaitingFromParticipation($socket, $attribute, $this->currentParticipantId);
+                    $this->currentParticipantId++;
+                }
             }
         }
         else {

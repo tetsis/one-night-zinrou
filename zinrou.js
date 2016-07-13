@@ -748,7 +748,10 @@ function clickTalkingTime(incrementOrDecrement) {
 //「ゲーム開始」をクリック
 function clickGameStart() {
     console.log('ENTER: clickGameStart');
-    if (numberOfLeft >= 1) {
+    if (numberOfPlayer <= 2) {
+        alert('ゲームを始めるには3人以上必要です');
+    }
+    else if (numberOfLeft >= 1) {
         alert('役職人数の配分を行ってください');
     }
     else if (talkingTime == 0) {
@@ -1140,6 +1143,13 @@ function rejectName() {
         document.getElementById('btn_participationAsSpectator').disabled = true;
     }
     document.getElementById('btn_participationAsPlayer').disabled = false;
+}
+
+//プレイヤー人数超過により拒否
+function exceedNumberOfPlayer() {
+    console.log('ENTER: exceedNumberOfPlayer');
+    alert('この村のプレイヤーが制限人数の7人に達しています\n村をもう1つ作って遊ぶことをおすすめします');
+    displayTop();
 }
 
 //ゲームが既に開始していることにより拒否
