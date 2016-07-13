@@ -280,6 +280,9 @@ window.addEventListener('load',
                         else if (message == 'reject') {
                             rejectName();
                         }
+                        else if (message == 'exceedNumberOfPlayer') {
+                            exceedNumberOfPlayer();
+                        }
                         else if (message == 'alreadyStarted') {
                             alreadyStarted();
                         }
