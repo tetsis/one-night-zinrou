@@ -1,24 +1,24 @@
 <?php
 class Village {
-    public $id;
-    public $name;
-    public $password;
-    public $spectatorFlag;
-    public $currentParticipantId;
-    public $playerArray = array();
-    public $spectatorArray = array();
-    public $participantArray = array();
-    public $numberOfParticipant;
-    public $numberOfPositionArray = array();
-    public $talkingTime;
-    public $endingTime;
-    public $state;
-    public $winnerSide;
-    public $fieldPosition1;
-    public $fieldPosition2;
-    public $resultOfFortunetellerArray = array();
-    public $resultOfThiefArray = array();
-    public $villageManagement;
+    private $id;
+    private $name;
+    private $password;
+    private $spectatorFlag;
+    private $currentParticipantId;
+    private $playerArray = array();
+    private $spectatorArray = array();
+    private $participantArray = array();
+    private $numberOfParticipant;
+    private $numberOfPositionArray = array();
+    private $talkingTime;
+    private $endingTime;
+    private $state;
+    private $winnerSide;
+    private $fieldPosition1;
+    private $fieldPosition2;
+    private $resultOfFortunetellerArray = array();
+    private $resultOfThiefArray = array();
+    private $villageManagement;
 
     //コンストラクタ
     public function __construct(&$villageManagement, $id, $name, $password, $spectatorFlag) {
@@ -53,6 +53,7 @@ class Village {
 
     //プレイヤーを削除
     public function removePlayer($id) {
+        outputLog('ENTER: removePlayer, id: '. $id);
         $player = $this->getPlayer($id);
         $foundPlayer = array_search($player, $this->playerArray);
         if ($foundPlayer !== false) {
@@ -76,6 +77,7 @@ class Village {
 
     //観戦者を削除
     public function removeSpectator($id) {
+        outputLog('ENTER: removeSpectator, id: '. $id);
         $spectator = $this->getSpectator($id);
         $foundSpectator = array_search($spectator, $this->spectatorArray);
         if ($foundSpectator !== false) {
@@ -92,12 +94,14 @@ class Village {
 
     //participantArrayに追加
     public function addParticipantArray($socket) {
+        outputLog('ENTER: addParticipantArray');
         $this->participantArray[] = $socket;
         $this->numberOfParticipant++;
     }
 
     //participantArrayから削除
     public function removeParticipantArray($socket) {
+        outputLog('ENTER: removeParticipantArray');
         $foundSocket = array_search($socket, $this->participantArray);
         if ($foundSocket !== false) {
             unset($this->participantArray[$foundSocket]);
@@ -120,6 +124,21 @@ class Village {
     //観戦者ありなしを取得
     public function getSpectatorFlag() {
         return $this->spectatorFlag;
+    }
+
+    //プレイヤー配列を取得
+    public function getPlayerArray() {
+        return $this->playerArray;
+    }
+
+    //観戦者配列を取得
+    public function getSpectatorArray() {
+        return $this->spectatorArray;
+    }
+
+    //村の状態を取得
+    public function getState() {
+        return $this->state;
     }
 
 

@@ -262,11 +262,11 @@ class VillageManagement {
                 }
                 else {
                     //他の参加者に通知
-                    foreach ($village->playerArray as $i) {
+                    foreach ($village->getPlayerArray() as $i) {
                         $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'PLAYER', 'id'=>$id);
                         sendMessage($messageArray, $i->socket);
                     }
-                    foreach ($village->spectatorArray as $i) {
+                    foreach ($village->getSpectatorArray() as $i) {
                         $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'SPECTATOR', 'id'=>$id);
                         sendMessage($messageArray, $i->socket);
                     }
@@ -303,7 +303,7 @@ class VillageManagement {
             $flag = false;
             switch ($attribute) {
                 case 'PLAYER':
-                    foreach ($village->playerArray as $i) {
+                    foreach ($village->getPlayerArray() as $i) {
                         if ($i->id == $id) {
                             $village->removeParticipantArray($i->socket);
                             $village->addParticipantArray($socket);
@@ -314,7 +314,7 @@ class VillageManagement {
                     }
                     break;
                 case 'SPECTATOR':
-                    foreach ($village->spectatorArray as $i) {
+                    foreach ($village->getSpectatorArray() as $i) {
                         if ($i->id == $id) {
                             $village->removeParticipantArray($i->socket);
                             $village->addParticipantArray($socket);
@@ -326,14 +326,14 @@ class VillageManagement {
                     break;
             }
             if ($flag == true) {
-                switch ($village->state) {
+                switch ($village->getState()) {
                     case 'WAITING':
                         $this->goToWaitingFromConnection($socket, $villageId, $attribute, $id);
                         break;
                     case 'NIGHT':
                         switch ($attribute) {
                             case 'PLAYER':
-                                foreach ($village->playerArray as $i) {
+                                foreach ($village->getPlayerArray() as $i) {
                                     if ($i->id == $id) {
                                         if ($i->actionFlag == true) {
                                             $this->goToNotificationFromConnection($socket, $villageId, $id);
