@@ -1,7 +1,7 @@
 <?php
 class VillageManagement {
-    public $villageArray = array();
-    public $currentId;
+    private $villageArray = array();
+    private $currentId;
     //public $socketInLobbyArray = array();
 
     //コンストラクタ
@@ -11,16 +11,29 @@ class VillageManagement {
 
     }
 
-    //村情報を取得
+    //村配列を取得
+    public function getVillageArray() {
+        return $this->villageArray;
+    }
+
+    //村を取得
     public function getVillage($villageId) {
         foreach ($this->villageArray as $i) {
-            $id = $i->id;
+            $id = $i->getId();
             if ($id == $villageId) {
                 return $i;
             }
         }
 
         return null;
+    }
+
+    //村を削除
+    public function removeVillage($villageId) {
+        outputLog('ENTER: removeVillage, villageId: '. $villageId);
+        $village = $this->getVillage($villageId);
+        $foundVillage = array_search($village, $this->villageArray);
+        unset($this->villageArray[$foundVillage]);
     }
 
     //現在の村IDを取得する関数
@@ -100,7 +113,7 @@ class VillageManagement {
 
         $flag = false;
         foreach ($this->villageArray as $i) {
-            if ($i->name == $name) {
+            if ($i->getName() == $name) {
                 $messageArray = array('type'=>'system', 'state'=>'MAKING', 'message'=>'reject');
                 sendMessage($messageArray, $socket);
                 $flag = true;
@@ -111,7 +124,7 @@ class VillageManagement {
             $id = $this->getCurrentId();
             //村を作成する
             $village = new Village($this, $id, $name, $password, $spectatorFlag);
-            $village->addParticipantArray($socket);
+            $village->addParticipant($socket);
             $this->villageArray[] = $village;
             $this->goToParticipationFromMaking($socket, $id, $name, $spectatorFlag);
         }
@@ -159,7 +172,7 @@ class VillageManagement {
                 }
             }
             if ($correctFlag == true) {
-                $village->addParticipantArray($socket);
+                $village->addParticipant($socket);
                 $this->goToParticipationFromLobby($socket, $villageId, $village->getName(), $village->getSpectatorFlag());
             }
             else {
@@ -197,13 +210,13 @@ class VillageManagement {
         outputLog('ENTER: updateVillageList');
         $flag = false;
         foreach ($this->villageArray as $i) {
-            if (($i->state == 'PARTICIPATION') || ($i->state == 'WAITING')) {
+            if (($i->getState() == 'PARTICIPATION') || ($i->getState() == 'WAITING')) {
                 $flag = true;
                 $passwordFlag = false;
-                if ($i->password !== '') {
+                if ($i->getPassword() !== '') {
                     $passwordFlag = true;
                 }
-                $messageArray = array('type'=>'system', 'state'=>'LOBBY', 'message'=>'add', 'villageId'=>$i->id, 'villageName'=>$i->name, 'passwordFlag'=>$passwordFlag);
+                $messageArray = array('type'=>'system', 'state'=>'LOBBY', 'message'=>'add', 'villageId'=>$i->getId(), 'villageName'=>$i->getName(), 'passwordFlag'=>$passwordFlag);
                 sendMessage($messageArray, $socket);
             }
         }
@@ -221,10 +234,9 @@ class VillageManagement {
         $villageId = $messageArray->villageId;
         $village = $this->getVillage($villageId);
         if ($village !== null) {
-            if ($village->removeParticipantArray($socket) !== false) {
+            if ($village->removeParticipant($socket) !== false) {
                 if ($village->getNumberOfParticipant() <= 0) {
-                    $foundVillage = array_search($village, $this->villageArray);
-                    unset($this->villageArray[$foundVillage]);
+                    $this->removeVillage($village->id);
                 }
             }
         }
@@ -255,10 +267,9 @@ class VillageManagement {
                     $village->removeSpectator($id);
                     break;
             }
-            if ($village->removeParticipantArray($socket) !== false) {
+            if ($village->removeParticipant($socket) !== false) {
                 if ($village->getNumberOfParticipant() <= 0) {
-                    $foundVillage = array_search($village, $this->villageArray);
-                    unset($this->villageArray[$foundVillage]);
+                    $this->removeVillage($village->id);
                 }
                 else {
                     //他の参加者に通知
@@ -305,8 +316,8 @@ class VillageManagement {
                 case 'PLAYER':
                     foreach ($village->getPlayerArray() as $i) {
                         if ($i->id == $id) {
-                            $village->removeParticipantArray($i->socket);
-                            $village->addParticipantArray($socket);
+                            $village->removeParticipant($i->socket);
+                            $village->addParticipant($socket);
                             $i->socket = $socket;
                             $flag = true;
                             break;
@@ -316,8 +327,8 @@ class VillageManagement {
                 case 'SPECTATOR':
                     foreach ($village->getSpectatorArray() as $i) {
                         if ($i->id == $id) {
-                            $village->removeParticipantArray($i->socket);
-                            $village->addParticipantArray($socket);
+                            $village->removeParticipant($i->socket);
+                            $village->addParticipant($socket);
                             $i->socket = $socket;
                             $flag = true;
                             break;
@@ -394,7 +405,7 @@ class VillageManagement {
     public function goToWaitingFromConnection($socket, $villageId, $attribute, $id) {
         outputLog('ENTER: goToWaitingFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
-            if ($i->id == $villageId) {
+            if ($i->getId() == $villageId) {
                 $i->displayWaiting($socket, $attribute, $id);
             }
         }
@@ -404,7 +415,7 @@ class VillageManagement {
     public function goToActionFromConnection($socket, $villageId, $id) {
         outputLog('ENTER: goToActionFromConnection, villageId: '. $villageId. ', id: '. $id);
         foreach ($this->villageArray as $i) {
-            if ($i->id == $villageId) {
+            if ($i->getId() == $villageId) {
                 $i->displayAction($socket, $id);
             }
         }
@@ -414,7 +425,7 @@ class VillageManagement {
     public function goToNotificationFromConnection($socket, $villageId, $id) {
         outputLog('ENTER: goToNotificationFromConnection, villageId: '. $villageId. ', id: '. $id);
         foreach ($this->villageArray as $i) {
-            if ($i->id == $villageId) {
+            if ($i->getId() == $villageId) {
                 $i->displayNotification($socket, $id);
             }
         }
@@ -424,7 +435,7 @@ class VillageManagement {
     public function goToNightFromConnection($socket, $villageId, $id) {
         outputLog('ENTER: goToNightFromConnection, villageId: '. $villageId. ', id: '. $id);
         foreach ($this->villageArray as $i) {
-            if ($i->id == $villageId) {
+            if ($i->getId() == $villageId) {
                 $i->displayNight($socket);
             }
         }
@@ -434,7 +445,7 @@ class VillageManagement {
     public function goToDaytimeFromConnection($socket, $villageId, $attribute, $id) {
         outputLog('ENTER: goToDaytimeFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
-            if ($i->id == $villageId) {
+            if ($i->getId() == $villageId) {
                 $i->displayDaytime($socket, $attribute, $id);
             }
         }
@@ -444,7 +455,7 @@ class VillageManagement {
     public function goToExecutionFromConnection($socket, $villageId, $attribute, $id) {
         outputLog('ENTER: goToExecutionFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
-            if ($i->id == $villageId) {
+            if ($i->getId() == $villageId) {
                 $i->displayExecution($socket, $attribute, $id);
             }
         }
@@ -454,7 +465,7 @@ class VillageManagement {
     public function goToResultFromConnection($socket, $villageId, $attribute, $id) {
         outputLog('ENTER: goToResultFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
-            if ($i->id == $villageId) {
+            if ($i->getId() == $villageId) {
                 $i->displayResult($socket, $attribute, $id);
             }
         }

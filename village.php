@@ -93,15 +93,15 @@ class Village {
     }
 
     //participantArrayに追加
-    public function addParticipantArray($socket) {
-        outputLog('ENTER: addParticipantArray');
+    public function addParticipant($socket) {
+        outputLog('ENTER: addParticipant');
         $this->participantArray[] = $socket;
         $this->numberOfParticipant++;
     }
 
     //participantArrayから削除
-    public function removeParticipantArray($socket) {
-        outputLog('ENTER: removeParticipantArray');
+    public function removeParticipant($socket) {
+        outputLog('ENTER: removeParticipant');
         $foundSocket = array_search($socket, $this->participantArray);
         if ($foundSocket !== false) {
             unset($this->participantArray[$foundSocket]);
@@ -109,6 +109,11 @@ class Village {
             return true;
         }
         return false;
+    }
+
+    //IDを取得
+    public function getId() {
+        return $this->id;
     }
 
     //名前を取得

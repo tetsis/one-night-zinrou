@@ -228,14 +228,11 @@ while (true) {
             unset($clients[$found_socket]);
 
             //notify all users about disconnected connection
-            foreach ($villageManagement->villageArray as $i) {
-                $foundSocket = array_search($changedSocket, $i->participantArray);
-                if ($foundSocket != false) {
-                    unset($i->participantArray[$foundSocket]);
-                    $i->numberOfParticipant--;
-                    if ($i->numberOfParticipant == 0) {
-                        $foundVillage = array_search($i, $villageManagement->villageArray);
-                        unset($villageManagement->villageArray[$foundVillage]);
+            foreach ($villageManagement->getVillageArray() as $i) {
+                if ($i->removeParticipant($changedSocket) !== false) {
+                    if ($i->getNumberOfParticipant() <= 0) {
+                        $villageManagement->removeVillage($i->getId());
+                        break;
                     }
                 }
             }
