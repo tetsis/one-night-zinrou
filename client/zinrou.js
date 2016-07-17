@@ -541,7 +541,6 @@ function clickDecideInMaking() {
         document.getElementById('btn_decideInMaking').disabled = true;
         if (password !== "") {
             password = MD5_hash(password);
-            console.log("MD5" + password);
         }
         //サーバに送信
         var messageArray = {
@@ -619,7 +618,6 @@ function clickDecideInLobby() {
             document.getElementById('btn_decideInLobby').disabled = true;
             if (password !== "") {
                 password = MD5_hash(password);
-                console.log("MD5" + password);
             }
             //サーバに送信
             var messageArray = {
