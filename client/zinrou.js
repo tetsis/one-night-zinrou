@@ -808,7 +808,7 @@ function clickOK() {
 function clickSelectionInAction(selectionId) {
     console.log('ENTER: clickSelectionInAction, selectionId: ' + selectionId);
     var buttonId;
-    if (this.selectionId != -1) {
+    if (this.selectionId != -2) {
         buttonId = 'btn_selectionInAction' + this.selectionId;
         notSelectButton(buttonId);
     }
@@ -821,7 +821,7 @@ function clickSelectionInAction(selectionId) {
 //「次へ」をクリック
 function clickNotification() {
     console.log('ENTER: clickNotification');
-    if (((position == 'FORTUNETELLER') || (position == 'THIEF')) && selectionId == -1) {
+    if (((position == 'FORTUNETELLER') || (position == 'THIEF')) && selectionId == -2) {
         alert('プレイヤーを選択してください');
     }
     else {
@@ -930,7 +930,7 @@ function clickConfirmation() {
 function clickSelectionInExecution(selectionId) {
     console.log('ENTER: clickSelectionInExecution, selectionId: ' + selectionId);
     var buttonId;
-    if (this.selectionId != -1) {
+    if (this.selectionId != -2) {
         buttonId = 'btn_selectionInExecution' + this.selectionId;
         notSelectButton(buttonId);
     }
@@ -943,7 +943,7 @@ function clickSelectionInExecution(selectionId) {
 //「結果発表へ」をクリック
 function clickResult() {
     console.log('ENTER: clickResult');
-    if (selectionId == -1) {
+    if (selectionId == -2) {
         alert('吊るプレイヤーを選択してください');
     }
     else {
@@ -1372,7 +1372,7 @@ function setGameStart(messageArray) {
 //初期化
 function initInAction(messageArray) {
     console.log('ENTER: initInAction, messageArray: ' + JSON.stringify(messageArray));
-    selectionId = -1;
+    selectionId = -2;
     document.getElementById('btn_OK').disabled = false;
     document.getElementById('box_selectionInAction').textContent = null;
     villageId = messageArray['villageId'];
@@ -1418,6 +1418,25 @@ function initInAction(messageArray) {
 //行動画面を表示
 function displayAction() {
     console.log('ENTER: displayAction');
+    //占い師と怪盗は選択ボタンの最後にボタンを追加
+    if (((position == 'FORTUNETELLER') || (position == 'THIEF'))) {
+        var box = document.getElementById('box_selectionInAction');
+        var element = document.createElement('input');
+        var id = -1
+        element.id = 'btn_selectionInAction' + id;
+        element.type = 'button';
+        switch (position) {
+            case 'FORTUNETELLER':
+                element.value = '場を占う';
+                break;
+            case 'THIEF':
+                element.value = '交換しない';
+                break;
+        }
+        element.addEventListener('click', function(){clickSelectionInAction(id)}, false);
+        box.appendChild(element);
+        box.appendChild(document.createElement('br'));
+    }
     displayState('ACTION');
 }
 
@@ -1721,7 +1740,7 @@ function setResultOfThiefInDaytime(messageArray) {
 //初期化
 function initInExecution(messageArray) {
     console.log('ENTER: initInExecution, messageArray: ' + JSON.stringify(messageArray));
-    selectionId = -1;
+    selectionId = -2;
     document.getElementById('box_selectionInExecution').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
