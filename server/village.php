@@ -146,6 +146,17 @@ class Village {
         return $this->state;
     }
 
+    //残り時間を取得
+    public function getRemaingTime() {
+        $remainingTime = 0;
+        $nowTime = new DateTime();
+        if ($this->endingTime > $nowTime) {
+            $remainingDate = $nowTime->diff($this->endingTime);
+            $remainingTime = $remainingDate->i * 60 + $remainingDate->s;
+        }
+        return $remainingTime;
+    }
+
 
     ////Participation////
     //socketで「プレイヤーとして参加」をクリック
@@ -538,14 +549,15 @@ class Village {
     //「話し合い延長」がクリックされた
     public function clickExtension($messageArray) {
         outputLog('ENTER: clickExtension');
-        $endingTime = new DateTime('+1 minutes');
+        $this->endingTime = new DateTime('+1 minutes');
+        $remainingTime = $this->getRemaingTime();
         //参加者に通知
         foreach ($this->playerArray as $i) {
-            $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setTalkingTime', 'time'=>1);
+            $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setRemainingTime', 'time'=>$remainingTime);
             sendMessage($messageArray, $i->socket);
         }
         foreach ($this->spectatorArray as $i) {
-                $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setTalkingTime', 'time'=>1);
+                $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setRemainingTime', 'time'=>$remainingTime);
                 sendMessage($messageArray, $i->socket);
         }
     }
@@ -609,7 +621,8 @@ class Village {
             $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setNumberOfPosition', 'position'=>$i, 'number'=>$this->numberOfPositionArray[$i]);
             sendMessage($messageArray, $socket);
         }
-        $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setTalkingTime', 'time'=>$this->talkingTime);
+        $remainingTime = $this->getRemaingTime();
+        $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setRemainingTime', 'time'=>$remainingTime);
         sendMessage($messageArray, $socket);
         foreach ($this->playerArray as $i) {
             if ($i->talksEndFlag == true) {

@@ -371,8 +371,8 @@ window.addEventListener('load',
                         else if (message == 'setNumberOfPosition') {
                             setNumberOfPositionInDaytime(messageArray);
                         }
-                        else if (message == 'setTalkingTime') {
-                            setTalkingTimeInDaytime(messageArray);
+                        else if (message == 'setRemainingTime') {
+                            setRemainingTimeInDaytime(messageArray);
                         }
                         else if (message == 'setTalksEnd') {
                             setTalksEnd(messageArray);
@@ -1670,11 +1670,10 @@ function setNumberOfPositionInDaytime(messageArray) {
 }
 
 //話し合い時間を設定
-function setTalkingTimeInDaytime(messageArray) {
-    console.log('ENTER: setTalkingTimeInDaytime, messageArray: ' + JSON.stringify(messageArray));
+function setRemainingTimeInDaytime(messageArray) {
+    console.log('ENTER: setRemainingTimeInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var time = messageArray['time'];
-    talkingTime = time;
-    remaingTime = 60 * time;
+    remaingTime = time;
     timer = setInterval(updateTimer, 1000);
 }
 
