@@ -13,6 +13,11 @@
 <?php
     if ($_POST[btn_commentSubmit]) {
         error_log("COMMENT: ". $_POST[txa_comment]. "\n", 3, '/var/log/zinrou.log');
+        $slackApiKey = 'SLACK_API_KEY';
+        $text = $_POST['txa_comment'];
+        $text = urlencode($text);
+        $url = "https://slack.com/api/chat.postMessage?token=${slackApiKey}&channel=%23one-night-zinrou&text=${text}&as_user=true";
+        file_get_contents($url);
         print "コメントが送信されました<br/>";
         print "ご協力ありがとうございました<br/><br/>";
     }
