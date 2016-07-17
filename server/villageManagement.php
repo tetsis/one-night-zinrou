@@ -236,7 +236,7 @@ class VillageManagement {
         if ($village !== null) {
             if ($village->removeParticipant($socket) !== false) {
                 if ($village->getNumberOfParticipant() <= 0) {
-                    $this->removeVillage($village->id);
+                    $this->removeVillage($village->getId());
                 }
             }
         }
@@ -269,7 +269,7 @@ class VillageManagement {
             }
             if ($village->removeParticipant($socket) !== false) {
                 if ($village->getNumberOfParticipant() <= 0) {
-                    $this->removeVillage($village->id);
+                    $this->removeVillage($village->getId());
                 }
                 else {
                     //他の参加者に通知
