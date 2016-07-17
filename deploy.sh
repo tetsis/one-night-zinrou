@@ -2,6 +2,7 @@
 
 DST_DIR="/var/www/html/one-night-zinrou/"
 
+rm -f $DST_DIR/*
 cp -f client/* $DST_DIR
 
 PROCESS=(`ps ax | grep "php server.php" | grep -v "grep" | sed -e 's/^\ *//' | cut -d " " -f 1`)
