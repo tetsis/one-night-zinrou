@@ -1,7 +1,11 @@
 @charset "UTF-8";
 
-* {
-    font-size: 40px;
+html {
+    font-size: 62.5%;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
 }
 
 input {
