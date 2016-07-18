@@ -1097,7 +1097,8 @@ function addVillage(messageArray) {
     element.id = 'btn_village' + villageId;
     element.type = 'button';
     element.value = villageName;
-    element.addEventListener('click', function(){clickSelectionInLobby(villageId, passwordFlag)}, false);
+    var id = villageId;
+    element.addEventListener('click', function(){clickSelectionInLobby(id, passwordFlag)}, false);
     box.appendChild(element);
     box.appendChild(document.createElement('br'));
     document.getElementById('btn_updateInLobby').disabled = false;
