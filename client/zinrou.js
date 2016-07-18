@@ -86,6 +86,8 @@ function displayState(state) {
             document.getElementById('result').style.display = 'block';
             break;
     }
+    //最上部へスクロール
+    window.scrollTo(0, 0);
 }
 
 //buttonIdのボタンを選択されたという表示に設定
