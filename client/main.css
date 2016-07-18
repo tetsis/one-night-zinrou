@@ -8,6 +8,72 @@ html {
     box-sizing: border-box;
 }
 
+body {
+    width: 100%;
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+.state {
+    margin: 40px auto;
+    width: 80%;
+}
+
+.btn_main {
+    display: block;
+    margin: 80px auto;
+    width: 100%;
+    padding: 30px 0;
+    font-size: 3rem;
+}
+
+.header {
+    margin: 0 auto;
+    width: 100%;
+    font-size: 2rem;
+    text-align: left;
+}
+
+.txt {
+    display: block;
+    margin: 0 auto 50px;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 3rem;
+}
+
+.btn_spectator {
+    display: inline-block;
+    width: 40%;
+    padding: 10px 0;
+    font-size: 3rem;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clearfix::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.btn_selection {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 3rem;
+}
+
+/*
 input {
     font-size: 40px;
 }
@@ -44,8 +110,10 @@ td {
     vertical-align: top;
 }
 
+*/
 #footer {
     margin: 100px 0px;
     padding: 50px 0px;
     border-top: solid;
 }
+

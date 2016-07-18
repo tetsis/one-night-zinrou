@@ -1094,12 +1094,13 @@ function addVillage(messageArray) {
     var passwordFlag = messageArray['passwordFlag'];
     var box = document.getElementById('box_villageList');
     var element = document.createElement('input');
+    var id = villageId;
     element.id = 'btn_village' + villageId;
+    element.className = 'btn_selection';
     element.type = 'button';
     element.value = villageName;
-    element.addEventListener('click', function(){clickSelectionInLobby(villageId, passwordFlag)}, false);
+    element.addEventListener('click', function(){clickSelectionInLobby(id, passwordFlag)}, false);
     box.appendChild(element);
-    box.appendChild(document.createElement('br'));
     document.getElementById('btn_updateInLobby').disabled = false;
 }
 

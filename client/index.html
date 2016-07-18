@@ -12,55 +12,39 @@
 <body>
 
 <!-- Top -->
-<div id="top">
+<div id="top" class="state">
 <div>
 <h1>ワンナイト人狼</h1>
 </div>
 
-<input type="button" id="btn_lobby" value="村に参加"><br/><br/>
-<input type="button" id="btn_making" value="村を作る"><br/>
+<input type="button" id="btn_lobby" class="btn_main" value="村に参加">
+<input type="button" id="btn_making" class="btn_main" value="村を作る">
 </div>
 
 
 <!-- Making -->
-<div id ="making">
-村の名前を入力してください<br/>
-<input type="text" maxlength="20" id="txt_villageName"><br/><br/>
-必要ならパスワードを設定してください<br/>
-<input type="text" maxlength="20" id="txt_villagePassword"><br/><br/>
-
-観戦モード<br/>
-<table>
-    <tr>
-        <td>
-            <input type="button" id="btn_spectatorYes" value="あり">
-        </td>
-        <td>
-            <input type="button" id="btn_spectatorNo" value="なし">
-        </td>
-    </tr>
-</table><br/>
-
-<input type="button" id="btn_decideInMaking" value="決定"><br/><br/>
-<input type="button" id="btn_backInMaking" value="戻る"><br/>
+<div id ="making" class="state">
+<div class="header">村名</div>
+<input type="text" maxlength="20" id="txt_villageName" class="txt" placeholder="村名を入力してください">
+<div class="header">パスワード（任意）</div>
+<input type="text" maxlength="20" id="txt_villagePassword" class="txt" placeholder="パスワードを入力してください">
+<div class="header">観戦者</div>
+<div class="clearfix">
+    <input type="button" id="btn_spectatorYes" class="btn_spectator left" value="あり">
+    <input type="button" id="btn_spectatorNo" class="btn_spectator right" value="なし">
+</div>
+<input type="button" id="btn_decideInMaking" class="btn_main" value="決定">
+<input type="button" id="btn_backInMaking" class="btn_main" value="戻る">
 </div>
 
 
 <!-- Lobby -->
-<div id ="lobby">
-村一覧<br/>
-
-<table class="border">
-    <tr>
-        <td>
-            <div id="box_villageList"></div>
-        </td>
-    </tr>
-</table>
-<input type="button" id="btn_updateInLobby" value="更新"><br/><br/><br/>
-
-<input type="button" id="btn_decideInLobby" value="決定"><br/><br/>
-<input type="button" id="btn_backInLobby" value="戻る"><br/>
+<div id ="lobby" class="state">
+<div class="header">村一覧</div>
+<div id="box_villageList" class="box_list"></div>
+<input type="button" id="btn_updateInLobby" class="btn_main" value="更新">
+<input type="button" id="btn_decideInLobby" class="btn_main" value="決定">
+<input type="button" id="btn_backInLobby" class="btn_main" value="戻る">
 </div>
 
 
@@ -282,7 +266,7 @@
 
 <!-- Footer -->
 <div id="footer">
-<input type="button" id="btn_comment" onclick="location.href='comment.php'" value="コメントを送る">
+<input type="button" id="btn_comment" class="btn_main" onclick="location.href='comment.php'" value="コメントを送る">
 <br/><br/>
 </div>
 
