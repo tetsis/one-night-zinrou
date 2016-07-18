@@ -1094,11 +1094,11 @@ function addVillage(messageArray) {
     var passwordFlag = messageArray['passwordFlag'];
     var box = document.getElementById('box_villageList');
     var element = document.createElement('input');
-    var id = villageId;
     element.id = 'btn_village' + villageId;
     element.className = 'btn_selection';
     element.type = 'button';
     element.value = villageName;
+    var id = villageId;
     element.addEventListener('click', function(){clickSelectionInLobby(id, passwordFlag)}, false);
     box.appendChild(element);
     document.getElementById('btn_updateInLobby').disabled = false;
@@ -1132,7 +1132,7 @@ function displayParticipation(messageArray) {
     villageId = messageArray['villageId'];
     villageName = messageArray['villageName'];
     spectatorFlag = messageArray['spectatorFlag'];
-    document.getElementById('scrn_villageName').innerHTML = villageName + ' 村';
+    document.getElementById('scrn_villageNameInParticipation').innerHTML = villageName + ' 村';
     if (spectatorFlag == true) {
         document.getElementById('btn_participationAsSpectator').disabled = false;
     }
@@ -1181,9 +1181,11 @@ function initInWaiting(messageArray) {
     numberOfPositionArray = [];
     numberOfLeft = 0;
     talkingTime = 0;
+    document.getElementById('scrn_villageNameInWaiting').innerHTML = villageName + ' 村';
     document.getElementById('box_playerListInWaiting').textContent = null;
     document.getElementById('box_spectatorListInWaiting').textContent = null;
     villageId = messageArray['villageId'];
+    villageName = messageArray['villageName'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
     switch (attribute) {
@@ -1427,6 +1429,7 @@ function displayAction() {
         var element = document.createElement('input');
         var id = -1
         element.id = 'btn_selectionInAction' + id;
+        element.className = 'btn_selection';
         element.type = 'button';
         switch (position) {
             case 'FORTUNETELLER':
@@ -1451,6 +1454,7 @@ function setPlayerInAction(messageArray) {
     var box = document.getElementById('box_selectionInAction');
     var element = document.createElement('input');
     element.id = 'btn_selectionInAction' + id;
+    element.className = 'btn_selection';
     element.type = 'button';
     element.value = name;
     element.addEventListener('click', function(){clickSelectionInAction(id)}, false);
@@ -1775,6 +1779,7 @@ function setPlayerInExecution(messageArray) {
     var box = document.getElementById('box_selectionInExecution');
     var element = document.createElement('input');
     element.id = 'btn_selectionInExecution' + id;
+    element.className = 'btn_selection';
     element.type = 'button';
     element.value = name;
     element.addEventListener('click', function(){clickSelectionInExecution(id)}, false);
