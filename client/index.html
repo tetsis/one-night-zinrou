@@ -13,259 +13,247 @@
 
 <!-- Top -->
 <div id="top" class="state">
-<div>
-<h1>ワンナイト人狼</h1>
-</div>
+    <div><h1>ワンナイト人狼</h1></div>
 
-<input type="button" id="btn_lobby" class="btn_main" value="村に参加">
-<input type="button" id="btn_making" class="btn_main" value="村を作る">
+    <input type="button" id="btn_lobby" class="btn_main" value="村に参加">
+    <input type="button" id="btn_making" class="btn_main" value="村を作る">
 </div>
 
 
 <!-- Making -->
 <div id ="making" class="state">
-<div class="header">村名</div>
-<input type="text" maxlength="20" id="txt_villageName" class="txt" placeholder="村名を入力してください">
-<div class="header">パスワード（任意）</div>
-<input type="text" maxlength="20" id="txt_villagePassword" class="txt" placeholder="パスワードを入力してください">
-<div class="header">観戦者</div>
-<div class="clearfix">
-    <input type="button" id="btn_spectatorYes" class="btn_spectator left" value="あり">
-    <input type="button" id="btn_spectatorNo" class="btn_spectator right" value="なし">
-</div>
-<input type="button" id="btn_decideInMaking" class="btn_main" value="決定">
-<input type="button" id="btn_backInMaking" class="btn_main" value="戻る">
+    <div class="header">村名</div>
+    <input type="text" maxlength="20" id="txt_villageName" class="txt" placeholder="村名を入力してください">
+    <div class="header">パスワード（任意）</div>
+    <input type="text" maxlength="20" id="txt_villagePassword" class="txt" placeholder="パスワードを入力してください">
+    <div class="header">観戦者</div>
+    <div class="clearfix">
+        <input type="button" id="btn_spectatorYes" class="btn_spectator left" value="あり">
+        <input type="button" id="btn_spectatorNo" class="btn_spectator right" value="なし">
+    </div>
+    <input type="button" id="btn_decideInMaking" class="btn_main" value="決定">
+    <input type="button" id="btn_backInMaking" class="btn_main" value="戻る">
 </div>
 
 
 <!-- Lobby -->
 <div id ="lobby" class="state">
-<div class="header">村一覧</div>
-<div id="box_villageList" class="box_list"></div>
-<input type="button" id="btn_updateInLobby" class="btn_main" value="更新">
-<input type="button" id="btn_decideInLobby" class="btn_main" value="決定">
-<input type="button" id="btn_backInLobby" class="btn_main" value="戻る">
+    <div class="header">村一覧</div>
+    <div id="box_villageList" class="box_list"></div>
+    <input type="button" id="btn_updateInLobby" class="btn_main" value="更新">
+    <input type="button" id="btn_decideInLobby" class="btn_main" value="決定">
+    <input type="button" id="btn_backInLobby" class="btn_main" value="戻る">
 </div>
 
 
 <!-- Participation -->
 <div id="participation" class="state">
-<div id="scrn_villageNameInParticipation" class="header indention"></div>
-
-<div class="header">あなたの名前</div>
-<input type="text" maxlength="20" id="txt_participantName" class="txt" placeholder="あなたの名前を入力してください">
-<input type="button" id="btn_participationAsPlayer" class="btn_main" value="プレイヤー参加">
-<input type="button" id="btn_participationAsSpectator" class="btn_main" value="観戦者参加">
-<input type="button" id="btn_backInParticipation" class="btn_main" value="戻る">
+    <div id="scrn_villageNameInParticipation" class="header indention"></div>
+    <div class="header">あなたの名前</div>
+    <input type="text" maxlength="20" id="txt_participantName" class="txt" placeholder="あなたの名前を入力してください">
+    <input type="button" id="btn_participationAsPlayer" class="btn_main" value="プレイヤー参加">
+    <input type="button" id="btn_participationAsSpectator" class="btn_main" value="観戦者参加">
+    <input type="button" id="btn_backInParticipation" class="btn_main" value="戻る">
 </div>
 
 
 <!-- Waiting -->
 <div id="waiting" class="state">
-<div id="scrn_villageNameInWaiting" class="header indention"></div>
-
-<table>
-    <tr>
-        <td>
-            プレイヤー
-        </td>
-        <td>
-            観戦者
-        </td>
-    </tr>
-    <tr>
-        <td class="border">
+    <div id="scrn_villageNameInWaiting" class="header indention"></div>
+    <div class="table">
+        <div class="box_participant table-cell">
+            <div class="box_head">プレイヤー</div>
             <div id="box_playerListInWaiting"></div>
-        </td>
-        <td class="border">
+        </div>
+        <div class="box_participant table-cell">
+            <div class="box_head">観戦者</div>
             <div id="box_spectatorListInWaiting"></div>
-        </td>
-    </tr>
-</table>
-<br/>
-<div class="header">村構成</div>
-<table>
-    <tr>
-        <td>村人</td>
-        <td><input type="button" id="btn_decrementOfNumberOfVillager" value="－"></td>
-        <td><div id="scrn_numberOfVillagerInWaiting"></div></td>
-        <td><input type="button" id="btn_incrementOfNumberOfVillager" value="＋"></td>
-    </tr>
-    <tr>
-        <td>人狼</td>
-        <td><input type="button" id="btn_decrementOfNumberOfWerewolf" value="－"></td>
-        <td><div id="scrn_numberOfWerewolfInWaiting"></div></td>
-        <td><input type="button" id="btn_incrementOfNumberOfWerewolf" value="＋"></td>
-    </tr>
-    <tr>
-        <td>占い師</td>
-        <td><input type="button" id="btn_decrementOfNumberOfFortuneteller" value="－"></td>
-        <td><div id="scrn_numberOfFortunetellerInWaiting"></div></td>
-        <td><input type="button" id="btn_incrementOfNumberOfFortuneteller" value="＋"></td>
-    </tr>
-    <tr>
-        <td>怪盗</td>
-        <td><input type="button" id="btn_decrementOfNumberOfThief" value="－"></td>
-        <td><div id="scrn_numberOfThiefInWaiting"></div></td>
-        <td><input type="button" id="btn_incrementOfNumberOfThief" value="＋"></td>
-    </tr>
-    <tr>
-        <td>狂人</td>
-        <td><input type="button" id="btn_decrementOfNumberOfMadman" value="－"></td>
-        <td><div id="scrn_numberOfMadmanInWaiting"></div></td>
-        <td><input type="button" id="btn_incrementOfNumberOfMadman" value="＋"></td>
-    </tr>
-    <tr>
-        <td>てるてる</td>
-        <td><input type="button" id="btn_decrementOfNumberOfHanging" value="－"></td>
-        <td><div id="scrn_numberOfHangingInWaiting"></div></td>
-        <td><input type="button" id="btn_incrementOfNumberOfHanging" value="＋"></td>
-    </tr>
-    <tr>
-        <td>残り</td>
-        <td></td>
-        <td><div id="scrn_left"></div></td>
-        <td></td>
-    </tr>
-</table>
-<br/>
-<br/>
-<div class="header">話し合い時間</div>
+        </div>
+    </div>
+    <br/>
+    <div class="header">村構成</div>
+    <table>
+        <tr>
+            <td>村人</td>
+            <td><input type="button" id="btn_decrementOfNumberOfVillager" value="－"></td>
+            <td><div id="scrn_numberOfVillagerInWaiting"></div></td>
+            <td><input type="button" id="btn_incrementOfNumberOfVillager" value="＋"></td>
+        </tr>
+        <tr>
+            <td>人狼</td>
+            <td><input type="button" id="btn_decrementOfNumberOfWerewolf" value="－"></td>
+            <td><div id="scrn_numberOfWerewolfInWaiting"></div></td>
+            <td><input type="button" id="btn_incrementOfNumberOfWerewolf" value="＋"></td>
+        </tr>
+        <tr>
+            <td>占い師</td>
+            <td><input type="button" id="btn_decrementOfNumberOfFortuneteller" value="－"></td>
+            <td><div id="scrn_numberOfFortunetellerInWaiting"></div></td>
+            <td><input type="button" id="btn_incrementOfNumberOfFortuneteller" value="＋"></td>
+        </tr>
+        <tr>
+            <td>怪盗</td>
+            <td><input type="button" id="btn_decrementOfNumberOfThief" value="－"></td>
+            <td><div id="scrn_numberOfThiefInWaiting"></div></td>
+            <td><input type="button" id="btn_incrementOfNumberOfThief" value="＋"></td>
+        </tr>
+        <tr>
+            <td>狂人</td>
+            <td><input type="button" id="btn_decrementOfNumberOfMadman" value="－"></td>
+            <td><div id="scrn_numberOfMadmanInWaiting"></div></td>
+            <td><input type="button" id="btn_incrementOfNumberOfMadman" value="＋"></td>
+        </tr>
+        <tr>
+            <td>てるてる</td>
+            <td><input type="button" id="btn_decrementOfNumberOfHanging" value="－"></td>
+            <td><div id="scrn_numberOfHangingInWaiting"></div></td>
+            <td><input type="button" id="btn_incrementOfNumberOfHanging" value="＋"></td>
+        </tr>
+        <tr>
+            <td>残り</td>
+            <td></td>
+            <td><div id="scrn_left"></div></td>
+            <td></td>
+        </tr>
+    </table>
+    <br/>
+    <br/>
+    <div class="header">話し合い時間</div>
 
-<br/>
-<table>
-    <tr>
-        <td><input type="button" id="btn_decrementOfTalkingTime" value="－"></td>
-        <td><div id="scrn_talkingTimeInWaiting"></div></td>
-        <td><input type="button" id="btn_incrementOfTalkingTime" value="＋"></td>
-    </tr>
-</table>
-<br/>
-<br/>
-<input type="button" id="btn_gameStart" class="btn_main" value="ゲーム開始"><br/><br/>
-<input type="button" id="btn_backInWaiting" class="btn_main" value="村を出る"><br/>
+    <br/>
+    <table>
+        <tr>
+            <td><input type="button" id="btn_decrementOfTalkingTime" value="－"></td>
+            <td><div id="scrn_talkingTimeInWaiting"></div></td>
+            <td><input type="button" id="btn_incrementOfTalkingTime" value="＋"></td>
+        </tr>
+    </table>
+    <br/>
+    <br/>
+    <input type="button" id="btn_gameStart" class="btn_main" value="ゲーム開始">
+    <input type="button" id="btn_backInWaiting" class="btn_main" value="村を出る">
 </div>
 
 
 <!-- Action -->
 <div id="action" class="state">
-<div id="scrn_yourPosition" class="header indention"></div>
-<br/>
-<div id="box_OK"><input type="button" id="btn_OK" class="btn_main" value="OK"></div>
-<div id="box_selectionInAction"></div>
-<br/>
-<br/>
-<input type="button" id="btn_notification" class="btn_main" value="次へ"><br/>
+    <div id="scrn_yourPosition" class="header indention"></div>
+    <div id="box_OK"><input type="button" id="btn_OK" class="btn_main" value="OK"></div>
+    <div id="box_selectionInAction"></div>
+    <input type="button" id="btn_notification" class="btn_main" value="次へ">
 </div>
 
 
 <!-- Notification -->
 <div id="notification" class="state">
-<div id="scrn_notification" class="header"></div>
-<br/>
-<br/>
-<input type="button" id="btn_daytime" class="btn_main" value="昼のフェーズへ"><br/>
+    <div id="scrn_notification" class="header indention"></div>
+    <input type="button" id="btn_daytime" class="btn_main" value="昼のフェーズへ">
 </div>
 
 
 <!-- Night -->
 <div id="night" class="state">
-<div id="box_playerListInNight"></div>
-<br/>
-<br/>
-<div id="box_resultOfFortunetellerInNight"></div>
-<br/>
-<br/>
-<div id="box_resultOfThiefInNight"></div>
+    <div class="table">
+        <div class="box_participant table-cell">
+            <div class="box_head">プレイヤー</div>
+            <div id="box_playerListInNight"></div>
+        </div>
+        <div class="box_position table-cell">
+            <div class="box_head">役職</div>
+            <div id="box_positionListInNight"></div>
+        </div>
+    </div>
+
+    <div class="table">
+        <div class="box_resultOfPosition table-cell">
+            <div class="box_head">占い結果</div>
+            <div id="box_resultOfFortunetellerInNight"></div>
+        </div>
+    </div>
+    <div class="table">
+        <div class="box_resultOfPosition table-cell">
+            <div class="box_head">怪盗結果</div>
+            <div id="box_resultOfThiefInNight"></div>
+        </div>
+    </div>
 </div>
 
 
 <!-- Daytime -->
 <div id="daytime" class="state">
-<div class="header">残り時間</div>
-<div id="scrn_remainingTime"></div>
-<div id="box_extension"><input type="button" id="btn_extension" value="延長"></div>
-<br/>
-<br/>
-<table>
-    <tr>
-        <td>
-            プレイヤー
-        </td>
-        <td>
-            観戦者
-        </td>
-    </tr>
-    <tr>
-        <td class="border">
+    <div class="header">残り時間</div>
+    <div id="scrn_remainingTime"></div>
+    <div id="box_extension"><input type="button" id="btn_extension" class="btn_selection" value="延長"></div>
+    <div class="table">
+        <div class="box_participant table-cell">
+            <div class="box_head">プレイヤー</div>
             <div id="box_playerListInDaytime"></div>
-        </td>
-        <td class="border">
+        </div>
+        <div class="box_participant table-cell">
+            <div class="box_head">観戦者</div>
             <div id="box_spectatorListInDaytime"></div>
-        </td>
-    </tr>
-</table>
-<br/>
-<br/>
-役職<br/>
-<table>
-    <tr>
-        <td>村人：</td>
-        <td><div id="scrn_numberOfVillagerInDaytime"></div></td>
-        <td>  人狼：</td>
-        <td><div id="scrn_numberOfWerewolfInDaytime"></div></td>
-    </tr>
-    <tr>
-        <td>占い師：</td>
-        <td><div id="scrn_numberOfFortunetellerInDaytime"></div></td>
-        <td>  怪盗：</td>
-        <td><div id="scrn_numberOfThiefInDaytime"></div></td>
-    </tr>
-    <tr>
-        <td>狂人：</td>
-        <td><div id="scrn_numberOfMadmanInDaytime"></div></td>
-        <td>  てるてる：</td>
-        <td><div id="scrn_numberOfHangingInDaytime"></div></td>
-    </tr>
-</table>
-<br/>
-<br/>
-<input type="button" id="btn_talksEnd" class="btn_main" value="話し合い終了"><br/><br/>
-<input type="button" id="btn_confirmation" class="btn_main" value="役職確認"><br/>
+        </div>
+    </div>
+    役職<br/>
+    <table>
+        <tr>
+            <td>村人：</td>
+            <td><div id="scrn_numberOfVillagerInDaytime"></div></td>
+            <td>  人狼：</td>
+            <td><div id="scrn_numberOfWerewolfInDaytime"></div></td>
+        </tr>
+        <tr>
+            <td>占い師：</td>
+            <td><div id="scrn_numberOfFortunetellerInDaytime"></div></td>
+            <td>  怪盗：</td>
+            <td><div id="scrn_numberOfThiefInDaytime"></div></td>
+        </tr>
+        <tr>
+            <td>狂人：</td>
+            <td><div id="scrn_numberOfMadmanInDaytime"></div></td>
+            <td>  てるてる：</td>
+            <td><div id="scrn_numberOfHangingInDaytime"></div></td>
+        </tr>
+    </table>
+    <br/>
+    <br/>
+    <input type="button" id="btn_talksEnd" class="btn_main" value="話し合い終了">
+    <input type="button" id="btn_confirmation" class="btn_main" value="役職確認">
 </div>
 
 
 <!-- Execution -->
 <div id="execution" class="state">
-<div id="scrn_execution" class="header"></div>
-<br/>
-<div id="box_selectionInExecution"></div>
-<br/>
-<br/>
-<input type="button" id="btn_result" class="btn_main" value="結果発表へ"><br/>
+    <div id="scrn_execution" class="header indention"></div>
+    <div id="box_selectionInExecution"></div>
+    <input type="button" id="btn_result" class="btn_main" value="結果発表へ">
 </div>
 
 
 <!-- Result -->
 <div id="result" class="state">
-<div id="scrn_winnerOrLoser" class="header indention"></div>
-<br/>
-<div id="scrn_winnerSide" class="header indention"></div>
-<br/>
-<div id="box_playerListInResult"></div>
-<br/>
-<div id="box_resultOfFortunetellerInResult"></div>
-<br/>
-<div id="box_resultOfThiefInResult"></div>
-<br/>
-<input type="button" id="btn_nextNight" class="btn_main" value="次の夜へ"><br/><br/>
-<input type="button" id="btn_exitInResult" class="btn_main" value="終了"><br/>
+    <div id="scrn_winnerOrLoser" class="header indention"></div>
+    <div id="scrn_winnerSide" class="header indention"></div>
+    <div id="box_playerListInResult"></div>
+    <div class="table">
+        <div class="box_resultOfPosition table-cell">
+            <div class="box_head">占い結果</div>
+            <div id="box_resultOfFortunetellerInResult"></div>
+        </div>
+    </div>
+    <div class="table">
+        <div class="box_resultOfPosition table-cell">
+            <div class="box_head">怪盗結果</div>
+            <div id="box_resultOfThiefInResult"></div>
+        </div>
+    </div>
+    <input type="button" id="btn_nextNight" class="btn_main" value="次の夜へ">
+    <input type="button" id="btn_exitInResult" class="btn_main" value="終了">
 </div>
 
 <!-- Footer -->
 <div id="footer">
-<input type="button" id="btn_comment" class="btn_main" onclick="location.href='comment.php'" value="コメントを送る">
-<br/><br/>
+    <input type="button" id="btn_comment" class="btn_main" onclick="location.href='comment.php'" value="コメントを送る">
 </div>
 
 </body>

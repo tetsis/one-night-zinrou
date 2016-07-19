@@ -904,11 +904,11 @@ function clickConfirmation() {
     for (var i = 1; i < resultOfFortunetellerArray.length; i++) {
         var fortunetellerName = getPlayer(resultOfFortunetellerArray[i].id).name;
         if (resultOfFortunetellerArray[i].selectionId == -1) {
-            popupString += fortunetellerName + 'は場の2枚を占いました\n';
+            popupString += fortunetellerName + ' は場を占いました\n';
         }
         else {
             selectionName = getPlayer(resultOfFortunetellerArray[i].selectionId).name;
-            popupString += fortunetellerName + 'は' + selectionName + 'を占いました\n';
+            popupString += fortunetellerName + ' は ' + selectionName + ' を占いました\n';
         }
     }
     popupString += '\n';
@@ -916,11 +916,11 @@ function clickConfirmation() {
     for (var i = 1; i < resultOfThiefArray.length; i++) {
         var thiefName = getPlayer(resultOfThiefArray[i].id).name;
         if (resultOfThiefArray[i].selectionId == -1) {
-            popupString += thiefName + 'は役職を交換しませんでした\n';
+            popupString += thiefName + ' は役職を交換しませんでした\n';
         }
         else {
             selectionName = getPlayer(resultOfThiefArray[i].selectionId).name;
-            popupString += thiefName + 'は' + selectionName + 'と役職を交換しました\n';
+            popupString += thiefName + ' は ' + selectionName + ' と役職を交換しました\n';
         }
     }
     alert(popupString);
@@ -1237,6 +1237,7 @@ function addParticipant(messageArray) {
             box = document.getElementById('box_playerListInWaiting');
             element = document.createElement('div');
             element.id = 'scrn_playerListInWaiting' + id;
+            element.className = 'box_main';
             element.innerHTML = name;
             box.appendChild(element);
             numberOfLeft++;
@@ -1246,6 +1247,7 @@ function addParticipant(messageArray) {
             box = document.getElementById('box_spectatorListInWaiting');
             element = document.createElement('div');
             element.id = 'scrn_spectatorListInWaiting' + id;
+            element.className = 'box_main';
             element.innerHTML = name;
             box.appendChild(element);
             break;
@@ -1556,6 +1558,7 @@ function initInNight() {
     console.log('ENTER: initInNight');
     playerArray = [];
     document.getElementById('box_playerListInNight').textContent = null;
+    document.getElementById('box_positionListInNight').textContent = null;
     document.getElementById('box_resultOfFortunetellerInNight').textContent = null;
     document.getElementById('box_resultOfThiefInNight').textContent = null;
     //ローカルストレージに保存
@@ -1580,7 +1583,14 @@ function setPositionOfPlayerInNight(messageArray) {
     var box = document.getElementById('box_playerListInNight');
     var element = document.createElement('div');
     element.id = 'scrn_playerListInNight' + id;
-    element.innerHTML = name + ': ' + positionString;
+    element.className = 'box_main';
+    element.innerHTML = name;
+    box.appendChild(element);
+    box = document.getElementById('box_positionListInNight');
+    element = document.createElement('div');
+    element.id = 'scrn_positionListInNight' + id;
+    element.className = 'box_main';
+    element.innerHTML = positionString;
     box.appendChild(element);
 }
 
@@ -1593,12 +1603,13 @@ function setResultOfFortunetellerInNight(messageArray) {
     var box = document.getElementById('box_resultOfFortunetellerInNight');
     var element = document.createElement('div');
     element.id = 'scrn_resultOfFortunetellerInNight' + id;
+    element.className = 'box_main';
     if (selectionId == -1) {
-        element.innerHTML = fortunetellerName + 'は場を占いました';
+        element.innerHTML = fortunetellerName + ' は場を占いました';
     }
     else {
         selectionName = getPlayer(selectionId).name;
-        element.innerHTML = fortunetellerName + 'は' + selectionName + 'を占いました';
+        element.innerHTML = fortunetellerName + ' は ' + selectionName + ' を占いました';
     }
     box.appendChild(element);
 }
@@ -1612,12 +1623,13 @@ function setResultOfThiefInNight(messageArray) {
     var box = document.getElementById('box_resultOfThiefInNight');
     var element = document.createElement('div');
     element.id = 'scrn_resultOfThiefInNight' + id;
+    element.className = 'box_main';
     if (selectionId == -1) {
-        element.innerHTML = thiefName + 'は役職を交換しませんでした';
+        element.innerHTML = thiefName + ' は役職を交換しませんでした';
     }
     else {
         selectionName = getPlayer(selectionId).name;
-        element.innerHTML = thiefName + 'は' + selectionName + 'と役職を交換しました';
+        element.innerHTML = thiefName + ' は ' + selectionName + ' と役職を交換しました';
     }
     box.appendChild(element);
 }
@@ -1668,6 +1680,7 @@ function setPlayerInDaytime(messageArray) {
     var box = document.getElementById('box_playerListInDaytime');
     var element = document.createElement('div');
     element.id = 'scrn_playerListInDaytime' + id;
+    element.className = 'box_main';
     element.innerHTML = name;
     box.appendChild(element);
 }
@@ -1680,6 +1693,7 @@ function setSpectatorInDaytime(messageArray) {
     var box = document.getElementById('box_spectatorListInDaytime');
     var element = document.createElement('div');
     element.id = 'scrn_spectatorListInDaytime' + id;
+    element.className = 'box_main';
     element.innerHTML = name;
     box.appendChild(element);
 }
