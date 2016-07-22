@@ -21,6 +21,7 @@ var selectionPosition;
 var buddyNameArray;
 var positionArray;
 var timer;
+var peaceFlag;
 
 playerArray = [];
 resultOfFortunetellerArray = [];
@@ -49,6 +50,7 @@ function displayState(state) {
     document.getElementById('notification').style.display = 'none';
     document.getElementById('night').style.display = 'none';
     document.getElementById('daytime').style.display = 'none';
+    document.getElementById('selection').style.display = 'none';
     document.getElementById('execution').style.display = 'none';
     document.getElementById('result').style.display = 'none';
     switch (state) {
@@ -78,6 +80,9 @@ function displayState(state) {
             break;
         case 'DAYTIME':
             document.getElementById('daytime').style.display = 'block';
+            break;
+        case 'SELECTION':
+            document.getElementById('selection').style.display = 'block';
             break;
         case 'EXECUTION':
             document.getElementById('execution').style.display = 'block';
@@ -389,6 +394,17 @@ window.addEventListener('load',
                             setResultOfThiefInDaytime(messageArray);
                         }
                         break;
+                    case 'SELECTION':
+                        if (message == 'init') {
+                            initInSelection(messageArray);
+                        }
+                        else if (message == 'display') {
+                            displaySelection();
+                        }
+                        else if (message == 'setPlayer') {
+                            setPlayerInSelection(messageArray);
+                        }
+                        break;
                     case 'EXECUTION':
                         if (message == 'init') {
                             initInExecution(messageArray);
@@ -473,6 +489,9 @@ window.addEventListener('load',
         document.getElementById('btn_extension').addEventListener('click', clickExtension, false);
         document.getElementById('btn_talksEnd').addEventListener('click', clickTalksEnd, false);
         document.getElementById('btn_confirmation').addEventListener('click', clickConfirmation, false);
+
+        ////Selection////
+        document.getElementById('btn_execution').addEventListener('click', clickExecution, false);
 
         ////Execution////
         document.getElementById('btn_result').addEventListener('click', clickResult, false);
@@ -927,44 +946,61 @@ function clickConfirmation() {
 }
 
 
-////Execution////
+////Selection////
 //吊るプレイヤーをクリック
-function clickSelectionInExecution(selectionId) {
-    console.log('ENTER: clickSelectionInExecution, selectionId: ' + selectionId);
+function clickSelectionInSelection(selectionId) {
+    console.log('ENTER: clickSelectionInSelection, selectionId: ' + selectionId);
     var buttonId;
     if (this.selectionId != -2) {
-        buttonId = 'btn_selectionInExecution' + this.selectionId;
+        buttonId = 'btn_selectionInSelection' + this.selectionId;
         notSelectButton(buttonId);
     }
     this.selectionId = selectionId;
-    buttonId = 'btn_selectionInExecution' + this.selectionId;
+    buttonId = 'btn_selectionInSelection' + this.selectionId;
     selectButton(buttonId);
-    document.getElementById('btn_result').disabled = false;
+    document.getElementById('btn_execution').disabled = false;
 }
 
-//「結果発表へ」をクリック
-function clickResult() {
-    console.log('ENTER: clickResult');
+//「吊る」ボタンをクリック
+function clickExecution() {
+    console.log('ENTER: clickExecution');
     if (selectionId == -2) {
         alert('吊るプレイヤーを選択してください');
     }
     else {
-        document.getElementById('btn_result').disabled = true;
-        var buttons = document.getElementById('box_selectionInExecution').childNodes;
+        document.getElementById('btn_execution').disabled = true;
+        var buttons = document.getElementById('box_selectionInSelection').childNodes;
         for (var i = 0; i < buttons.length; i+=2) {
             buttons[i].disabled = true;
         }
         //サーバに送信
         var messageArray = {
             type: 'system',
-            state: 'EXECUTION',
-            message: 'result',
+            state: 'SELECTION',
+            message: 'execution',
             villageId: villageId,
             id: id,
             hangingId: selectionId
         };
         sendMessage(messageArray);
     }
+}
+
+////Execution////
+//「結果発表へ」をクリック
+function clickResult() {
+    console.log('ENTER: clickResult');
+    document.getElementById('btn_result').disabled = true;
+    //サーバに送信
+    var messageArray = {
+        type: 'system',
+        state: 'EXECUTION',
+        message: 'result',
+        villageId: villageId,
+        attribute: attribute,
+        id: id
+    };
+    sendMessage(messageArray);
 }
 
 
@@ -1739,47 +1775,85 @@ function setResultOfThiefInDaytime(messageArray) {
 }
 
 
-////Execution////
+////Selection////
 //初期化
-function initInExecution(messageArray) {
-    console.log('ENTER: initInExecution, messageArray: ' + JSON.stringify(messageArray));
+function initInSelection(messageArray) {
+    console.log('ENTER: initInSelection, messageArray: ' + JSON.stringify(messageArray));
     selectionId = -2;
-    document.getElementById('box_selectionInExecution').textContent = null;
+    document.getElementById('box_selectionInSelection').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
     switch (attribute) {
         case 'PLAYER':
-            document.getElementById('scrn_execution').innerHTML = '吊る人を選択してください';
-            document.getElementById('btn_result').disabled = false;
+            document.getElementById('scrn_selection').innerHTML = '吊る人を選択してください';
+            document.getElementById('btn_execution').disabled = false;
             break;
         case 'SPECTATOR':
-            document.getElementById('scrn_execution').innerHTML = 'プレイヤーが吊る人を選択しています';
-            document.getElementById('btn_result').disabled = true;
+            document.getElementById('scrn_selection').innerHTML = 'プレイヤーが吊る人を選択しています';
+            document.getElementById('btn_execution').disabled = true;
             break;
     }
-
 }
 
 //吊る人選択画面を表示
-function displayExecution() {
-    console.log('ENTER: displayExecution');
-    displayState('EXECUTION');
+function displaySelection() {
+    console.log('ENTER: displaySelection');
+    displayState('SELECTION');
 }
 
 //選択するプレイヤーを設定
+function setPlayerInSelection(messageArray) {
+    console.log('ENTER: setPlayerInSelection, messageArray: ' + JSON.stringify(messageArray));
+    var id = messageArray['id'];
+    var name = messageArray['name'];
+    var box = document.getElementById('box_selectionInSelection');
+    var element = document.createElement('input');
+    element.id = 'btn_selectionInSelection' + id;
+    element.type = 'button';
+    element.value = name;
+    element.addEventListener('click', function(){clickSelectionInSelection(id)}, false);
+    box.appendChild(element);
+    box.appendChild(document.createElement('br'));
+}
+
+
+////Execution////
+//初期化
+function initInExecution(messageArray) {
+    console.log('ENTER: initInExecution, messageArray: ' + JSON.stringify(messageArray));
+    document.getElementById('box_hangingInExecution').textContent = null;
+    villageId = messageArray['villageId'];
+    attribute = messageArray['attribute'];
+    id = messageArray['id'];
+    peaceFlag = true;
+    document.getElementById('btn_result').disabled = false;
+}
+
+//処刑画面を表示
+function displayExecution() {
+    console.log('ENTER: displayExecution');
+    if (peaceFlag == true) {
+        document.getElementById('scrn_execution').innerHTML = '平和村です';
+    }
+    else {
+        document.getElementById('scrn_execution').innerHTML = '吊られた人';
+    }
+    displayState('EXECUTION');
+}
+
+//処刑されたプレイヤーを設定
 function setPlayerInExecution(messageArray) {
     console.log('ENTER: setPlayerInExecution, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
-    var box = document.getElementById('box_selectionInExecution');
-    var element = document.createElement('input');
-    element.id = 'btn_selectionInExecution' + id;
-    element.type = 'button';
-    element.value = name;
-    element.addEventListener('click', function(){clickSelectionInExecution(id)}, false);
+    var box = document.getElementById('box_hangingInExecution');
+    var element = document.createElement('div');
+    element.id = 'btn_hangingInExecution' + id;
+    element.innerHTML = name;
     box.appendChild(element);
     box.appendChild(document.createElement('br'));
+    peaceFlag = false;
 }
 
 

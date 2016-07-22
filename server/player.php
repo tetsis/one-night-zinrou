@@ -9,6 +9,7 @@ class Player {
     public $actionFlag;
     public $daytimeFlag;
     public $talksEndFlag;
+    public $executionFlag;
     public $resultFlag;
     public $winnerOrLoser;
     public $selectionId;
@@ -26,6 +27,7 @@ class Player {
         $this->actionFlag = false;
         $this->daytimeFlag = false;
         $this->talksEndFlag = false;
+        $this->executionFlag = false;
         $this->resultFlag = false;
         $this->winnerOrLoser = -1;
         $this->selectionId = -1;
