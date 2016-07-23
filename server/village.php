@@ -18,6 +18,7 @@ class Village {
     private $fieldPosition2;
     private $resultOfFortunetellerArray = array();
     private $resultOfThiefArray = array();
+    private $hangingPlayerArray = array();
     private $villageManagement;
 
     //コンストラクタ
@@ -586,21 +587,21 @@ class Village {
                 }
             }
             if ($sum == count($this->playerArray)) {
-                $this->state = 'EXECUTION';
+                $this->state = 'SELECTION';
                 foreach ($this->playerArray as $i) {
-                    $this->goToExecutionFromDaytime($i->socket, 'PLAYER', $i->id);
+                    $this->goToSelectionFromDaytime($i->socket, 'PLAYER', $i->id);
                 }
                 foreach ($this->spectatorArray as $i) {
-                    $this->goToExecutionFromDaytime($i->socket, 'SPECTATOR', $i-id);
+                    $this->goToSelectionFromDaytime($i->socket, 'SPECTATOR', $i->id);
                 }
             }
         }
     }
 
     //吊る人選択画面に遷移
-    public function goToExecutionFromDaytime($socket, $attribute, $id) {
-        outputLog('ENTER: goToExecutionFromDaytime, attribute: '. $attribute. ', id: '. $id);
-        $this->displayExecution($socket, $attribute, $id);
+    public function goToSelectionFromDaytime($socket, $attribute, $id) {
+        outputLog('ENTER: goToSelectionFromDaytime, attribute: '. $attribute. ', id: '. $id);
+        $this->displaySelection($socket, $attribute, $id);
     }
 
     //昼の画面を表示
@@ -649,15 +650,15 @@ class Village {
     }
 
 
-    ////Execution////
-    //「結果発表へ」がクリックされた
-    public function clickResult($messageArray) {
-        outputLog('ENTER: clickResult');
+    ////Selection////
+    //「吊る」がクリックされた
+    public function clickExecution($messageArray) {
+        outputLog('ENTER: clickExecution');
         $id = $messageArray->id;
         $hangingId = $messageArray->hangingId;
         $player = $this->getPlayer($id);
         if ($player !== null) {
-            $player->resultFlag = true;
+            $player->executionFlag = true;
             $player->hangingId = $hangingId;
             $hangingPlayer = $this->getPlayer($hangingId);
             if ($hangingPlayer !== null) {
@@ -666,7 +667,7 @@ class Village {
 
             $sum = 0;
             foreach ($this->playerArray as $i) {
-                if ($i->resultFlag == true) {
+                if ($i->executionFlag == true) {
                     $sum++;
                 }
             }
@@ -678,35 +679,34 @@ class Village {
                 }
                 $this->state = 'RESULT';
                 foreach ($this->playerArray as $i) {
-                    $this->goToResultFromExecution($i->socket, 'PLAYER', $i->id);
+                    $this->goToExecutionFromSelection($i->socket, 'PLAYER', $i->id);
                 }
                 foreach ($this->spectatorArray as $i) {
-                    $this->goToResultFromExecution($i->socket, 'SPECTATOR', $i->id);
+                    $this->goToExecutionFromSelection($i->socket, 'SPECTATOR', $i->id);
                 }
             }
         }
     }
 
-    //結果発表画面に遷移
-    public function goToResultFromExecution($socket, $attribute, $id) {
-        outputLog('ENTER: goToResultFromExecution, attribute: '. $attribute. ', id: '. $id);
-        $this->displayResult($socket, $attribute, $id);
+    public function goToExecutionFromSelection($socket, $attribute, $id) {
+        outputLog('ENTER: goToExecutionFromSelection, attribute: '. $attribute. ', id: '. $id);
+        $this->displayExecution($socket, $attribute, $id);
     }
 
     //吊る人選択画面を表示
-    public function displayExecution($socket, $attribute, $id) {
-        outputLog('ENTER: displayExecution, attribute: '. $attribute. ', id: '. $id);
-        $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id);
+    public function displaySelection($socket, $attribute, $id) {
+        outputLog('ENTER: displaySelection, attribute: '. $attribute. ', id: '. $id);
+        $messageArray = array('type'=>'system', 'state'=>'SELECTION', 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id);
         sendMessage($messageArray, $socket);
         if ($attribute == 'PLAYER') {
             foreach ($this->playerArray as $i) {
                 if ($i->id != $id) {
-                    $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name);
+                    $messageArray = array('type'=>'system', 'state'=>'SELECTION', 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name);
                     sendMessage($messageArray, $socket);
                 }
             }
         }
-        $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'display');
+        $messageArray = array('type'=>'system', 'state'=>'SELECTION', 'message'=>'display');
         sendMessage($messageArray, $socket);
     }
 
@@ -727,17 +727,16 @@ class Village {
             }
         }
         //最も多く指名されたプレイヤーを抜き出す
-        $hangingArray = array();
         $max = 0;
         foreach ($this->playerArray as $i) {
             if ($i->hangingNumber > $max) {
                 $max = $i->hangingNumber;
             }
         }
-        $maxPlayerArray = array();
+        $this->hangingPlayerArray = array();
         foreach ($this->playerArray as $i) {
             if ($i->hangingNumber == $max) {
-                $maxPlayerArray[] = $i;
+                $this->hangingPlayerArray[] = $i;
             }
         }
         //maxは1？
@@ -758,11 +757,12 @@ class Village {
             else {
                 $this->winnerSide = 'PEACE';
             }
+            $this->hangingPlayerArray = array();
         }
         else {
             //最も多く指名されたプレイヤーの中にてるてるはいる？
             $flag = false;
-            foreach ($maxPlayerArray as $i) {
+            foreach ($this->hangingPlayerArray as $i) {
                 if ($i->position == 'HANGING') {
                     $flag = true;
                     break;
@@ -775,7 +775,7 @@ class Village {
             else {
                 //最も多く指名されたプレイヤーの中に人狼はいる？
                 $flag = false;
-                foreach ($maxPlayerArray as $i) {
+                foreach ($this->hangingPlayerArray as $i) {
                     if ($i->position == 'WEREWOLF') {
                         $flag = true;
                         break;
@@ -877,6 +877,49 @@ class Village {
     }
 
 
+    ////Execution////
+    //「結果発表へ」がクリックされた
+    public function clickResult($socket, $messageArray) {
+        outputLog('ENTER: clickResult');
+        $id = $messageArray->id;
+        $attribute = $messageArray->attribute;
+        switch ($attribute) {
+            case 'PLAYER':
+                $player = $this->getPlayer($id);
+                if ($player !== null) {
+                    $player->resultFlag = true;
+                }
+                break;
+            case 'SPECTATOR':
+                $spectator = $this->getSpectator($id);
+                if ($spectator !== null) {
+                    $spectator->resultFlag = true;
+                }
+                break;
+        }
+        $this->goToResultFromExecution($socket, $attribute, $id);
+    }
+
+    //結果発表画面に遷移
+    public function goToResultFromExecution($socket, $attribute, $id) {
+        outputLog('ENTER: goToResultFromExecution, attribute: '. $attribute. ', id: '. $id);
+        $this->displayResult($socket, $attribute, $id);
+    }
+
+    //処刑画面を表示
+    public function displayExecution($socket, $attribute, $id) {
+        outputLog('ENTER: displayExecution, attribute: '. $attribute. ', id: '. $id);
+        $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id);
+        sendMessage($messageArray, $socket);
+        foreach ($this->hangingPlayerArray as $i) {
+                $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name);
+                sendMessage($messageArray, $socket);
+        }
+        $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'display');
+        sendMessage($messageArray, $socket);
+    }
+
+
     ////Result////
     //「次の夜へ」がクリックされた
     public function clickNextNight() {
@@ -889,11 +932,13 @@ class Village {
             $i->actionFlag = false;
             $i->daytimeFlag = false;
             $i->talksEndFlag = false;
+            $i->executionFlag = false;
             $i->resultFlag = false;
             $i->hangingNumber = 0;
             $this->goToActionFromResult($i->socket, $i->id);
         }
         foreach ($this->spectatorArray as $i) {
+            $i->resultFlag = false;
             $this->goToNightFromResult($i->socket);
         }
     }
@@ -909,8 +954,12 @@ class Village {
             $i->actionFlag = false;
             $i->daytimeFlag = false;
             $i->talksEndFlag = false;
+            $i->executionFlag = false;
             $i->resultFlag = false;
             $i->hangingNumber = 0;
+        }
+        foreach ($this->spectatorArray as $i) {
+            $i->resultFlag = false;
         }
         foreach ($this->playerArray as $i) {
             $this->goToWaitingFromResult($i->socket, 'PLAYER', $i->id);

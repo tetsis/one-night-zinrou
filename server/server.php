@@ -179,13 +179,24 @@ while (true) {
                                 }
                             }
                             break;
+                        case 'SELECTION':
+                            $villageId = $messageArray->villageId;
+                            $village = $villageManagement->getVillage($villageId);
+                            if ($village !== null) {
+                                switch ($message) {
+                                    case 'execution':
+                                        $village->clickExecution($messageArray);
+                                        break;
+                                }
+                            }
+                            break;
                         case 'EXECUTION':
                             $villageId = $messageArray->villageId;
                             $village = $villageManagement->getVillage($villageId);
                             if ($village !== null) {
                                 switch ($message) {
                                     case 'result':
-                                        $village->clickResult($messageArray);
+                                        $village->clickResult($changedSocket, $messageArray);
                                         break;
                                 }
                             }

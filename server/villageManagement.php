@@ -364,11 +364,38 @@ class VillageManagement {
                     case 'DAYTIME':
                         $this->goToDaytimeFromConnection($socket, $villageId, $attribute, $id);
                         break;
-                    case 'EXECUTION':
-                        $this->goToExecutionFromConnection($socket, $villageId, $attribute, $id);
+                    case 'SELECTION':
+                        $this->goToSelectionFromConnection($socket, $villageId, $attribute, $id);
                         break;
                     case 'RESULT':
-                        $this->goToResultFromConnection($socket, $villageId, $attribute, $id);
+                        switch ($attribute) {
+                            case 'PLAYER':
+                                foreach ($village->getPlayerArray() as $i) {
+                                    if ($i->id == $id) {
+                                        if ($i->resultFlag == true) {
+                                            $this->goToResultFromConnection($socket, $villageId, $attribute, $id);
+                                        }
+                                        else {
+                                            $this->goToExecutionFromConnection($socket, $villageId, $attribute, $id);
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
+                            case 'SPECTATOR':
+                                foreach ($village->getSpectatorArray() as $i) {
+                                    if ($i->id == $id) {
+                                        if ($i->resultFlag == true) {
+                                            $this->goToResultFromConnection($socket, $villageId, $attribute, $id);
+                                        }
+                                        else {
+                                            $this->goToExecutionFromConnection($socket, $villageId, $attribute, $id);
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
+                        }
                         break;
                 }
             }
@@ -452,6 +479,16 @@ class VillageManagement {
     }
 
     //socketを吊る人選択画面に遷移
+    public function goToSelectionFromConnection($socket, $villageId, $attribute, $id) {
+        outputLog('ENTER: goToSelectionFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
+        foreach ($this->villageArray as $i) {
+            if ($i->getId() == $villageId) {
+                $i->displaySelection($socket, $attribute, $id);
+            }
+        }
+    }
+
+    //socketを処刑画面に遷移
     public function goToExecutionFromConnection($socket, $villageId, $attribute, $id) {
         outputLog('ENTER: goToExecutionFromConnection, villageId: '. $villageId. ', attribute: '. $attribute. ', id: '. $id);
         foreach ($this->villageArray as $i) {
