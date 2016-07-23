@@ -156,13 +156,13 @@
     </div>
 
     <div class="table">
-        <div class="box_resultOfPosition table-cell">
+        <div class="box_result table-cell">
             <div class="box_head">占い結果</div>
             <div id="box_resultOfFortunetellerInNight"></div>
         </div>
     </div>
     <div class="table">
-        <div class="box_resultOfPosition table-cell">
+        <div class="box_result table-cell">
             <div class="box_head">怪盗結果</div>
             <div id="box_resultOfThiefInNight"></div>
         </div>
@@ -212,48 +212,27 @@
             <div id="scrn_numberOfHangingInDaytime" class="box_main"></div>
         </div>
     </div>
-    <!--
-    <table>
-        <tr>
-            <td>村人：</td>
-            <td><div id="scrn_numberOfVillagerInDaytime"></div></td>
-            <td>  人狼：</td>
-            <td><div id="scrn_numberOfWerewolfInDaytime"></div></td>
-        </tr>
-        <tr>
-            <td>占い師：</td>
-            <td><div id="scrn_numberOfFortunetellerInDaytime"></div></td>
-            <td>  怪盗：</td>
-            <td><div id="scrn_numberOfThiefInDaytime"></div></td>
-        </tr>
-        <tr>
-            <td>狂人：</td>
-            <td><div id="scrn_numberOfMadmanInDaytime"></div></td>
-            <td>  てるてる：</td>
-            <td><div id="scrn_numberOfHangingInDaytime"></div></td>
-        </tr>
-    </table>
-    -->
     <input type="button" id="btn_talksEnd" class="btn_main" value="話し合い終了">
     <input type="button" id="btn_confirmation" class="btn_main" value="役職確認">
 </div>
 
 
 <!-- Selection -->
-<div id="selection">
-<div id="scrn_selection"></div>
-<br/>
+<div id="selection" class="state">
+<div id="scrn_selection" class="header indention"></div>
 <div id="box_selectionInSelection"></div>
-<br/>
-<br/>
-<input type="button" id="btn_execution" value="吊る"><br/>
+<input type="button" id="btn_execution" class="btn_main" value="吊る"><br/>
 </div>
 
 
 <!-- Execution -->
 <div id="execution" class="state">
-    <div id="scrn_execution" class="header indention"></div>
-    <div id="box_hangingInExecution"></div>
+    <div class="table">
+        <div class="box_result table-cell">
+            <div id="box_execution" class="box_head"></div>
+            <div id="box_hangingInExecution"></div>
+        </div>
+    </div>
     <input type="button" id="btn_result" class="btn_main" value="結果発表へ">
 </div>
 
@@ -264,13 +243,13 @@
     <div id="scrn_winnerSide" class="header indention"></div>
     <div id="box_playerListInResult"></div>
     <div class="table">
-        <div class="box_resultOfPosition table-cell">
+        <div class="box_result table-cell">
             <div class="box_head">占い結果</div>
             <div id="box_resultOfFortunetellerInResult"></div>
         </div>
     </div>
     <div class="table">
-        <div class="box_resultOfPosition table-cell">
+        <div class="box_result table-cell">
             <div class="box_head">怪盗結果</div>
             <div id="box_resultOfThiefInResult"></div>
         </div>
@@ -280,7 +259,7 @@
 </div>
 
 <!-- Footer -->
-<div id="footer">
+<div id="footer" class="state">
     <input type="button" id="btn_comment" class="btn_main" onclick="location.href='comment.php'" value="コメントを送る">
 </div>
 

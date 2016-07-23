@@ -1479,7 +1479,6 @@ function displayAction() {
         }
         element.addEventListener('click', function(){clickSelectionInAction(id)}, false);
         box.appendChild(element);
-        box.appendChild(document.createElement('br'));
     }
     displayState('ACTION');
 }
@@ -1497,7 +1496,6 @@ function setPlayerInAction(messageArray) {
     element.value = name;
     element.addEventListener('click', function(){clickSelectionInAction(id)}, false);
     box.appendChild(element);
-    box.appendChild(document.createElement('br'));
 }
 
 
@@ -1828,11 +1826,11 @@ function setPlayerInSelection(messageArray) {
     var box = document.getElementById('box_selectionInSelection');
     var element = document.createElement('input');
     element.id = 'btn_selectionInSelection' + id;
+    element.className = 'btn_selection';
     element.type = 'button';
     element.value = name;
     element.addEventListener('click', function(){clickSelectionInSelection(id)}, false);
     box.appendChild(element);
-    box.appendChild(document.createElement('br'));
 }
 
 
@@ -1852,10 +1850,10 @@ function initInExecution(messageArray) {
 function displayExecution() {
     console.log('ENTER: displayExecution');
     if (peaceFlag == true) {
-        document.getElementById('scrn_execution').innerHTML = '平和村です';
+        document.getElementById('box_execution').innerHTML = '平和村';
     }
     else {
-        document.getElementById('scrn_execution').innerHTML = '吊られた人';
+        document.getElementById('box_execution').innerHTML = '吊られた人';
     }
     displayState('EXECUTION');
 }
@@ -1868,9 +1866,9 @@ function setPlayerInExecution(messageArray) {
     var box = document.getElementById('box_hangingInExecution');
     var element = document.createElement('div');
     element.id = 'btn_hangingInExecution' + id;
+    element.className = "box_main";
     element.innerHTML = name;
     box.appendChild(element);
-    box.appendChild(document.createElement('br'));
     peaceFlag = false;
 }
 
@@ -1971,6 +1969,7 @@ function setResultOfFortunetellerInResult(messageArray) {
     var box = document.getElementById('box_resultOfFortunetellerInResult');
     var element = document.createElement('div');
     element.id = 'scrn_resultOfFortunetellerInResult' + id;
+    element.className = 'box_main';
     if (selectionId == -1) {
         element.innerHTML = fortunetellerName + 'は場を占いました';
     }
@@ -1990,6 +1989,7 @@ function setResultOfThiefInResult(messageArray) {
     var box = document.getElementById('box_resultOfThiefInResult');
     var element = document.createElement('div');
     element.id = 'scrn_resultOfThiefInResult' + id;
+    element.className = 'box_main';
     if (selectionId == -1) {
         element.innerHTML = thiefName + 'は役職を交換しませんでした';
     }
