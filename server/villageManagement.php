@@ -274,11 +274,11 @@ class VillageManagement {
                 else {
                     //他の参加者に通知
                     foreach ($village->getPlayerArray() as $i) {
-                        $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'PLAYER', 'id'=>$id);
+                        $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>$attribute, 'id'=>$id);
                         sendMessage($messageArray, $i->socket);
                     }
                     foreach ($village->getSpectatorArray() as $i) {
-                        $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>'SPECTATOR', 'id'=>$id);
+                        $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'del', 'attribute'=>$attribute, 'id'=>$id);
                         sendMessage($messageArray, $i->socket);
                     }
                 }
