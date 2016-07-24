@@ -1848,6 +1848,7 @@ function initInExecution(messageArray) {
     console.log('ENTER: initInExecution, messageArray: ' + JSON.stringify(messageArray));
     playerArray = [];
     document.getElementById('box_hangingInExecution').textContent = null;
+    document.getElementById('box_playerListInExecution').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
@@ -1921,6 +1922,7 @@ function initInResult(messageArray) {
     document.getElementById('box_resultOfWerewolf').textContent = null;
     document.getElementById('box_resultOfMadman').textContent = null;
     document.getElementById('box_resultOfHanging').textContent = null;
+    document.getElementById('box_pointList').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
