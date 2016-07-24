@@ -6,7 +6,7 @@
     <meta charaset="UTF-8">
     <title>ワンナイト人狼：コメント</title>
     <link rel="stylesheet" href="normalize.css">
-    <link rel= stylesheet" href="main.css">
+    <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
