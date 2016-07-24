@@ -912,8 +912,12 @@ class Village {
         $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id);
         sendMessage($messageArray, $socket);
         foreach ($this->hangingPlayerArray as $i) {
-                $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name);
-                sendMessage($messageArray, $socket);
+            $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'setHanging', 'id'=>$i->id, 'name'=>$i->name);
+            sendMessage($messageArray, $socket);
+        }
+        foreach ($this->playerArray as $i) {
+            $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name, 'hangingId'=>$i->hangingId);
+            sendMessage($messageArray, $socket);
         }
         $messageArray = array('type'=>'system', 'state'=>'EXECUTION', 'message'=>'display');
         sendMessage($messageArray, $socket);

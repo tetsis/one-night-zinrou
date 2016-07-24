@@ -149,6 +149,10 @@ h1 {
     width: 50%;
 }
 
+.box_margin {
+    width: 10%;
+}
+
 .box_position {
     width: 30%;
 }
@@ -173,8 +177,15 @@ h1 {
     width: 20%;
 }
 
+.box_point {
+    width: 50%;
+}
+
+.txt_right {
+    text-align: right;
+}
+
 #footer {
-    margin: 100px 0px;
     padding: 50px 0px;
     border-top: solid;
 }

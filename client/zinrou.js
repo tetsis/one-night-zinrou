@@ -412,6 +412,9 @@ window.addEventListener('load',
                         else if (message == 'display') {
                             displayExecution();
                         }
+                        else if (message == 'setHanging') {
+                            setHangingInExecution(messageArray);
+                        }
                         else if (message == 'setPlayer') {
                             setPlayerInExecution(messageArray);
                         }
@@ -918,28 +921,32 @@ function clickConfirmation() {
         var positionString = getPositionNameInJapanese(playerArray[i].position);
         popupString += playerArray[i].name + 'の役職は' + positionString + 'です\n';
     }
-    popupString += '\n';
-    popupString += '占い結果\n';
-    for (var i = 1; i < resultOfFortunetellerArray.length; i++) {
-        var fortunetellerName = getPlayer(resultOfFortunetellerArray[i].id).name;
-        if (resultOfFortunetellerArray[i].selectionId == -1) {
-            popupString += fortunetellerName + ' は場を占いました\n';
-        }
-        else {
-            selectionName = getPlayer(resultOfFortunetellerArray[i].selectionId).name;
-            popupString += fortunetellerName + ' は ' + selectionName + ' を占いました\n';
+    if (resultOfFortunetellerArray.length > 0) {
+        popupString += '\n';
+        popupString += '占い結果\n';
+        for (var i = 1; i < resultOfFortunetellerArray.length; i++) {
+            var fortunetellerName = getPlayer(resultOfFortunetellerArray[i].id).name;
+            if (resultOfFortunetellerArray[i].selectionId == -1) {
+                popupString += fortunetellerName + ' は場を占いました\n';
+            }
+            else {
+                selectionName = getPlayer(resultOfFortunetellerArray[i].selectionId).name;
+                popupString += fortunetellerName + ' は ' + selectionName + ' を占いました\n';
+            }
         }
     }
-    popupString += '\n';
-    popupString += '交換結果\n';
-    for (var i = 1; i < resultOfThiefArray.length; i++) {
-        var thiefName = getPlayer(resultOfThiefArray[i].id).name;
-        if (resultOfThiefArray[i].selectionId == -1) {
-            popupString += thiefName + ' は役職を交換しませんでした\n';
-        }
-        else {
-            selectionName = getPlayer(resultOfThiefArray[i].selectionId).name;
-            popupString += thiefName + ' は ' + selectionName + ' と役職を交換しました\n';
+    if (resultOfThiefArray.length > 0) {
+        popupString += '\n';
+        popupString += '交換結果\n';
+        for (var i = 1; i < resultOfThiefArray.length; i++) {
+            var thiefName = getPlayer(resultOfThiefArray[i].id).name;
+            if (resultOfThiefArray[i].selectionId == -1) {
+                popupString += thiefName + ' は役職を交換しませんでした\n';
+            }
+            else {
+                selectionName = getPlayer(resultOfThiefArray[i].selectionId).name;
+                popupString += thiefName + ' は ' + selectionName + ' と役職を交換しました\n';
+            }
         }
     }
     alert(popupString);
@@ -1526,8 +1533,9 @@ function displayNotification() {
             resultString += '仲間の人狼は<br/>';
             if (buddyNameArray.length >= 1) {
                 for (var i = 0; i < buddyNameArray.length; i++) {
-                    resultString += '・' + buddyNameArray[i] + '<br/>';
+                    resultString += buddyNameArray[i] + '<br/>';
                 }
+                resultString += 'です';
             }
             else {
                 resultString += 'いませんでした';
@@ -1537,11 +1545,11 @@ function displayNotification() {
             if (selectionPosition == -1) {
                 var position1String = getPositionNameInJapanese(position1);
                 var position2String = getPositionNameInJapanese(position2);
-                resultString += '場の役職は' + position1String + 'と' + position2String + 'です';
+                resultString += '場の役職は ' + position1String + ' と ' + position2String + ' です';
             }
             else {
                 var positionString = getPositionNameInJapanese(selectionPosition);
-                resultString += selectionName + 'は' + positionString + 'です';
+                resultString += selectionName + ' は ' + positionString + ' です';
             }
             break;
         case 'THIEF':
@@ -1550,7 +1558,7 @@ function displayNotification() {
             }
             else {
                 var positionString = getPositionNameInJapanese(selectionPosition);
-                resultString += selectionName + 'の' + positionString + 'と役職を交換しました';
+                resultString += selectionName + ' の ' + positionString + ' と役職を交換しました';
             }
             break;
         case 'MADMAN':
@@ -1838,6 +1846,7 @@ function setPlayerInSelection(messageArray) {
 //初期化
 function initInExecution(messageArray) {
     console.log('ENTER: initInExecution, messageArray: ' + JSON.stringify(messageArray));
+    playerArray = [];
     document.getElementById('box_hangingInExecution').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
@@ -1855,12 +1864,29 @@ function displayExecution() {
     else {
         document.getElementById('box_execution').innerHTML = '吊られた人';
     }
+    for (var i = 0; i < playerArray.length; i++) {
+        var hangingName = getPlayer(playerArray[i].hangingId).name;
+        var box = document.getElementById('box_playerListInExecution');
+        var elementOfParent = document.createElement('div');
+        var elementOfSelf = document.createElement('div');
+        var elementOfHanging = document.createElement('div');
+        elementOfParent.className = "clearfix";
+        elementOfSelf.id = "scrn_playerInExecution" + playerArray[i].id;
+        elementOfSelf.className = "box_participant box_main left";
+        elementOfSelf.innerHTML = playerArray[i].name;
+        elementOfHanging.id = "scrn_hangingInExecution" + playerArray[i].id;
+        elementOfHanging.className = "box_participant box_main right";
+        elementOfHanging.innerHTML = hangingName;
+        elementOfParent.appendChild(elementOfSelf);
+        elementOfParent.appendChild(elementOfHanging);
+        box.appendChild(elementOfParent);
+    }
     displayState('EXECUTION');
 }
 
 //処刑されたプレイヤーを設定
-function setPlayerInExecution(messageArray) {
-    console.log('ENTER: setPlayerInExecution, messageArray: ' + JSON.stringify(messageArray));
+function setHangingInExecution(messageArray) {
+    console.log('ENTER: setHangingInExecution, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
     var box = document.getElementById('box_hangingInExecution');
@@ -1870,6 +1896,15 @@ function setPlayerInExecution(messageArray) {
     element.innerHTML = name;
     box.appendChild(element);
     peaceFlag = false;
+}
+
+//プレイヤーの設定
+function setPlayerInExecution(messageArray) {
+    var id = messageArray['id'];
+    var name = messageArray['name'];
+    var hangingId = messageArray['hangingId'];
+    var array = {id: id, name: name, hangingId: hangingId};
+    playerArray.push(array);
 }
 
 
@@ -1971,9 +2006,6 @@ function displayResult() {
         elementOfSelf.id = "scrn_playerInResult" + playerArray[i].id;
         elementOfSelf.className = "box_participant box_main left";
         elementOfSelf.innerHTML = playerArray[i].name;
-        if (playerArray[i].id == this.id) {
-            elementOfSelf.style.background = 'skyblue';
-        }
         elementOfHanging.id = "scrn_hangingInResult" + playerArray[i].id;
         elementOfHanging.className = "box_participant box_main right";
         elementOfHanging.innerHTML = hangingName;
@@ -2046,6 +2078,20 @@ function setResultOfPlayerInResult(messageArray) {
     var point = messageArray['point'];
     var player = {id: id, name: name, position: position, hangingId: hangingId, point: point};
     playerArray.push(player);
+    var box = document.getElementById('box_pointList');
+    var elementOfParent = document.createElement('div');
+    var elementOfPlayer = document.createElement('div');
+    var elementOfPoint = document.createElement('div');
+    elementOfParent.className = "clearfix";
+    elementOfPlayer.id = "scrn_playerInPointList" + id;
+    elementOfPlayer.className = "box_participant box_main left";
+    elementOfPlayer.innerHTML = name;
+    elementOfPoint.id = "scrn_pointInPointList" + point;
+    elementOfPoint.className = "box_participant box_main right txt_right";
+    elementOfPoint.innerHTML = point;
+    elementOfParent.appendChild(elementOfPlayer);
+    elementOfParent.appendChild(elementOfPoint);
+    box.appendChild(elementOfParent);
 }
 
 //占い結果を表示
