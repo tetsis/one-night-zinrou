@@ -128,7 +128,7 @@
 
 <!-- Action -->
 <div id="action" class="state">
-    <div id="scrn_yourPosition" class="header indention"></div>
+    <div id="scrn_yourPosition" class="header"></div>
     <div id="box_OK"><input type="button" id="btn_OK" class="btn_main" value="OK"></div>
     <div id="box_selectionInAction"></div>
     <input type="button" id="btn_notification" class="btn_main" value="次へ">
@@ -137,7 +137,7 @@
 
 <!-- Notification -->
 <div id="notification" class="state">
-    <div id="scrn_notification" class="header indention"></div>
+    <div id="scrn_notification" class="header"></div>
     <input type="button" id="btn_daytime" class="btn_main" value="昼のフェーズへ">
 </div>
 
@@ -219,7 +219,7 @@
 
 <!-- Selection -->
 <div id="selection" class="state">
-<div id="scrn_selection" class="header indention"></div>
+<div id="scrn_selection" class="header"></div>
 <div id="box_selectionInSelection"></div>
 <input type="button" id="btn_execution" class="btn_main" value="吊る"><br/>
 </div>
@@ -241,19 +241,56 @@
 <div id="result" class="state">
     <div id="scrn_winnerOrLoser" class="header indention"></div>
     <div id="scrn_winnerSide" class="header indention"></div>
-    <div id="box_playerListInResult"></div>
-    <div class="table">
-        <div class="box_result table-cell">
-            <div class="box_head">占い結果</div>
-            <div id="box_resultOfFortunetellerInResult"></div>
+    <div id="box_villagerSide" class="box_side">
+        <div class="header">村人サイド</div>
+        <div id="box_villager">
+            <div class="clearfix">
+                <div class="box_participant box_head left">村人</div>
+                <div class="box_participant box_head right">吊った相手</div>
+            </div>
+            <div id="box_resultOfVillager"></div>
+        </div>
+        <div id="box_fortuneteller">
+            <div class="clearfix">
+                <div class="box_participant box_head left">占い師</div>
+                <div class="box_participant box_head right">吊った相手</div>
+            </div>
+            <div id="box_resultOfFortuneteller"></div>
+        </div>
+        <div id="box_thief">
+            <div class="clearfix">
+                <div class="box_participant box_head left">怪盗</div>
+                <div class="box_participant box_head right">吊った相手</div>
+            </div>
+            <div id="box_resultOfThief"></div>
         </div>
     </div>
-    <div class="table">
-        <div class="box_result table-cell">
-            <div class="box_head">怪盗結果</div>
-            <div id="box_resultOfThiefInResult"></div>
+    <div id="box_werewolfSide" class="box_side">
+        <div class="header">人狼サイド</div>
+        <div id="box_werewolf">
+            <div class="clearfix">
+                <div class="box_participant box_head left">人狼</div>
+                <div class="box_participant box_head right">吊った相手</div>
+            </div>
+            <div id="box_resultOfWerewolf"></div>
+        </div>
+        <div id="box_madman">
+            <div class="clearfix">
+                <div class="box_participant box_head left">狂人</div>
+                <div class="box_participant box_head right">吊った相手</div>
+            </div>
+            <div id="box_resultOfMadman"></div>
         </div>
     </div>
+    <div id="box_hangingSide" class="box_side">
+        <div class="header">てるてるサイド</div>
+        <div class="clearfix">
+            <div class="box_participant box_head left">てるてる</div>
+            <div class="box_participant box_head right">吊った相手</div>
+        </div>
+        <div id="box_resultOfHanging"></div>
+    </div>
+    <div id=box_pointList></div>
     <input type="button" id="btn_nextNight" class="btn_main" value="次の夜へ">
     <input type="button" id="btn_exitInResult" class="btn_main" value="終了">
 </div>

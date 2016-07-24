@@ -128,6 +128,17 @@ h1 {
     margin: 30px 0;
 }
 
+.table_result {
+    display: table;
+    width: 100%;
+    margin: 0;
+}
+
+.box_side {
+    width: 100%;
+    margin: 0 auto 30px;
+}
+
 .table-cell {
     display: table-cell;
     padding: 5px 0;
