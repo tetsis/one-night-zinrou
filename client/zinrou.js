@@ -924,7 +924,7 @@ function clickConfirmation() {
     if (resultOfFortunetellerArray.length > 0) {
         popupString += '\n';
         popupString += '占い結果\n';
-        for (var i = 1; i < resultOfFortunetellerArray.length; i++) {
+        for (var i = 0; i < resultOfFortunetellerArray.length; i++) {
             var fortunetellerName = getPlayer(resultOfFortunetellerArray[i].id).name;
             if (resultOfFortunetellerArray[i].selectionId == -1) {
                 popupString += fortunetellerName + ' は場を占いました\n';
@@ -938,7 +938,7 @@ function clickConfirmation() {
     if (resultOfThiefArray.length > 0) {
         popupString += '\n';
         popupString += '交換結果\n';
-        for (var i = 1; i < resultOfThiefArray.length; i++) {
+        for (var i = 0; i < resultOfThiefArray.length; i++) {
             var thiefName = getPlayer(resultOfThiefArray[i].id).name;
             if (resultOfThiefArray[i].selectionId == -1) {
                 popupString += thiefName + ' は役職を交換しませんでした\n';
