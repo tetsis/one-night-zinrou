@@ -1224,13 +1224,13 @@ function initInWaiting(messageArray) {
     numberOfPositionArray = [];
     numberOfLeft = 0;
     talkingTime = 0;
-    document.getElementById('scrn_villageNameInWaiting').innerHTML = villageName + ' 村';
-    document.getElementById('box_playerListInWaiting').textContent = null;
-    document.getElementById('box_spectatorListInWaiting').textContent = null;
     villageId = messageArray['villageId'];
     villageName = messageArray['villageName'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
+    document.getElementById('scrn_villageNameInWaiting').innerHTML = villageName + ' 村';
+    document.getElementById('box_playerListInWaiting').textContent = null;
+    document.getElementById('box_spectatorListInWaiting').textContent = null;
     switch (attribute) {
         case 'PLAYER':
             document.getElementById('btn_gameStart').disabled = false;
