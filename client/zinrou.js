@@ -850,6 +850,10 @@ function clickNotification() {
     }
     else {
         document.getElementById('btn_notification').disabled = true;
+        var buttons = document.getElementById('box_selectionInAction').childNodes;
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+        }
         //サーバに送信
         var messageArray = {
             type: 'system',
@@ -977,7 +981,7 @@ function clickExecution() {
     else {
         document.getElementById('btn_execution').disabled = true;
         var buttons = document.getElementById('box_selectionInSelection').childNodes;
-        for (var i = 0; i < buttons.length; i+=2) {
+        for (var i = 0; i < buttons.length; i++) {
             buttons[i].disabled = true;
         }
         //サーバに送信
