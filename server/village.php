@@ -435,17 +435,17 @@ class Village {
 
 
     ////Notification////
-    //「昼のフェーズへ」がクリックされた
-    public function clickDaytime($messageArray) {
-        outputLog('ENTER: clickDaytime');
+    //「話し合い開始」がクリックされた
+    public function clickTalksStart($messageArray) {
+        outputLog('ENTER: clickTalksStart');
         $id = $messageArray->id;
         $player = $this->getPlayer($id);
         if ($player !== null) {
-            $player->daytimeFlag = true;
+            $player->talksStartFlag = true;
 
             $sum = 0;
             foreach ($this->playerArray as $i) {
-                if ($i->daytimeFlag == true) {
+                if ($i->talksStartFlag == true) {
                     $sum++;
                 }
             }
@@ -934,7 +934,7 @@ class Village {
         $this->startGame();
         foreach ($this->playerArray as $i) {
             $i->actionFlag = false;
-            $i->daytimeFlag = false;
+            $i->talksStartFlag = false;
             $i->talksEndFlag = false;
             $i->executionFlag = false;
             $i->resultFlag = false;
@@ -956,7 +956,7 @@ class Village {
             $i->point = 0;
             $i->gameStartFlag = false;
             $i->actionFlag = false;
-            $i->daytimeFlag = false;
+            $i->talksStartFlag = false;
             $i->talksEndFlag = false;
             $i->executionFlag = false;
             $i->resultFlag = false;

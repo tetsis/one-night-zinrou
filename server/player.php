@@ -25,7 +25,7 @@ class Player {
         $this->position = -1;
         $this->gameStartFlag = false;
         $this->actionFlag = false;
-        $this->daytimeFlag = false;
+        $this->talksStartFlag = false;
         $this->talksEndFlag = false;
         $this->executionFlag = false;
         $this->resultFlag = false;

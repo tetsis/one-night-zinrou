@@ -159,8 +159,8 @@ while (true) {
                             $village = $villageManagement->getVillage($villageId);
                             if ($village !== null) {
                                 switch ($message) {
-                                    case 'daytime':
-                                        $village->clickDaytime($messageArray);
+                                    case 'talksStart':
+                                        $village->clickTalksStart($messageArray);
                                         break;
                                 }
                             }

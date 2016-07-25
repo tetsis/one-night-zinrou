@@ -486,7 +486,7 @@ window.addEventListener('load',
         document.getElementById('btn_notification').addEventListener('click', clickNotification, false);
 
         ////Notification////
-        document.getElementById('btn_daytime').addEventListener('click', clickDaytime, false);
+        document.getElementById('btn_talksStart').addEventListener('click', clickTalksStart, false);
 
         ////Daytime////
         document.getElementById('btn_extension').addEventListener('click', clickExtension, false);
@@ -866,14 +866,14 @@ function clickNotification() {
 
 ////Notification////
 //「昼のフェーズへ」をクリック
-function clickDaytime() {
-    console.log('ENTER: clickDaytime');
-    document.getElementById('btn_daytime').disabled = true;
+function clickTalksStart() {
+    console.log('ENTER: clickTalksStart');
+    document.getElementById('btn_talksStart').disabled = true;
     //サーバに送信
     var messageArray = {
         type: 'system',
         state: 'NOTIFICATION',
-        message: 'daytime',
+        message: 'talksStart',
         villageId: villageId,
         id: id
     };
@@ -1518,7 +1518,7 @@ function initInNotification(messageArray) {
     villageId = messageArray['villageId'];
     id = messageArray['id'];
     position = messageArray['position'];
-    document.getElementById('btn_daytime').disabled = false;
+    document.getElementById('btn_talksStart').disabled = false;
 }
 
 //通知画面を表示
