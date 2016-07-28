@@ -2020,11 +2020,12 @@ function displayResult() {
         box.appendChild(elementOfParent);
         switch (playerArray[i].position) {
             case "FORTUNETELLER":
+                var flag = false;
+                var elementOfResult = document.createElement('div');
+                elementOfResult.id = 'scrn_resultOfFortunetellerInResult' + playerArray[i].id;
+                elementOfResult.className = 'box_result box_main';
                 for (var j = 0; j < resultOfFortunetellerArray.length; j++) {
                     if (playerArray[i].id == resultOfFortunetellerArray[j].id) {
-                        var elementOfResult = document.createElement('div');
-                        elementOfResult.id = 'scrn_resultOfFortunetellerInResult' + playerArray[i].id;
-                        elementOfResult.className = 'box_result box_main';
                         if (resultOfFortunetellerArray[j].selectionId == -1) {
                             elementOfResult.innerHTML = playerArray[i].name + ' は場を占いました';
                         }
@@ -2032,28 +2033,57 @@ function displayResult() {
                             var selectionName = getPlayer(resultOfFortunetellerArray[j].selectionId).name;
                             elementOfResult.innerHTML = playerArray[i].name + ' は ' + selectionName + ' を占いました';
                         }
-                        box.appendChild(elementOfResult);
+                        flag = true;
+                        break;
                     }
-                    break;
                 }
+                if (flag == false) {
+                    for (var j = 0; j < resultOfThiefArray.length; j++) {
+                        if (playerArray[i].id == resultOfThiefArray[j].id) {
+                            for (var k = 0; k < resultOfFortunetellerArray.length; k++) {
+                                if (resultOfThiefArray[j].selectionId == resultOfFortunetellerArray[k].id) {
+                                    var fortunetellerName = getPlayer(resultOfFortunetellerArray[k].id).name;
+                                    if (resultOfFortunetellerArray[k].selectionId == -1) {
+                                        elementOfResult.innerHTML = fortunetellerName + ' は場を占いました';
+                                    }
+                                    else {
+                                        var selectionName = getPlayer(resultOfFortunetellerArray[k].selectionId).name;
+                                        elementOfResult.innerHTML = fortunetellerName + ' は ' + selectionName + ' を占いました';
+                                    }
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                box.appendChild(elementOfResult);
                 break;
             case "THIEF":
+                var elementOfResult = document.createElement('div');
+                elementOfResult.id = 'scrn_resultOfThiefInResult' + playerArray[i].id;
+                elementOfResult.className = 'box_result box_main';
+                var flag = false;
                 for (var j = 0; j < resultOfThiefArray.length; j++) {
                     if (playerArray[i].id == resultOfThiefArray[j].id) {
-                        var elementOfResult = document.createElement('div');
-                        elementOfResult.id = 'scrn_resultOfThiefInResult' + playerArray[i].id;
-                        elementOfResult.className = 'box_result box_main';
                         if (resultOfThiefArray[j].selectionId == -1) {
                             elementOfResult.innerHTML = playerArray[i].name + ' は役職を交換しませんでした';
                         }
-                        else {
-                            var selectionName = getPlayer(resultOfThiefArray[j].selectionId).name;
-                            elementOfResult.innerHTML = playerArray[i].name + ' は ' + selectionName + ' と役職を交換しました';
-                        }
-                        box.appendChild(elementOfResult);
+                        flag = true;
+                        break;
                     }
-                    break;
                 }
+                if (flag == false) {
+                    for (var j = 0; j < resultOfThiefArray.length; j++) {
+                        if (playerArray[i].id == resultOfThiefArray[j].selectionId) {
+                            var thiefName = getPlayer(resultOfThiefArray[j].id).name;
+                            var selectionName = getPlayer(resultOfThiefArray[j].selectionId).name;
+                            elementOfResult.innerHTML = thiefName + ' は ' + selectionName + ' と役職を交換しました';
+                            break;
+                        }
+                    }
+                }
+                box.appendChild(elementOfResult);
                 break;
         }
     }
