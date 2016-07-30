@@ -2112,7 +2112,8 @@ function setResultOfPlayerInResult(messageArray) {
     var position = messageArray['position'];
     var hangingId = messageArray['hangingId'];
     var point = messageArray['point'];
-    var player = {id: id, name: name, position: position, hangingId: hangingId, point: point};
+    var earningPoint = messageArray['earningPoint'];
+    var player = {id: id, name: name, position: position, hangingId: hangingId, point: point, earningPoint: earningPoint};
     playerArray.push(player);
     var box = document.getElementById('box_pointList');
     var elementOfParent = document.createElement('div');
@@ -2124,7 +2125,7 @@ function setResultOfPlayerInResult(messageArray) {
     elementOfPlayer.innerHTML = name;
     elementOfPoint.id = "scrn_pointInPointList" + point;
     elementOfPoint.className = "box_participant box_main right txt_right";
-    elementOfPoint.innerHTML = point;
+    elementOfPoint.innerHTML = point + " (" + earningPoint + ")";
     elementOfParent.appendChild(elementOfPlayer);
     elementOfParent.appendChild(elementOfPoint);
     box.appendChild(elementOfParent);

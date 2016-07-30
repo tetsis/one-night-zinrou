@@ -675,7 +675,8 @@ class Village {
                 $this->judgeWinner();
                 foreach ($this->playerArray as $i) {
                     $i->winnerOrLoser = $this->isWinner($i->position, $this->winnerSide);
-                    $i->point += $this->getPoint($i->position, $this->winnerSide);
+                    $i->earningPoint = $this->getPoint($i->position, $this->winnerSide);
+                    $i->point += $i->earningPoint;
                 }
                 $this->state = 'RESULT';
                 foreach ($this->playerArray as $i) {
@@ -997,7 +998,7 @@ class Village {
             sendMessage($messageArray, $socket);
         }
         foreach ($this->playerArray as $i) {
-            $messageArray = array('type'=>'system', 'state'=>'RESULT', 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position, 'hangingId'=>$i->hangingId, 'point'=>$i->point);
+            $messageArray = array('type'=>'system', 'state'=>'RESULT', 'message'=>'setResultOfPlayer', 'id'=>$i->id, 'name'=>$i->name, 'position'=>$i->position, 'hangingId'=>$i->hangingId, 'point'=>$i->point, 'earningPoint'=>$i->earningPoint);
             sendMessage($messageArray, $socket);
         }
         foreach ($this->resultOfFortunetellerArray as $i) {

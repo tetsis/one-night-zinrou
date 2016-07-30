@@ -4,6 +4,7 @@ class Player {
     public $name;
     public $socket;
     public $point;
+    public $earningPoint;
     public $position;
     public $gameStartFlag;
     public $actionFlag;
@@ -22,6 +23,7 @@ class Player {
         $this->name = $name;
         $this->socket = $socket;
         $this->point = 0;
+        $this->earningPoint = 0;
         $this->position = -1;
         $this->gameStartFlag = false;
         $this->actionFlag = false;
