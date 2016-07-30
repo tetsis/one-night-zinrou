@@ -222,6 +222,34 @@ function sendMessage(messageArray) {
     console.log('SEND: ' + message);
 }
 
+//占い結果の文字列を取得
+function getResultOfFortunetellerString(fortunetellerId, selectionId) {
+    var fortunetellerName = getPlayer(fortunetellerId).name;
+    var selectionName = getPlayer(selectionId).name;
+    var resultString = '';
+    if (selectionId == -1) {
+        resultString = fortunetellerName + ' は場を占いました';
+    }
+    else {
+        resultString = fortunetellerName + ' は ' + selectionName + ' を占いました';
+    }
+
+    return resultString;
+}
+
+//交換結果の文字列を取得
+function getResultOfThiefString(thiefId, selectionId) {
+    var thiefName = getPlayer(thiefId).name;
+    var selectionName = getPlayer(selectionId).name;
+    var resultString = '';
+    if (selectionId == -1) {
+        resultString = thiefName + ' は役職を交換しませんでした';
+    }
+    else {
+        resultString = thiefName + ' は ' + selectionName + ' と役職を交換しました';
+    }
+}
+
 //ロード時の処理
 window.addEventListener('load',
     function (event) {
@@ -241,202 +269,228 @@ window.addEventListener('load',
             if (type == 'system') {
                 state = messageArray['state'];
                 var message = messageArray['message'];
-                switch(state) {
+                switch (state) {
                     case 'CONNECTION':
-                        if (message == 'query') {
-                            queryData();
-                        }
-                        else if (message == 'delete') {
-                            deleteData();
+                        switch (message) {
+                            case 'query':
+                                queryData();
+                                break;
+                            case 'delete':
+                                deleteData();
+                                break;
                         }
                         break;
                     case 'TOP':
-                        if (message == 'display') {
-                            displayTop();
+                        switch (message) {
+                            case 'display':
+                                displayTop();
+                                break;
                         }
                         break;
                     case 'MAKING':
-                        if (message == 'display') {
-                            displayMaking();
-                        }
-                        else if (message == 'reject') {
-                            rejectVillageName();
+                        switch (message) {
+                            case 'display':
+                                displayMaking();
+                                break;
+                            case 'reject':
+                                rejectVillageName();
+                                break;
                         }
                         break;
                     case 'LOBBY':
-                        if (message == 'display') {
-                            displayLobby();
-                        }
-                        else if (message == 'add') {
-                            addVillage(messageArray);
-                        }
-                        else if (message == 'notExit') {
-                            notExitVillage();
-                        }
-                        else if (message == 'delete') {
-                            deleteVillage();
-                        }
-                        else if (message == 'reject') {
-                            rejectPassword();
+                        switch (message) {
+                            case 'display':
+                                displayLobby();
+                                break;
+                            case 'add':
+                                addVillage(messageArray);
+                                break;
+                            case 'notExit':
+                                notExitVillage();
+                                break;
+                            case 'delete':
+                                deleteVillage();
+                                break;
+                            case 'reject':
+                                rejectPassword();
+                                break;
                         }
                         break;
                     case 'PARTICIPATION':
-                        if (message == 'display') {
-                            displayParticipation(messageArray);
-                        }
-                        else if (message == 'reject') {
-                            rejectName();
-                        }
-                        else if (message == 'exceedNumberOfPlayer') {
-                            exceedNumberOfPlayer();
-                        }
-                        else if (message == 'alreadyStarted') {
-                            alreadyStarted();
+                        switch (message) {
+                            case 'display':
+                                displayParticipation(messageArray);
+                                break;
+                            case 'reject':
+                                rejectName();
+                                break;
+                            case 'exceedNumberOfPlayer':
+                                exceedNumberOfPlayer();
+                                break;
+                            case 'alreadyStarted':
+                                alreadyStarted();
+                                break;
                         }
                         break;
                     case 'WAITING':
-                        if (message == 'init') {
-                            initInWaiting(messageArray);
-                        }
-                        else if (message == 'display') {
-                            displayWaiting();
-                        }
-                        else if (message == 'add') {
-                            addParticipant(messageArray);
-                        }
-                        else if (message == 'del') {
-                            delParticipant(messageArray);
-                        }
-                        else if (message == 'setNumberOfPosition') {
-                            setNumberOfPositionInWaiting(messageArray);
-                        }
-                        else if (message == 'setTalkingTime') {
-                            setTalkingTimeInWaiting(messageArray);
-                        }
-                        else if (message == 'setGameStart') {
-                            setGameStart(messageArray);
+                        switch (message) {
+                            case 'init':
+                                initInWaiting(messageArray);
+                                break;
+                            case 'display':
+                                displayWaiting();
+                                break;
+                            case 'add':
+                                addParticipant(messageArray);
+                                break;
+                            case 'del':
+                                delParticipant(messageArray);
+                                break;
+                            case 'setNumberOfPosition':
+                                setNumberOfPositionInWaiting(messageArray);
+                                break;
+                            case 'setTalkingTime':
+                                setTalkingTimeInWaiting(messageArray);
+                                break;
+                            case 'setGameStart':
+                                setGameStart(messageArray);
+                                break;
                         }
                         break;
                     case 'ACTION':
-                        if (message == 'init') {
-                            initInAction(messageArray);
-                        }
-                        else if (message == 'display') {
-                            displayAction();
-                        }
-                        else if (message == 'setPlayer') {
-                            setPlayerInAction(messageArray);
+                        switch (message) {
+                            case 'init':
+                                initInAction(messageArray);
+                                break;
+                            case 'display':
+                                displayAction();
+                                break;
+                            case 'setPlayer':
+                                setPlayerInAction(messageArray);
+                                break;
                         }
                         break;
                     case 'NOTIFICATION':
-                        if (message == 'init') {
-                            initInNotification(messageArray);
-                        }
-                        else if (message == 'display') {
-                            displayNotification();
-                        }
-                        else if (message == 'setResult') {
-                            setResult(messageArray);
-                        }
-                        else if (message == 'setResultOfField') {
-                            setResultOfField(messageArray);
-                        }
-                        else if (message == 'setBuddy') {
-                            setBuddy(messageArray);
+                        switch (message) {
+                            case 'init':
+                                initInNotification(messageArray);
+                                break;
+                            case 'display':
+                                displayNotification();
+                                break;
+                            case 'setResult':
+                                setResult(messageArray);
+                                break;
+                            case 'setResultOfField':
+                                setResultOfField(messageArray);
+                                break;
+                            case 'setBuddy':
+                                setBuddy(messageArray);
+                                break;
                         }
                         break;
                     case 'NIGHT':
-                        if (message == 'init') {
-                            initInNight();
-                        }
-                        else if (message == 'display') {
-                            displayNight();
-                        }
-                        else if (message == 'setPositionOfPlayer') {
-                            setPositionOfPlayerInNight(messageArray);
-                        }
-                        else if (message == 'setResultOfFortuneteller') {
-                            setResultOfFortunetellerInNight(messageArray);
-                        }
-                        else if (message == 'setResultOfThief') {
-                            setResultOfThiefInNight(messageArray);
+                        switch (message) {
+                            case 'init':
+                                initInNight();
+                                break;
+                            case 'display':
+                                displayNight();
+                                break;
+                            case 'setPositionOfPlayer':
+                                setPositionOfPlayerInNight(messageArray);
+                                break;
+                            case 'setResultOfFortuneteller':
+                                setResultOfFortunetellerInNight(messageArray);
+                                break;
+                            case 'setResultOfThief':
+                                setResultOfThiefInNight(messageArray);
+                                break;
                         }
                         break;
                     case 'DAYTIME':
-                        if (message == 'init') {
-                            initInDaytime(messageArray);
-                        }
-                        else if (message == 'display') {
-                            displayDaytime();
-                        }
-                        else if (message == 'setPlayer') {
-                            setPlayerInDaytime(messageArray);
-                        }
-                        else if (message == 'setSpectator') {
-                            setSpectatorInDaytime(messageArray);
-                        }
-                        else if (message == 'setNumberOfPosition') {
-                            setNumberOfPositionInDaytime(messageArray);
-                        }
-                        else if (message == 'setRemainingTime') {
-                            setRemainingTimeInDaytime(messageArray);
-                        }
-                        else if (message == 'setTalksEnd') {
-                            setTalksEnd(messageArray);
-                        }
-                        else if (message == 'setPositionOfPlayer') {
-                            setPositionOfPlayerInDaytime(messageArray);
-                        }
-                        else if (message == 'setResultOfFortuneteller') {
-                            setResultOfFortunetellerInDaytime(messageArray);
-                        }
-                        else if (message == 'setResultOfThief') {
-                            setResultOfThiefInDaytime(messageArray);
+                        switch (message) {
+                            case 'init':
+                                initInDaytime(messageArray);
+                                break;
+                            case 'display':
+                                displayDaytime();
+                                break;
+                            case 'setPlayer':
+                                setPlayerInDaytime(messageArray);
+                                break;
+                            case 'setSpectator':
+                                setSpectatorInDaytime(messageArray);
+                                break;
+                            case 'setNumberOfPosition':
+                                setNumberOfPositionInDaytime(messageArray);
+                                break;
+                            case 'setRemainingTime':
+                                setRemainingTimeInDaytime(messageArray);
+                                break;
+                            case 'setTalksEnd':
+                                setTalksEnd(messageArray);
+                                break;
+                            case 'setPositionOfPlayer':
+                                setPositionOfPlayerInDaytime(messageArray);
+                                break;
+                            case 'setResultOfFortuneteller':
+                                setResultOfFortunetellerInDaytime(messageArray);
+                                break;
+                            case 'setResultOfThief':
+                                setResultOfThiefInDaytime(messageArray);
+                                break;
                         }
                         break;
                     case 'SELECTION':
-                        if (message == 'init') {
-                            initInSelection(messageArray);
-                        }
-                        else if (message == 'display') {
-                            displaySelection();
-                        }
-                        else if (message == 'setPlayer') {
-                            setPlayerInSelection(messageArray);
+                        switch (message) {
+                            case 'init':
+                                initInSelection(messageArray);
+                                break;
+                            case 'display':
+                                displaySelection();
+                                break;
+                            case 'setPlayer':
+                                setPlayerInSelection(messageArray);
+                                break;
                         }
                         break;
                     case 'EXECUTION':
-                        if (message == 'init') {
-                            initInExecution(messageArray);
-                        }
-                        else if (message == 'display') {
-                            displayExecution();
-                        }
-                        else if (message == 'setHanging') {
-                            setHangingInExecution(messageArray);
-                        }
-                        else if (message == 'setPlayer') {
-                            setPlayerInExecution(messageArray);
+                        switch (message) {
+                            case 'init':
+                                initInExecution(messageArray);
+                                break;
+                            case 'display':
+                                displayExecution();
+                                break;
+                            case 'setHanging':
+                                setHangingInExecution(messageArray);
+                                break;
+                            case 'setPlayer':
+                                setPlayerInExecution(messageArray);
+                                break;
                         }
                         break;
                     case 'RESULT':
-                        if (message == 'init') {
-                            initInResult(messageArray);
-                        }
-                        else if (message == 'display') {
-                            displayResult();
-                        }
-                        else if (message == 'setWinnerOrLoser') {
-                            setWinnerOrLoser(messageArray);
-                        }
-                        else if (message == 'setResultOfPlayer') {
-                            setResultOfPlayerInResult(messageArray);
-                        }
-                        else if (message == 'setResultOfFortuneteller') {
-                            setResultOfFortunetellerInResult(messageArray);
-                        }
-                        else if (message == 'setResultOfThief') {
-                            setResultOfThiefInResult(messageArray);
+                        switch (message) {
+                            case 'init':
+                                initInResult(messageArray);
+                                break;
+                            case 'display':
+                                displayResult();
+                                break;
+                            case 'setWinnerOrLoser':
+                                setWinnerOrLoser(messageArray);
+                                break;
+                            case 'setResultOfPlayer':
+                                setResultOfPlayerInResult(messageArray);
+                                break;
+                            case 'setResultOfFortuneteller':
+                                setResultOfFortunetellerInResult(messageArray);
+                                break;
+                            case 'setResultOfThief':
+                                setResultOfThiefInResult(messageArray);
+                                break;
                         }
                         break;
                 }
@@ -929,28 +983,16 @@ function clickConfirmation() {
         popupString += '\n';
         popupString += '占い結果\n';
         for (var i = 0; i < resultOfFortunetellerArray.length; i++) {
-            var fortunetellerName = getPlayer(resultOfFortunetellerArray[i].id).name;
-            if (resultOfFortunetellerArray[i].selectionId == -1) {
-                popupString += fortunetellerName + ' は場を占いました\n';
-            }
-            else {
-                selectionName = getPlayer(resultOfFortunetellerArray[i].selectionId).name;
-                popupString += fortunetellerName + ' は ' + selectionName + ' を占いました\n';
-            }
+            popupString += getResultOfFortunetellerString(resultOfFortunetellerArray[i].id, resultOfFortunetellerArray[i].selectionId);
+            popupString += '\n';
         }
     }
     if (resultOfThiefArray.length > 0) {
         popupString += '\n';
         popupString += '交換結果\n';
         for (var i = 0; i < resultOfThiefArray.length; i++) {
-            var thiefName = getPlayer(resultOfThiefArray[i].id).name;
-            if (resultOfThiefArray[i].selectionId == -1) {
-                popupString += thiefName + ' は役職を交換しませんでした\n';
-            }
-            else {
-                selectionName = getPlayer(resultOfThiefArray[i].selectionId).name;
-                popupString += thiefName + ' は ' + selectionName + ' と役職を交換しました\n';
-            }
+            popupString += getResultOfThiefString(resultOfThiefArray[i].id, resultOfThiefArray[i].selectionId);
+            popupString += '\n';
         }
     }
     alert(popupString);
@@ -1645,18 +1687,11 @@ function setResultOfFortunetellerInNight(messageArray) {
     console.log('ENTER: setResultOfFortunetellerInNight, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
-    var fortunetellerName = getPlayer(id).name;
     var box = document.getElementById('box_resultOfFortunetellerInNight');
     var element = document.createElement('div');
     element.id = 'scrn_resultOfFortunetellerInNight' + id;
     element.className = 'box_main';
-    if (selectionId == -1) {
-        element.innerHTML = fortunetellerName + ' は場を占いました';
-    }
-    else {
-        selectionName = getPlayer(selectionId).name;
-        element.innerHTML = fortunetellerName + ' は ' + selectionName + ' を占いました';
-    }
+    element.innerHTML = getResultOfFortunetellerString(id, selectionId);
     box.appendChild(element);
 }
 
@@ -1665,18 +1700,11 @@ function setResultOfThiefInNight(messageArray) {
     console.log('ENTER: setResultOfThiefInNight, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
-    var thiefName = getPlayer(id).name;
     var box = document.getElementById('box_resultOfThiefInNight');
     var element = document.createElement('div');
     element.id = 'scrn_resultOfThiefInNight' + id;
     element.className = 'box_main';
-    if (selectionId == -1) {
-        element.innerHTML = thiefName + ' は役職を交換しませんでした';
-    }
-    else {
-        selectionName = getPlayer(selectionId).name;
-        element.innerHTML = thiefName + ' は ' + selectionName + ' と役職を交換しました';
-    }
+    element.innerHTML = getResultOfThiefString(id, selectionId);
     box.appendChild(element);
 }
 
@@ -2026,13 +2054,7 @@ function displayResult() {
                 elementOfResult.className = 'box_result box_main';
                 for (var j = 0; j < resultOfFortunetellerArray.length; j++) {
                     if (playerArray[i].id == resultOfFortunetellerArray[j].id) {
-                        if (resultOfFortunetellerArray[j].selectionId == -1) {
-                            elementOfResult.innerHTML = playerArray[i].name + ' は場を占いました';
-                        }
-                        else {
-                            var selectionName = getPlayer(resultOfFortunetellerArray[j].selectionId).name;
-                            elementOfResult.innerHTML = playerArray[i].name + ' は ' + selectionName + ' を占いました';
-                        }
+                        elementOfResult.innerHTML = getResultOfFortunetellerString(resultOfFortunetellerArray[j].id, resultOfFortunetellerArray[j].selectionId);
                         flag = true;
                         break;
                     }
@@ -2042,14 +2064,7 @@ function displayResult() {
                         if (playerArray[i].id == resultOfThiefArray[j].id) {
                             for (var k = 0; k < resultOfFortunetellerArray.length; k++) {
                                 if (resultOfThiefArray[j].selectionId == resultOfFortunetellerArray[k].id) {
-                                    var fortunetellerName = getPlayer(resultOfFortunetellerArray[k].id).name;
-                                    if (resultOfFortunetellerArray[k].selectionId == -1) {
-                                        elementOfResult.innerHTML = fortunetellerName + ' は場を占いました';
-                                    }
-                                    else {
-                                        var selectionName = getPlayer(resultOfFortunetellerArray[k].selectionId).name;
-                                        elementOfResult.innerHTML = fortunetellerName + ' は ' + selectionName + ' を占いました';
-                                    }
+                                    elementOfResult.innerHTML = getResultOfFortunetellerString(resultOfFortunetellerArray[k].id, resultOfFortunetellerArray[k].selectionId);
                                     break;
                                 }
                             }
@@ -2066,9 +2081,7 @@ function displayResult() {
                 var flag = false;
                 for (var j = 0; j < resultOfThiefArray.length; j++) {
                     if (playerArray[i].id == resultOfThiefArray[j].id) {
-                        if (resultOfThiefArray[j].selectionId == -1) {
-                            elementOfResult.innerHTML = playerArray[i].name + ' は役職を交換しませんでした';
-                        }
+                        elementOfResult.innerHTML = getResultOfThiefString(resultOfThiefArray[j].id, resultOfThiefArray[j].selectionId);
                         flag = true;
                         break;
                     }
@@ -2076,9 +2089,7 @@ function displayResult() {
                 if (flag == false) {
                     for (var j = 0; j < resultOfThiefArray.length; j++) {
                         if (playerArray[i].id == resultOfThiefArray[j].selectionId) {
-                            var thiefName = getPlayer(resultOfThiefArray[j].id).name;
-                            var selectionName = getPlayer(resultOfThiefArray[j].selectionId).name;
-                            elementOfResult.innerHTML = thiefName + ' は ' + selectionName + ' と役職を交換しました';
+                            elementOfResult.innerHTML = getResultOfThiefString(resultOfThiefArray[j].id, resultOfThiefArray[j].selectionId);
                             break;
                         }
                     }
