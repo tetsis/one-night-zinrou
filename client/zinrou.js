@@ -305,8 +305,8 @@ window.addEventListener('load',
                             case 'add':
                                 addVillage(messageArray);
                                 break;
-                            case 'notExit':
-                                notExitVillage();
+                            case 'notExist':
+                                notExistVillage();
                                 break;
                             case 'delete':
                                 deleteVillage();
@@ -1194,8 +1194,8 @@ function addVillage(messageArray) {
 }
 
 //参加できる村がない
-function notExitVillage() {
-    console.log('ENTER: notExitVillage');
+function notExistVillage() {
+    console.log('ENTER: notExistVillage');
     document.getElementById('btn_updateInLobby').disabled = false;
 }
 

@@ -221,7 +221,7 @@ class VillageManagement {
             }
         }
         if ($flag == false) {
-                $messageArray = array('type'=>'system', 'state'=>'LOBBY', 'message'=>'notExit');
+                $messageArray = array('type'=>'system', 'state'=>'LOBBY', 'message'=>'notExist');
                 sendMessage($messageArray, $socket);
         }
     }
