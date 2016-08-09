@@ -10,7 +10,6 @@ var position;
 var playerArray;
 var resultOfFortunetellerArray;
 var resultOfThiefArray;
-var numberOfPlayer;
 var numberOfPositionArray;
 var numberOfLeft;
 var talkingTime;
@@ -835,7 +834,7 @@ function clickTalkingTime(incrementOrDecrement) {
 //「ゲーム開始」をクリック
 function clickGameStart() {
     console.log('ENTER: clickGameStart');
-    if (numberOfPlayer <= 2) {
+    if (playerArray.length <= 2) {
         alert('ゲームを始めるには3人以上必要です');
     }
     else if (numberOfLeft >= 1) {
@@ -1266,7 +1265,6 @@ function alreadyStarted() {
 function initInWaiting(messageArray) {
     console.log('ENTER: initInWaiting, messageArray: ' + JSON.stringify(messageArray));
     playerArray = [];
-    numberOfPlayer = 0;
     numberOfPositionArray = [];
     numberOfLeft = 0;
     talkingTime = 0;
@@ -1322,15 +1320,13 @@ function addParticipant(messageArray) {
         case 'PLAYER':
             var player = {id: id, name: name};
             playerArray.push(player);
-            numberOfPlayer++;
             box = document.getElementById('box_playerListInWaiting');
             element = document.createElement('div');
             element.id = 'scrn_playerListInWaiting' + id;
             element.className = 'box_main';
             element.innerHTML = name;
             box.appendChild(element);
-            numberOfLeft++;
-            document.getElementById('scrn_left').innerHTML = numberOfLeft + '人';
+            updateNumberOfPosition();
             break;
         case 'SPECTATOR':
             box = document.getElementById('box_spectatorListInWaiting');
@@ -1361,14 +1357,12 @@ function delParticipant(messageArray) {
             }
             if (number != -1) {
                 playerArray.splice(number, 1);
-                numberOfPlayer--;
                 box = document.getElementById('box_playerListInWaiting');
                 element = document.getElementById('scrn_playerListInWaiting' + id);
                 if (element != null) {
                     box.removeChild(element);
                 }
-                numberOfLeft--;
-                document.getElementById('scrn_left').innerHTML = numberOfLeft + '人';
+                updateNumberOfPosition();
             }
             break;
         case 'SPECTATOR':
@@ -1392,11 +1386,41 @@ function setNumberOfPositionInWaiting(messageArray) {
     var positionString = getPositionNameInEnglish(position);
     divId = 'scrn_numberOf' + positionString + 'InWaiting';
     document.getElementById(divId).innerHTML = number + '人';
+    updateNumberOfPosition();
+}
+
+//話し合い時間を設定
+function setTalkingTimeInWaiting(messageArray) {
+    console.log('ENTER: setTalkingTimeInWaiting, messageArray: ' + JSON.stringify(messageArray));
+    var time = messageArray['time'];
+    talkingTime = time;
+    document.getElementById('scrn_talkingTimeInWaiting').innerHTML = time + ' 分';
+    if (attribute == 'PLAYER') {
+        document.getElementById('btn_incrementOfTalkingTime').disabled = false;
+        if (time <= 1) {
+            document.getElementById('btn_decrementOfTalkingTime').disabled = true;
+        }
+        else {
+            document.getElementById('btn_decrementOfTalkingTime').disabled = false;
+        }
+    }
+}
+
+//「ゲーム開始」をクリックしたプレイヤーがいた
+function setGameStart(messageArray) {
+    console.log('ENTER: setGameStart, messageArray: ' + JSON.stringify(messageArray));
+    var id = messageArray['id'];
+    var elementId = 'scrn_playerListInWaiting' + id;
+    selectedElement(elementId);
+}
+
+//役職の人数を更新
+function updateNumberOfPosition() {
     var sum = 0;
     for (var i = 0; i < positionArray.length; i++) {
         sum += numberOfPositionArray[positionArray[i]];
     }
-    numberOfLeft = numberOfPlayer + 2 - sum;
+    numberOfLeft = playerArray.length + 2 - sum;
     document.getElementById('scrn_left').innerHTML = numberOfLeft + '人';
     if (attribute == 'PLAYER') {
         if (numberOfLeft <= 0) {
@@ -1436,31 +1460,6 @@ function setNumberOfPositionInWaiting(messageArray) {
             }
         }
     }
-}
-
-//話し合い時間を設定
-function setTalkingTimeInWaiting(messageArray) {
-    console.log('ENTER: setTalkingTimeInWaiting, messageArray: ' + JSON.stringify(messageArray));
-    var time = messageArray['time'];
-    talkingTime = time;
-    document.getElementById('scrn_talkingTimeInWaiting').innerHTML = time + ' 分';
-    if (attribute == 'PLAYER') {
-        document.getElementById('btn_incrementOfTalkingTime').disabled = false;
-        if (time <= 1) {
-            document.getElementById('btn_decrementOfTalkingTime').disabled = true;
-        }
-        else {
-            document.getElementById('btn_decrementOfTalkingTime').disabled = false;
-        }
-    }
-}
-
-//「ゲーム開始」をクリックしたプレイヤーがいた
-function setGameStart(messageArray) {
-    console.log('ENTER: setGameStart, messageArray: ' + JSON.stringify(messageArray));
-    var id = messageArray['id'];
-    var elementId = 'scrn_playerListInWaiting' + id;
-    selectedElement(elementId);
 }
 
 
