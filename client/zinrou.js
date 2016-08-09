@@ -232,7 +232,6 @@ function getResultOfFortunetellerString(fortunetellerId, selectionId) {
         var selectionName = getPlayer(selectionId).name;
         resultString = fortunetellerName + ' は ' + selectionName + ' を占いました';
     }
-
     return resultString;
 }
 
@@ -247,6 +246,7 @@ function getResultOfThiefString(thiefId, selectionId) {
         var selectionName = getPlayer(selectionId).name;
         resultString = thiefName + ' は ' + selectionName + ' と役職を交換しました';
     }
+    return resultString;
 }
 
 //ロード時の処理
