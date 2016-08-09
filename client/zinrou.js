@@ -225,12 +225,12 @@ function sendMessage(messageArray) {
 //占い結果の文字列を取得
 function getResultOfFortunetellerString(fortunetellerId, selectionId) {
     var fortunetellerName = getPlayer(fortunetellerId).name;
-    var selectionName = getPlayer(selectionId).name;
     var resultString = '';
     if (selectionId == -1) {
         resultString = fortunetellerName + ' は場を占いました';
     }
     else {
+        var selectionName = getPlayer(selectionId).name;
         resultString = fortunetellerName + ' は ' + selectionName + ' を占いました';
     }
 
@@ -240,12 +240,12 @@ function getResultOfFortunetellerString(fortunetellerId, selectionId) {
 //交換結果の文字列を取得
 function getResultOfThiefString(thiefId, selectionId) {
     var thiefName = getPlayer(thiefId).name;
-    var selectionName = getPlayer(selectionId).name;
     var resultString = '';
     if (selectionId == -1) {
         resultString = thiefName + ' は役職を交換しませんでした';
     }
     else {
+        var selectionName = getPlayer(selectionId).name;
         resultString = thiefName + ' は ' + selectionName + ' と役職を交換しました';
     }
 }
@@ -1313,7 +1313,7 @@ function displayWaiting() {
 //参加者を追加
 function addParticipant(messageArray) {
     console.log('ENTER: addParticipant, messageArray: ' + JSON.stringify(messageArray));
-    var box;
+    var box = null;
     var element;
     var attribute = messageArray['attribute'];
     var id = messageArray['id'];

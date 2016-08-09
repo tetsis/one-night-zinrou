@@ -716,11 +716,13 @@ class Village {
         outputLog('ENTER: judgeWinner');
         //怪盗が交換した後の役職に設定
         foreach ($this->resultOfThiefArray as $i) {
-            $thief = $this->getPlayer($i['id']);
-            $selection = $this->getPlayer($i['selectionId']);
-            $swap = $selection->position;
-            $selection->position = $thief->position;
-            $thief->position = $swap;
+            if ($i['selectionId'] != -1) {
+                $thief = $this->getPlayer($i['id']);
+                $selection = $this->getPlayer($i['selectionId']);
+                $swap = $selection->position;
+                $selection->position = $thief->position;
+                $thief->position = $swap;
+            }
         }
         //最も多く指名されたプレイヤーを抜き出す
         $max = 0;
