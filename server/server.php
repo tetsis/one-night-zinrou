@@ -151,6 +151,9 @@ while (true) {
                                     case 'notification':
                                         $village->clickNotification($messageArray);
                                         break;
+                                    case 'exit':
+                                        $village->clickExitInAction($messageArray);
+                                        break;
                                 }
                             }
                             break;
@@ -161,6 +164,9 @@ while (true) {
                                 switch ($message) {
                                     case 'talksStart':
                                         $village->clickTalksStart($messageArray);
+                                        break;
+                                    case 'exit':
+                                        $village->clickExitInNotification($messageArray);
                                         break;
                                 }
                             }
@@ -176,6 +182,10 @@ while (true) {
                                     case 'talksEnd':
                                         $village->clickTalksEnd($messageArray);
                                         break;
+                                    case 'exit':
+                                        $village->clickExitInDaytime($messageArray);
+                                        break;
+                                }
                                 }
                             }
                             break;
@@ -187,6 +197,9 @@ while (true) {
                                     case 'execution':
                                         $village->clickExecution($messageArray);
                                         break;
+                                    case 'exit':
+                                        $village->clickExitInSelection($messageArray);
+                                        break;
                                 }
                             }
                             break;
@@ -197,6 +210,9 @@ while (true) {
                                 switch ($message) {
                                     case 'result':
                                         $village->clickResult($changedSocket, $messageArray);
+                                        break;
+                                    case 'exit':
+                                        $village->clickExitInExecution($messageArray);
                                         break;
                                 }
                             }

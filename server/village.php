@@ -377,6 +377,33 @@ class Village {
         sendMessage($messageArray, $socket);
     }
 
+    //中断により待機画面の表示
+    public function displayWaitingByInterruption($socket, $attribute, $id, $playerId) {
+        outputLog('ENTER: displayWaitingByInterruption, attribute: '. $attribute. ', id: '. $id. ', playerId: '. $playerId);
+        $messageArray = array('type'=>'system', 'state'=>'WAITING', 'message'=>'displayByInterruption', 'id'=>$playerId);
+        sendMessage($messageArray, $socket);
+        $this->displayWaiting($socket, $attribute, $id);
+    }
+
+    //待機画面の初期化
+    public function initWaiting() {
+        $this->id = $this->villageManagement->getCurrentId();
+        $this->state = 'WAITING';
+        foreach ($this->playerArray as $i) {
+            $i->point = 0;
+            $i->gameStartFlag = false;
+            $i->actionFlag = false;
+            $i->talksStartFlag = false;
+            $i->talksEndFlag = false;
+            $i->executionFlag = false;
+            $i->resultFlag = false;
+            $i->hangingNumber = 0;
+        }
+        foreach ($this->spectatorArray as $i) {
+            $i->resultFlag = false;
+        }
+    }
+
 
     ////Action////
     //「次へ」がクリックされた
@@ -409,10 +436,32 @@ class Village {
         }
     }
 
+    //「ゲーム終了」がクリックされた
+    public function clickExitInAction($messageArray) {
+        outputLog('ENTER: clickExitInAction');
+        $id = $messageArray->id;
+        $player = $this->getPlayer($id);
+        if ($player !== null) {
+            $this->initWaiting();
+            foreach ($this->playerArray as $i) {
+                $this->goToWaitingFromAction($i->socket, 'PLAYER', $i->id, $id);
+            }
+            foreach ($this->spectatorArray as $i) {
+                $this->goToWaitingFromAction($i->socket, 'SPECTATOR', $i->id, $id);
+            }
+        }
+    }
+
     //通知画面に遷移
     public function goToNotificationFromAction($socket, $id) {
         outputLog('ENTER: goToNotificationFromAction, id: '. $id);
         $this->displayNotification($socket, $id);
+    }
+
+    //待機画面に遷移
+    public function goToWaitingFromAction($socket, $attribute, $id, $playerId) {
+        outputLog('ENTER: goToWaitingFromAction, attribute: '. $attribute. ', id: '. $id. ', playerId: '. $playerId);
+        $this->displayWaitingByInterruption($socket, $attribute, $id, $playerId);
     }
 
     //行動画面を表示
@@ -462,10 +511,32 @@ class Village {
         }
     }
 
+    //「ゲーム終了」がクリックされた
+    public function clickExitInNotification($messageArray) {
+        outputLog('ENTER: clickExitInNotification');
+        $id = $messageArray->id;
+        $player = $this->getPlayer($id);
+        if ($player !== null) {
+            $this->initWaiting();
+            foreach ($this->playerArray as $i) {
+                $this->goToWaitingFromNotification($i->socket, 'PLAYER', $i->id, $id);
+            }
+            foreach ($this->spectatorArray as $i) {
+                $this->goToWaitingFromNotification($i->socket, 'SPECTATOR', $i->id, $id);
+            }
+        }
+    }
+
     //昼の画面に遷移
     public function goToDaytimeFromNotification($socket, $id) {
         outputLog('ENTER: goToDaytimeFromNotification, id: '. $id);
         $this->displayDaytime($socket, 'PLAYER', $id);
+    }
+
+    //待機画面に遷移
+    public function goToWaitingFromNotification($socket, $attribute, $id, $playerId) {
+        outputLog('ENTER: goToWaitingFromNotification, attribute: '. $attribute. ', id: '. $id. ', playerId: '. $playerId);
+        $this->displayWaitingByInterruption($socket, $attribute, $id, $playerId);
     }
 
     //通知画面を表示
@@ -598,10 +669,32 @@ class Village {
         }
     }
 
+    //「ゲーム終了」がクリックされた
+    public function clickExitInDaytime($messageArray) {
+        outputLog('ENTER: clickExitInDaytime');
+        $id = $messageArray->id;
+        $player = $this->getPlayer($id);
+        if ($player !== null) {
+            $this->initWaiting();
+            foreach ($this->playerArray as $i) {
+                $this->goToWaitingFromDaytime($i->socket, 'PLAYER', $i->id, $id);
+            }
+            foreach ($this->spectatorArray as $i) {
+                $this->goToWaitingFromDaytime($i->socket, 'SPECTATOR', $i->id, $id);
+            }
+        }
+    }
+
     //吊る人選択画面に遷移
     public function goToSelectionFromDaytime($socket, $attribute, $id) {
         outputLog('ENTER: goToSelectionFromDaytime, attribute: '. $attribute. ', id: '. $id);
         $this->displaySelection($socket, $attribute, $id);
+    }
+
+    //待機画面に遷移
+    public function goToWaitingFromDaytime($socket, $attribute, $id, $playerId) {
+        outputLog('ENTER: goToWaitingFromDaytime, attribute: '. $attribute. ', id: '. $id. ', playerId: '. $playerId);
+        $this->displayWaitingByInterruption($socket, $attribute, $id, $playerId);
     }
 
     //昼の画面を表示
@@ -689,9 +782,32 @@ class Village {
         }
     }
 
+    //「ゲーム終了」がクリックされた
+    public function clickExitInSelection($messageArray) {
+        outputLog('ENTER: clickExitInSelection');
+        $id = $messageArray->id;
+        $player = $this->getPlayer($id);
+        if ($player !== null) {
+            $this->initWaiting();
+            foreach ($this->playerArray as $i) {
+                $this->goToWaitingFromSelection($i->socket, 'PLAYER', $i->id, $id);
+            }
+            foreach ($this->spectatorArray as $i) {
+                $this->goToWaitingFromSelection($i->socket, 'SPECTATOR', $i->id, $id);
+            }
+        }
+    }
+
+    //処刑画面に遷移
     public function goToExecutionFromSelection($socket, $attribute, $id) {
         outputLog('ENTER: goToExecutionFromSelection, attribute: '. $attribute. ', id: '. $id);
         $this->displayExecution($socket, $attribute, $id);
+    }
+
+    //待機画面に遷移
+    public function goToWaitingFromSelection($socket, $attribute, $id, $playerId) {
+        outputLog('ENTER: goToWaitingFromSelection, attribute: '. $attribute. ', id: '. $id. ', playerId: '. $playerId);
+        $this->displayWaitingByInterruption($socket, $attribute, $id, $playerId);
     }
 
     //吊る人選択画面を表示
@@ -898,10 +1014,32 @@ class Village {
         $this->goToResultFromExecution($socket, $attribute, $id);
     }
 
+    //「ゲーム終了」がクリックされた
+    public function clickExitInExecution($messageArray) {
+        outputLog('ENTER: clickExitInExecution');
+        $id = $messageArray->id;
+        $player = $this->getPlayer($id);
+        if ($player !== null) {
+            $this->initWaiting();
+            foreach ($this->playerArray as $i) {
+                $this->goToWaitingFromExecution($i->socket, 'PLAYER', $i->id, $id);
+            }
+            foreach ($this->spectatorArray as $i) {
+                $this->goToWaitingFromExecution($i->socket, 'SPECTATOR', $i->id, $id);
+            }
+        }
+    }
+
     //結果発表画面に遷移
     public function goToResultFromExecution($socket, $attribute, $id) {
         outputLog('ENTER: goToResultFromExecution, attribute: '. $attribute. ', id: '. $id);
         $this->displayResult($socket, $attribute, $id);
+    }
+
+    //待機画面に遷移
+    public function goToWaitingFromExecution($socket, $attribute, $id, $playerId) {
+        outputLog('ENTER: goToWaitingFromExecution, attribute: '. $attribute. ', id: '. $id. ', playerId: '. $playerId);
+        $this->displayWaitingByInterruption($socket, $attribute, $id, $playerId);
     }
 
     //処刑画面を表示
@@ -948,21 +1086,7 @@ class Village {
     //「終了」がクリックされた
     public function clickExitInResult() {
         outputLog('ENTER: clickExitInResult');
-        $this->id = $this->villageManagement->getCurrentId();
-        $this->state = 'WAITING';
-        foreach ($this->playerArray as $i) {
-            $i->point = 0;
-            $i->gameStartFlag = false;
-            $i->actionFlag = false;
-            $i->talksStartFlag = false;
-            $i->talksEndFlag = false;
-            $i->executionFlag = false;
-            $i->resultFlag = false;
-            $i->hangingNumber = 0;
-        }
-        foreach ($this->spectatorArray as $i) {
-            $i->resultFlag = false;
-        }
+        $this->initWaiting();
         foreach ($this->playerArray as $i) {
             $this->goToWaitingFromResult($i->socket, 'PLAYER', $i->id);
         }
