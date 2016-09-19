@@ -210,7 +210,7 @@ while (true) {
                                         $village->clickNextNight($messageArray);
                                         break;
                                     case 'exit':
-                                        $village->clickExit($messageArray);
+                                        $village->clickExitInResult($messageArray);
                                         break;
                                 }
                             }

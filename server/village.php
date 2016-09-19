@@ -946,8 +946,8 @@ class Village {
     }
 
     //「終了」がクリックされた
-    public function clickExit() {
-        outputLog('ENTER: clickExit');
+    public function clickExitInResult() {
+        outputLog('ENTER: clickExitInResult');
         $this->id = $this->villageManagement->getCurrentId();
         $this->state = 'WAITING';
         foreach ($this->playerArray as $i) {
