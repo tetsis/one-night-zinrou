@@ -186,7 +186,6 @@ while (true) {
                                         $village->clickExitInDaytime($messageArray);
                                         break;
                                 }
-                                }
                             }
                             break;
                         case 'SELECTION':
@@ -210,9 +209,6 @@ while (true) {
                                 switch ($message) {
                                     case 'result':
                                         $village->clickResult($changedSocket, $messageArray);
-                                        break;
-                                    case 'exit':
-                                        $village->clickExitInExecution($messageArray);
                                         break;
                                 }
                             }

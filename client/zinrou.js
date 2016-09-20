@@ -339,6 +339,9 @@ window.addEventListener('load',
                             case 'display':
                                 displayWaiting();
                                 break;
+                            case 'displayByCessation':
+                                displayByCessation(messageArray);
+                                break;
                             case 'add':
                                 addParticipant(messageArray);
                                 break;
@@ -537,17 +540,21 @@ window.addEventListener('load',
         ////Action////
         document.getElementById('btn_OK').addEventListener('click', clickOK, false);
         document.getElementById('btn_notification').addEventListener('click', clickNotification, false);
+        document.getElementById('btn_exitInAction').addEventListener('click', clickExitInAction, false);
 
         ////Notification////
         document.getElementById('btn_talksStart').addEventListener('click', clickTalksStart, false);
+        document.getElementById('btn_exitInNotification').addEventListener('click', clickExitInNotification, false);
 
         ////Daytime////
         document.getElementById('btn_extension').addEventListener('click', clickExtension, false);
         document.getElementById('btn_talksEnd').addEventListener('click', clickTalksEnd, false);
         document.getElementById('btn_confirmation').addEventListener('click', clickConfirmation, false);
+        document.getElementById('btn_exitInDaytime').addEventListener('click', clickExitInDaytime, false);
 
         ////Selection////
         document.getElementById('btn_execution').addEventListener('click', clickExecution, false);
+        document.getElementById('btn_exitInSelection').addEventListener('click', clickExitInSelection, false);
 
         ////Execution////
         document.getElementById('btn_result').addEventListener('click', clickResult, false);
@@ -920,6 +927,23 @@ function clickNotification() {
     }
 }
 
+//「ゲーム終了」をクリック
+function clickExitInAction() {
+    console.log('ENTER: clickExitInAction');
+    var result = confirm('ゲームを終了します\n本当によろしいですか？');
+    if (result) {
+        document.getElementById('btn_exitInAction').disabled = true;
+        //サーバに送信
+        var messageArray = {
+            type: 'system',
+            state: 'ACTION',
+            message: 'exit',
+            villageId: villageId,
+            id: id
+        };
+        sendMessage(messageArray)
+    }
+}
 
 ////Notification////
 //「昼のフェーズへ」をクリック
@@ -935,6 +959,24 @@ function clickTalksStart() {
         id: id
     };
     sendMessage(messageArray);
+}
+
+//「ゲーム終了」をクリック
+function clickExitInNotification() {
+    console.log('ENTER: clickExitInNotification');
+    var result = confirm('ゲームを終了します\n本当によろしいですか？');
+    if (result) {
+        document.getElementById('btn_exitInNotification').disabled = true;
+        //サーバに送信
+        var messageArray = {
+            type: 'system',
+            state: 'NOTIFICATION',
+            message: 'exit',
+            villageId: villageId,
+            id: id
+        };
+        sendMessage(messageArray)
+    }
 }
 
 
@@ -997,6 +1039,24 @@ function clickConfirmation() {
     alert(popupString);
 }
 
+//「ゲーム終了」をクリック
+function clickExitInDaytime() {
+    console.log('ENTER: clickExitInDaytime');
+    var result = confirm('ゲームを終了します\n本当によろしいですか？');
+    if (result) {
+        document.getElementById('btn_exitInDaytime').disabled = true;
+        //サーバに送信
+        var messageArray = {
+            type: 'system',
+            state: 'DAYTIME',
+            message: 'exit',
+            villageId: villageId,
+            id: id
+        };
+        sendMessage(messageArray)
+    }
+}
+
 
 ////Selection////
 //吊るプレイヤーをクリック
@@ -1037,6 +1097,25 @@ function clickExecution() {
         sendMessage(messageArray);
     }
 }
+
+//「ゲーム終了」をクリック
+function clickExitInSelection() {
+    console.log('ENTER: clickExitInSelection');
+    var result = confirm('ゲームを終了します\n本当によろしいですか？');
+    if (result) {
+        document.getElementById('btn_exitInSelection').disabled = true;
+        //サーバに送信
+        var messageArray = {
+            type: 'system',
+            state: 'SELECTION',
+            message: 'exit',
+            villageId: villageId,
+            id: id
+        };
+        sendMessage(messageArray)
+    }
+}
+
 
 ////Execution////
 //「結果発表へ」をクリック
@@ -1308,6 +1387,13 @@ function displayWaiting() {
     displayState('WAITING');
 }
 
+//ゲーム途中終了による待機画面を表示
+function displayByCessation(messageArray) {
+    console.log('ENTER: displayByCessation, messageArray: ' + JSON.stringify(messageArray));
+    var name = messageArray['name'];
+    alert(name + 'によりゲームを終了しました');
+}
+
 //参加者を追加
 function addParticipant(messageArray) {
     console.log('ENTER: addParticipant, messageArray: ' + JSON.stringify(messageArray));
@@ -1505,7 +1591,8 @@ function initInAction(messageArray) {
             document.getElementById('box_selectionInAction').style.display = 'none';
             break;
     }
-    document.getElementById('btn_notification').disabled = true
+    document.getElementById('btn_notification').disabled = true;
+    document.getElementById('btn_exitInAction').disabled = false;
     //ローカルストレージに保存
     setStorageData(villageId, attribute, id);
 }
@@ -1564,6 +1651,7 @@ function initInNotification(messageArray) {
     id = messageArray['id'];
     position = messageArray['position'];
     document.getElementById('btn_talksStart').disabled = false;
+    document.getElementById('btn_exitInNotification').disabled = false;
 }
 
 //通知画面を表示
@@ -1729,10 +1817,12 @@ function initInDaytime(messageArray) {
         case 'PLAYER':
             document.getElementById('btn_talksEnd').disabled = false;
             document.getElementById('btn_confirmation').disabled = true;
+            document.getElementById('btn_exitInDaytime').disabled = false;
             break;
         case 'SPECTATOR':
             document.getElementById('btn_talksEnd').disabled = true;
             document.getElementById('btn_confirmation').disabled = false;
+            document.getElementById('btn_exitInDaytime').disabled = true;
             break;
     }
 }
@@ -1843,10 +1933,12 @@ function initInSelection(messageArray) {
         case 'PLAYER':
             document.getElementById('scrn_selection').innerHTML = '吊る人を選択してください';
             document.getElementById('btn_execution').disabled = false;
+            document.getElementById('btn_exitInSelection').disabled = false;
             break;
         case 'SPECTATOR':
             document.getElementById('scrn_selection').innerHTML = 'プレイヤーが吊る人を選択しています';
             document.getElementById('btn_execution').disabled = true;
+            document.getElementById('btn_exitInSelection').disabled = true;
             break;
     }
 }
