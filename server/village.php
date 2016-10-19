@@ -158,6 +158,45 @@ class Village {
         return $remainingTime;
     }
 
+    //プレイヤーに行動結果を通知
+    public function sendResultOfAction($socket, $id, $state) {
+        $player = $this->getPlayer($id);
+        switch ($player->position) {
+            case 'WEREWOLF':
+                $buddyName = array();
+                foreach ($this->playerArray as $i) {
+                    if (($i->position == 'WEREWOLF') && ($i->id != $id)) {
+                        $buddyName[] = $i->name;
+                    }
+                }
+                if (empty($buddyName) == false) {
+                    foreach ($buddyName as $i) {
+                        $messageArray = array('type'=>'system', 'state'=>$state, 'message'=>'setBuddy', 'name'=>$i);
+                        sendMessage($messageArray, $socket);
+                    }
+                }
+                break;
+            case 'FORTUNETELLER':
+                if ($player->selectionId != -1) {
+                    $selectionPlayer = $this->getPlayer($player->selectionId);
+                    $messageArray = array('type'=>'system', 'state'=>$state, 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position);
+                    sendMessage($messageArray, $socket);
+                }
+                else {
+                    $messageArray = array('type'=>'system', 'state'=>$state, 'message'=>'setResultOfField', 'position1'=>$this->fieldPosition1, 'position2'=>$this->fieldPosition2);
+                    sendMessage($messageArray, $socket);
+                }
+                break;
+            case 'THIEF':
+                if ($player->selectionId != -1) {
+                    $selectionPlayer = $this->getPlayer($player->selectionId);
+                    $messageArray = array('type'=>'system', 'state'=>$state, 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position);
+                    sendMessage($messageArray, $socket);
+                }
+                break;
+        }
+    }
+
 
     ////Participation////
     //socketで「プレイヤーとして参加」をクリック
@@ -545,40 +584,7 @@ class Village {
         $player = $this->getPlayer($id);
         $messageArray = array('type'=>'system', 'state'=>'NOTIFICATION', 'message'=>'init', 'villageId'=>$this->id, 'id'=>$id, 'position'=>$player->position);
         sendMessage($messageArray, $socket);
-        switch ($player->position) {
-            case 'WEREWOLF':
-                $buddyName = array();
-                foreach ($this->playerArray as $i) {
-                    if (($i->position == 'WEREWOLF') && ($i->id != $id)) {
-                        $buddyName[] = $i->name;
-                    }
-                }
-                if (empty($buddyName) == false) {
-                    foreach ($buddyName as $i) {
-                        $messageArray = array('type'=>'system', 'state'=>'NOTIFICATION', 'message'=>'setBuddy', 'name'=>$i);
-                        sendMessage($messageArray, $socket);
-                    }
-                }
-                break;
-            case 'FORTUNETELLER':
-                if ($player->selectionId != -1) {
-                    $selectionPlayer = $this->getPlayer($player->selectionId);
-                    $messageArray = array('type'=>'system', 'state'=>'NOTIFICATION', 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position);
-                    sendMessage($messageArray, $socket);
-                }
-                else {
-                    $messageArray = array('type'=>'system', 'state'=>'NOTIFICATION', 'message'=>'setResultOfField', 'position1'=>$this->fieldPosition1, 'position2'=>$this->fieldPosition2);
-                    sendMessage($messageArray, $socket);
-                }
-                break;
-            case 'THIEF':
-                if ($player->selectionId != -1) {
-                    $selectionPlayer = $this->getPlayer($player->selectionId);
-                    $messageArray = array('type'=>'system', 'state'=>'NOTIFICATION', 'message'=>'setResult', 'name'=>$selectionPlayer->name, 'position'=>$selectionPlayer->position);
-                    sendMessage($messageArray, $socket);
-                }
-                break;
-        }
+        $this->sendResultOfAction($socket, $id, 'NOTIFICATION');
         $messageArray = array('type'=>'system', 'state'=>'NOTIFICATION', 'message'=>'display');
         sendMessage($messageArray, $socket);
     }
@@ -700,7 +706,15 @@ class Village {
     //昼の画面を表示
     public function displayDaytime($socket, $attribute, $id) {
         outputLog('ENTER: displayDaytime, attribute: '. $attribute. ', id: '. $id);
-        $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id);
+        switch ($attribute) {
+            case 'PLAYER':
+                $player = $this->getPlayer($id);
+                $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id, 'position'=>$player->position);
+                break;
+            case 'SPECTATOR':
+                $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'init', 'villageId'=>$this->id, 'attribute'=>$attribute, 'id'=>$id);
+                break;
+        }
         sendMessage($messageArray, $socket);
         foreach ($this->playerArray as $i) {
             $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setPlayer', 'id'=>$i->id, 'name'=>$i->name);
@@ -724,19 +738,24 @@ class Village {
                 sendMessage($messageArray, $socket);
             }
         }
-        if ($attribute == 'SPECTATOR') {
-            foreach ($this->playerArray as $i) {
-                $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setPositionOfPlayer', 'id'=>$i->id, 'position'=>$i->position);
-                sendMessage($messageArray, $socket);
-                if ($i->position == 'FORTUNETELLER') {
-                    $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId);
+        switch ($attribute) {
+            case 'PLAYER':
+                    $this->sendResultOfAction($socket, $id, 'DAYTIME');
+                break;
+            case 'SPECTATOR':
+                foreach ($this->playerArray as $i) {
+                    $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setPositionOfPlayer', 'id'=>$i->id, 'position'=>$i->position);
                     sendMessage($messageArray, $socket);
+                    if ($i->position == 'FORTUNETELLER') {
+                        $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setResultOfFortuneteller', 'id'=>$i->id, 'selectionId'=>$i->selectionId);
+                        sendMessage($messageArray, $socket);
+                    }
+                    else if ($i->position == 'THIEF') {
+                        $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId);
+                        sendMessage($messageArray, $socket);
+                    }
                 }
-                else if ($i->position == 'THIEF') {
-                    $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'setResultOfThief', 'id'=>$i->id, 'selectionId'=>$i->selectionId);
-                    sendMessage($messageArray, $socket);
-                }
-            }
+                break;
         }
         $messageArray = array('type'=>'system', 'state'=>'DAYTIME', 'message'=>'display');
         sendMessage($messageArray, $socket);

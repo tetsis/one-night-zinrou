@@ -6,7 +6,7 @@ cd client
 mkdir tmp
 cp *\.* tmp/
 cd tmp
-sed -i -e "s/^.*console\.log.*$//" *.js
+#sed -i -e "s/^.*console\.log.*$//" *.js
 rm -f $DST_DIR/*
 cp -f * $DST_DIR
 chown -R apache:apache $DST_DIR

@@ -249,6 +249,80 @@ function getResultOfThiefString(thiefId, selectionId) {
     return resultString;
 }
 
+//結果を設定
+function setResult(messageArray) {
+    selectionName = messageArray['name'];
+    selectionPosition = messageArray['position'];
+}
+
+//場の役職を設定
+function setResultOfField(messageArray) {
+    position1 = messageArray['position1'];
+    position2 = messageArray['position2'];
+}
+
+//仲間を設定
+function setBuddy(messageArray) {
+    var name = messageArray['name'];
+    buddyNameArray.push(name);
+}
+
+//行動結果の通知を取得
+function getResultOfAction(position) {
+    var resultString = '';
+    switch (position) {
+        case 'VILLAGER':
+            resultString += '仲間の村人と一緒に村を守りましょう';
+            break;
+        case 'WEREWOLF':
+            resultString += '仲間の人狼は';
+            if (buddyNameArray.length >= 1) {
+                for (var i = 0; i < buddyNameArray.length; i++) {
+                    if (i == 0) {
+                        resultString += ' ';
+                    }
+                    else {
+                        resultString += ' と ';
+                    }
+                    resultString += buddyNameArray[i];
+                }
+                resultString += ' です';
+            }
+            else {
+                resultString += 'いませんでした';
+            }
+            break;
+        case 'FORTUNETELLER':
+            if (selectionPosition == -1) {
+                var position1String = getPositionNameInJapanese(position1);
+                var position2String = getPositionNameInJapanese(position2);
+                resultString += '場の役職は ' + position1String + ' と ' + position2String + ' です';
+            }
+            else {
+                var positionString = getPositionNameInJapanese(selectionPosition);
+                resultString += selectionName + ' は ' + positionString + ' です';
+            }
+            break;
+        case 'THIEF':
+            if (selectionPosition == -1) {
+                resultString += '誰とも役職を交換しませんでした';
+            }
+            else {
+                var positionString = getPositionNameInJapanese(selectionPosition);
+                resultString += selectionName + ' の ' + positionString + ' と役職を交換しました';
+            }
+            break;
+        case 'MADMAN':
+                resultString += '村を混乱に陥れて人狼が有利になるように行動しましょう';
+            break;
+        case 'HANGING':
+                resultString += '村人から吊られるように行動しましょう';
+            break;
+    }
+
+    return resultString;
+}
+
 //ロード時の処理
 window.addEventListener('load',
     function (event) {
@@ -381,13 +455,13 @@ window.addEventListener('load',
                                 displayNotification();
                                 break;
                             case 'setResult':
-                                setResult(messageArray);
+                                setResultInNotification(messageArray);
                                 break;
                             case 'setResultOfField':
-                                setResultOfField(messageArray);
+                                setResultOfFieldInNotification(messageArray);
                                 break;
                             case 'setBuddy':
-                                setBuddy(messageArray);
+                                setBuddyInNotification(messageArray);
                                 break;
                         }
                         break;
@@ -441,6 +515,15 @@ window.addEventListener('load',
                                 break;
                             case 'setResultOfThief':
                                 setResultOfThiefInDaytime(messageArray);
+                                break;
+                            case 'setResult':
+                                setResultInDaytime(messageArray);
+                                break;
+                            case 'setResultOfField':
+                                setResultOfFieldInDaytime(messageArray);
+                                break;
+                            case 'setBuddy':
+                                setBuddyInDaytime(messageArray);
                                 break;
                         }
                         break;
@@ -1016,25 +1099,33 @@ function clickTalksEnd() {
 function clickConfirmation() {
     console.log('ENTER: clickConfirmation');
     var popupString = '役職確認\n';
-    for (var i = 0; i < playerArray.length; i++) {
-        var positionString = getPositionNameInJapanese(playerArray[i].position);
-        popupString += playerArray[i].name + 'の役職は' + positionString + 'です\n';
-    }
-    if (resultOfFortunetellerArray.length > 0) {
-        popupString += '\n';
-        popupString += '占い結果\n';
-        for (var i = 0; i < resultOfFortunetellerArray.length; i++) {
-            popupString += getResultOfFortunetellerString(resultOfFortunetellerArray[i].id, resultOfFortunetellerArray[i].selectionId);
-            popupString += '\n';
-        }
-    }
-    if (resultOfThiefArray.length > 0) {
-        popupString += '\n';
-        popupString += '交換結果\n';
-        for (var i = 0; i < resultOfThiefArray.length; i++) {
-            popupString += getResultOfThiefString(resultOfThiefArray[i].id, resultOfThiefArray[i].selectionId);
-            popupString += '\n';
-        }
+    switch (attribute) {
+        case 'PLAYER':
+            popupString += 'あなたは' + getPositionNameInJapanese(position) + 'です\n';
+            popupString += getResultOfAction(position);
+            break;
+        case 'SPECTATOR':
+            for (var i = 0; i < playerArray.length; i++) {
+                var positionString = getPositionNameInJapanese(playerArray[i].position);
+                popupString += playerArray[i].name + 'の役職は' + positionString + 'です\n';
+            }
+            if (resultOfFortunetellerArray.length > 0) {
+                popupString += '\n';
+                popupString += '占い結果\n';
+                for (var i = 0; i < resultOfFortunetellerArray.length; i++) {
+                    popupString += getResultOfFortunetellerString(resultOfFortunetellerArray[i].id, resultOfFortunetellerArray[i].selectionId);
+                    popupString += '\n';
+                }
+            }
+            if (resultOfThiefArray.length > 0) {
+                popupString += '\n';
+                popupString += '交換結果\n';
+                for (var i = 0; i < resultOfThiefArray.length; i++) {
+                    popupString += getResultOfThiefString(resultOfThiefArray[i].id, resultOfThiefArray[i].selectionId);
+                    popupString += '\n';
+                }
+            }
+            break;
     }
     alert(popupString);
 }
@@ -1559,34 +1650,35 @@ function initInAction(messageArray) {
     villageId = messageArray['villageId'];
     id = messageArray['id'];
     position = messageArray['position'];
+    var positionString = 'あなたは' + getPositionNameInJapanese(position) + 'です';
     switch (position) {
         case 'VILLAGER':
-            document.getElementById('scrn_yourPosition').innerHTML = 'あなたは村人です';
+            document.getElementById('scrn_yourPosition').innerHTML = positionString;
             document.getElementById('box_OK').style.display = 'block';
             document.getElementById('box_selectionInAction').style.display = 'none';
             break;
         case 'WEREWOLF':
-            document.getElementById('scrn_yourPosition').innerHTML = 'あなたは人狼です';
+            document.getElementById('scrn_yourPosition').innerHTML = positionString;
             document.getElementById('box_OK').style.display = 'block';
             document.getElementById('box_selectionInAction').style.display = 'none';
             break;
         case 'FORTUNETELLER':
-            document.getElementById('scrn_yourPosition').innerHTML = 'あなたは占い師です<br/>占うプレイヤーを選んでください';
+            document.getElementById('scrn_yourPosition').innerHTML = positionString + '<br/>占うプレイヤーを選んでください';
             document.getElementById('box_OK').style.display = 'none';
             document.getElementById('box_selectionInAction').style.display = 'block';
             break;
         case 'THIEF':
-            document.getElementById('scrn_yourPosition').innerHTML = 'あなたは怪盗です<br/>役職を交換するプレイヤーを選んでください';
+            document.getElementById('scrn_yourPosition').innerHTML = positionString + '<br/>役職を交換するプレイヤーを選んでください';
             document.getElementById('box_OK').style.display = 'none';
             document.getElementById('box_selectionInAction').style.display = 'block';
             break;
         case 'MADMAN':
-            document.getElementById('scrn_yourPosition').innerHTML = 'あなたは狂人です';
+            document.getElementById('scrn_yourPosition').innerHTML = positionString;
             document.getElementById('box_OK').style.display = 'block';
             document.getElementById('box_selectionInAction').style.display = 'none';
             break;
         case 'HANGING':
-            document.getElementById('scrn_yourPosition').innerHTML = 'あなたはてるてるです';
+            document.getElementById('scrn_yourPosition').innerHTML = positionString;
             document.getElementById('box_OK').style.display = 'block';
             document.getElementById('box_selectionInAction').style.display = 'none';
             break;
@@ -1657,73 +1749,28 @@ function initInNotification(messageArray) {
 //通知画面を表示
 function displayNotification() {
     console.log('ENTER: displayNotification');
-    var resultString = '';
-    switch (position) {
-        case 'VILLAGER':
-            resultString += '仲間の村人と一緒に村を守りましょう';
-            break;
-        case 'WEREWOLF':
-            resultString += '仲間の人狼は<br/>';
-            if (buddyNameArray.length >= 1) {
-                for (var i = 0; i < buddyNameArray.length; i++) {
-                    resultString += buddyNameArray[i] + '<br/>';
-                }
-                resultString += 'です';
-            }
-            else {
-                resultString += 'いませんでした';
-            }
-            break;
-        case 'FORTUNETELLER':
-            if (selectionPosition == -1) {
-                var position1String = getPositionNameInJapanese(position1);
-                var position2String = getPositionNameInJapanese(position2);
-                resultString += '場の役職は ' + position1String + ' と ' + position2String + ' です';
-            }
-            else {
-                var positionString = getPositionNameInJapanese(selectionPosition);
-                resultString += selectionName + ' は ' + positionString + ' です';
-            }
-            break;
-        case 'THIEF':
-            if (selectionPosition == -1) {
-                resultString += '誰とも役職を交換しませんでした';
-            }
-            else {
-                var positionString = getPositionNameInJapanese(selectionPosition);
-                resultString += selectionName + ' の ' + positionString + ' と役職を交換しました';
-            }
-            break;
-        case 'MADMAN':
-                resultString += '村を混乱に陥れて人狼が有利になるように行動しましょう';
-            break;
-        case 'HANGING':
-                resultString += '村人から吊られるように行動しましょう';
-            break;
-    }
+    var resultString = getResultOfAction(position);
+    console.log('DEBUG: resultString = ' + resultString);
     document.getElementById('scrn_notification').innerHTML = resultString;
     displayState('NOTIFICATION');
 }
 
 //結果を設定
-function setResult(messageArray) {
-    console.log('ENTER: setResult, messageArray: ' + JSON.stringify(messageArray));
-    selectionName = messageArray['name'];
-    selectionPosition = messageArray['position'];
+function setResultInNotification(messageArray) {
+    console.log('ENTER: setResultInNotification, messageArray: ' + JSON.stringify(messageArray));
+    setResult(messageArray);
 }
 
 //場の役職を設定
-function setResultOfField(messageArray) {
-    console.log('ENTER: setResultOfField, messageArray: ' + JSON.stringify(messageArray));
-    position1 = messageArray['position1'];
-    position2 = messageArray['position2'];
+function setResultOfFieldInNotification(messageArray) {
+    console.log('ENTER: setResultOfFieldInNotification, messageArray: ' + JSON.stringify(messageArray));
+    setResultOfField(messageArray);
 }
 
 //仲間を設定
-function setBuddy(messageArray) {
-    console.log('ENTER: setBuddy, messageArray: ' + JSON.stringify(messageArray));
-    var name = messageArray['name'];
-    buddyNameArray.push(name);
+function setBuddyInNotification(messageArray) {
+    console.log('ENTER: setBuddyInNotification, messageArray: ' + JSON.stringify(messageArray));
+    setBuddy(messageArray);
 }
 
 
@@ -1800,6 +1847,11 @@ function setResultOfThiefInNight(messageArray) {
 //初期化
 function initInDaytime(messageArray) {
     console.log('ENTER: initInDaytime, messageArray: ' + JSON.stringify(messageArray));
+    buddyNameArray = [];
+    selectionName = '';
+    selectionPosition = -1;
+    position1 = -1;
+    position2 = -1;
     playerArray = [];
     numberOfPositionArray = [];
     talkingTime = 3;
@@ -1808,6 +1860,7 @@ function initInDaytime(messageArray) {
     document.getElementById('scrn_remainingTime').style.display = 'none';
     document.getElementById('box_extension').style.display = 'none';
     document.getElementById('btn_extension').disabled = false;
+    document.getElementById('btn_confirmation').disabled = false;
     document.getElementById('box_playerListInDaytime').textContent = null;
     document.getElementById('box_spectatorListInDaytime').textContent = null;
     villageId = messageArray['villageId'];
@@ -1815,13 +1868,12 @@ function initInDaytime(messageArray) {
     id = messageArray['id'];
     switch (attribute) {
         case 'PLAYER':
+            position = messageArray['position'];
             document.getElementById('btn_talksEnd').disabled = false;
-            document.getElementById('btn_confirmation').disabled = true;
             document.getElementById('btn_exitInDaytime').disabled = false;
             break;
         case 'SPECTATOR':
             document.getElementById('btn_talksEnd').disabled = true;
-            document.getElementById('btn_confirmation').disabled = false;
             document.getElementById('btn_exitInDaytime').disabled = true;
             break;
     }
@@ -1917,6 +1969,24 @@ function setResultOfThiefInDaytime(messageArray) {
     var selectionId = messageArray['selectionId'];
     var array = {id: id, selectionId: selectionId};
     resultOfThiefArray.push(array);
+}
+
+//結果を設定
+function setResultInDaytime(messageArray) {
+    console.log('ENTER: setResultInDaytime, messageArray: ' + JSON.stringify(messageArray));
+    setResult(messageArray);
+}
+
+//場の役職を設定
+function setResultOfFieldInDaytime(messageArray) {
+    console.log('ENTER: setResultOfFieldInDaytime, messageArray: ' + JSON.stringify(messageArray));
+    setResultOfField(messageArray);
+}
+
+//仲間を設定
+function setBuddyInDaytime(messageArray) {
+    console.log('ENTER: setBuddyInDaytime, messageArray: ' + JSON.stringify(messageArray));
+    setBuddy(messageArray);
 }
 
 
