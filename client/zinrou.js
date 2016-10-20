@@ -1482,6 +1482,9 @@ function displayWaiting() {
 function displayByCessation(messageArray) {
     console.log('ENTER: displayByCessation, messageArray: ' + JSON.stringify(messageArray));
     var name = messageArray['name'];
+    if (timer != null) {
+        clearInterval(timer);
+    }
     alert(name + 'によりゲームを終了しました');
 }
 
