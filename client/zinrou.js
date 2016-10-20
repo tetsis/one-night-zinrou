@@ -127,7 +127,7 @@ function updateTimer() {
         var minute = parseInt(remaingTime / 60);
         var second = remaingTime % 60;
         document.getElementById('box_extension').style.display = 'none';
-        screen.innerHTML = minute + ' : ' + second;
+        screen.innerHTML = minute + ' : ' + ('00' + second).slice(-2);
         screen.style.display = 'block';
     }
     else {
