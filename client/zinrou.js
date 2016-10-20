@@ -1750,7 +1750,6 @@ function initInNotification(messageArray) {
 function displayNotification() {
     console.log('ENTER: displayNotification');
     var resultString = getResultOfAction(position);
-    console.log('DEBUG: resultString = ' + resultString);
     document.getElementById('scrn_notification').innerHTML = resultString;
     displayState('NOTIFICATION');
 }
