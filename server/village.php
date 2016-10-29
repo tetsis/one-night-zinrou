@@ -428,6 +428,8 @@ class Village {
     public function initWaiting() {
         $this->id = $this->villageManagement->getCurrentId();
         $this->state = 'WAITING';
+        $this->resultOfFortunetellerArray = array();
+        $this->resultOfThiefArray = array();
         foreach ($this->playerArray as $i) {
             $i->point = 0;
             $i->gameStartFlag = false;
