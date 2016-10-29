@@ -7,39 +7,64 @@
     <!--<link rel="stylesheet" href="normalize.css">-->
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-material-design.css">
+    <link rel="stylesheet" href="css/ripples.min.css">
     <script type="text/javascript" src="zinrou.js"></script>
     <script type="text/javascript" src="md5.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/ripples.min.js"></script>
+    <script type="text/javascript" src="js/material.js"></script>
 </head>
 <body>
+
+<script>
+    $.material.init();
+</script>
 
 <!-- Top -->
 <div id="top" class="state">
     <div><h1>ワンナイト人狼</h1></div>
 
-    <!--
-    <input type="button" id="btn_lobby" class="btn_main" value="村に参加">
-    <input type="button" id="btn_making" class="btn_main" value="村を作る">
-    -->
-    <button type="button" id="btn_lobby" class="btn_main btn btn-primary btn-lg">村に参加</button>
-    <button type="button" id="btn_making" class="btn_main">村を作る</button>
+    <button type="button" id="btn_lobby" class="btn btn-raised btn-primary btn_main">村に参加</button>
+    <button type="button" id="btn_making" class="btn btn-raised btn-primary btn_main">村を作る</button>
 </div>
 
 
 <!-- Making -->
 <div id ="making" class="state">
-    <div class="header">村名</div>
-    <input type="text" maxlength="20" id="txt_villageName" class="txt" placeholder="村名を入力してください">
-    <div class="header">パスワード（任意）</div>
-    <input type="text" maxlength="20" id="txt_villagePassword" class="txt" placeholder="パスワードを入力してください">
-    <div class="header">観戦者</div>
-    <div class="clearfix">
-        <input type="button" id="btn_spectatorYes" class="btn_spectator left" value="あり">
-        <input type="button" id="btn_spectatorNo" class="btn_spectator right" value="なし">
+    <!--
+    <div class="control-label header">村名</div>
+    <input type="text" maxlength="20" id="txt_villageName" class="form-control txt" placeholder="村名を入力してください">
+    -->
+
+    <div class="form-group">
+        <div>
+            <label class="control-label header">村名</label>
+        </div>
+        <input type="text" maxlength="20" id="txt_villageName" class="form-control txt" placeholder="村名を入力してください">
     </div>
-    <input type="button" id="btn_decideInMaking" class="btn_main" value="決定">
-    <input type="button" id="btn_backInMaking" class="btn_main" value="戻る">
+
+    <div class="form-group">
+        <div>
+            <label class="control-label header">パスワード</label>
+        </div>
+        <input type="text" maxlength="20" id="txt_villagePassword" class="form-control txt" placeholder="パスワードを入力してください">
+    </div>
+
+    <div class="header">観戦者</div>
+    <div class="togglebutton">
+    <label>
+    観戦モード
+    <input checked type="checkbox">
+    </label>
+    </div>
+    <div class="clearfix">
+        <button type="button" id="btn_spectatorYes" class="btn btn-raised btn-info btn_spectator left">あり</button>
+        <button type="button" id="btn_spectatorNo" class="btn btn-raised btn-info btn_spectator right">なし</button>
+    </div>
+    <button type="button" id="btn_decideInMaking" class="btn btn-raised btn-primary btn_main">決定</button>
+    <button type="button" id="btn_backInMaking" class="btn btn-raised btn-primary btn_main">戻る</button>
 </div>
 
 

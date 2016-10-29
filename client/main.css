@@ -25,7 +25,7 @@ h1 {
     margin: 40px auto;
 }
 
-.btn_main {
+div .btn_main {
     display: block;
     width: 100%;
     margin: 80px auto;
@@ -33,22 +33,29 @@ h1 {
     font-size: 4rem;
 }
 
-.header {
+input .btn_main {
+    display: block;
+    width: 100%;
+    margin: 80px auto;
+    padding: 30px 0;
+    font-size: 4rem;
+}
+
+.form-group div label.header {
     width: 100%;
     margin: 0 auto;
     font-size: 2rem;
     text-align: left;
 }
 
-.txt {
+div .txt {
     display: block;
     width: 100%;
     margin: 0 auto 50px;
-    padding: 10px 0;
     font-size: 3rem;
 }
 
-.btn_spectator {
+div .btn_spectator {
     display: inline-block;
     width: 40%;
     padding: 10px 0;
@@ -77,7 +84,7 @@ h1 {
     clear: both;
 }
 
-.btn_selection {
+div .btn_selection {
     display: block;
     width: 100%;
     margin: 0 0 20px;

@@ -1351,11 +1351,12 @@ function addVillage(messageArray) {
     villageName = messageArray['villageName'];
     var passwordFlag = messageArray['passwordFlag'];
     var box = document.getElementById('box_villageList');
-    var element = document.createElement('input');
+    var element = document.createElement('button');
     element.id = 'btn_village' + villageId;
-    element.className = 'btn_selection';
+    element.className = 'btn btn-raised btn-info btn_selection';
     element.type = 'button';
-    element.value = villageName;
+    //element.value = villageName;
+    element.innerHTML = villageName;
     var id = villageId;
     element.addEventListener('click', function(){clickSelectionInLobby(id, passwordFlag)}, false);
     box.appendChild(element);
