@@ -330,7 +330,7 @@ window.addEventListener('load',
         displayState(-1);
         var hostname = window.location.hostname;
         var wsUri = 'ws://' + hostname + ':9000';
-        websocket = new WebSocket(wsUri);
+        websocket = new ReconnectingWebSocket(wsUri);
 
         websocket.onopen = function(ev) {};
 
