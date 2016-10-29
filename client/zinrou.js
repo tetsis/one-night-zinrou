@@ -331,6 +331,7 @@ window.addEventListener('load',
         var hostname = window.location.hostname;
         var wsUri = 'ws://' + hostname + ':9000';
         websocket = new ReconnectingWebSocket(wsUri);
+        websocket.maxReconnectInterval = 10000;
 
         websocket.onopen = function(ev) {};
 
