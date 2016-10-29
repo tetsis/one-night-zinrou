@@ -8,3 +8,5 @@ $ git clone git@github.com:tetsis/one-night-zinrou.git
 $ cd one-night-zinrou
 $ ./deploy.sh
 ```
+
+
