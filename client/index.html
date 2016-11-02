@@ -26,8 +26,8 @@
 <div id="top" class="state">
     <div><h1>ワンナイト人狼</h1></div>
 
-    <button type="button" id="btn_lobby" class="btn btn-raised btn-primary btn_main">村に参加</button>
-    <button type="button" id="btn_making" class="btn btn-raised btn-primary btn_main">村を作る</button>
+    <button type="button" id="btn_lobby" class="btn btn-raised btn-default btn_main">村に参加</button>
+    <button type="button" id="btn_making" class="btn btn-raised btn-default btn_main">村を作る</button>
 </div>
 
 
@@ -39,22 +39,22 @@
     -->
 
         <div class="form-group">
-        <div class="header">村名</div>
-        <input type="text" maxlength="20" id="txt_villageName" class="form-control txt" placeholder="村名を入力してください">
+            <div class="header">村名</div>
+            <input type="text" maxlength="20" id="txt_villageName" class="form-control txt">
         </div>
 
         <div class="form-group">
-        <div class="header">パスワード</div>
-        <input type="text" maxlength="20" id="txt_villagePassword" class="form-control txt" placeholder="パスワードを入力してください">
+            <div class="header">パスワード</div>
+            <input type="text" maxlength="20" id="txt_villagePassword" class="form-control txt">
         </div>
 
     <div class="header">観戦者</div>
     <div class="clearfix">
-        <button type="button" id="btn_spectatorYes" class="btn btn-raised btn-info btn_spectator left">あり</button>
-        <button type="button" id="btn_spectatorNo" class="btn btn-raised btn-info btn_spectator right">なし</button>
+        <button type="button" id="btn_spectatorYes" class="btn btn-raised btn-default btn_spectator left">あり</button>
+        <button type="button" id="btn_spectatorNo" class="btn btn-raised btn-default btn_spectator right">なし</button>
     </div>
-    <button type="button" id="btn_decideInMaking" class="btn btn-raised btn-primary btn_main">決定</button>
-    <button type="button" id="btn_backInMaking" class="btn btn-raised btn-primary btn_main">戻る</button>
+    <button type="button" id="btn_decideInMaking" class="btn btn-raised btn-default btn_main">決定</button>
+    <button type="button" id="btn_backInMaking" class="btn btn-raised btn-default btn_main">戻る</button>
 </div>
 
 
@@ -62,20 +62,22 @@
 <div id ="lobby" class="state">
     <div class="header">村一覧</div>
     <div id="box_villageList" class="box_list"></div>
-    <input type="button" id="btn_updateInLobby" class="btn_main" value="更新">
-    <input type="button" id="btn_decideInLobby" class="btn_main" value="決定">
-    <input type="button" id="btn_backInLobby" class="btn_main" value="戻る">
+    <input type="button" id="btn_updateInLobby" class="btn btn-raised btn-default btn_main" value="更新">
+    <input type="button" id="btn_decideInLobby" class="btn btn-raised btn-default btn_main" value="決定">
+    <input type="button" id="btn_backInLobby" class="btn btn-raised btn-default btn_main" value="戻る">
 </div>
 
 
 <!-- Participation -->
 <div id="participation" class="state">
     <div id="scrn_villageNameInParticipation" class="header indention"></div>
-    <div class="header">あなたの名前</div>
-    <input type="text" maxlength="20" id="txt_participantName" class="txt" placeholder="あなたの名前を入力してください">
-    <input type="button" id="btn_participationAsPlayer" class="btn_main" value="プレイヤー参加">
-    <input type="button" id="btn_participationAsSpectator" class="btn_main" value="観戦者参加">
-    <input type="button" id="btn_backInParticipation" class="btn_main" value="戻る">
+    <div class="form-group">
+        <div class="header">あなたの名前</div>
+        <input type="text" maxlength="20" id="txt_participantName" class="form-control txt">
+    </div>
+    <input type="button" id="btn_participationAsPlayer" class="btn btn-raised btn-default btn_main" value="プレイヤー参加">
+    <input type="button" id="btn_participationAsSpectator" class="btn btn-raised btn-default btn_main" value="観戦者参加">
+    <input type="button" id="btn_backInParticipation" class="btn btn-raised btn-default btn_main" value="戻る">
 </div>
 
 
@@ -96,39 +98,39 @@
     <div class="header">村構成</div>
     <div class="table_setting">
         <div class="box_position table-cell">村人</div>
-        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfVillager" class="btn_operator" value="－"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfVillager" class="btn btn-raised btn-default btn_operator" value="－"></div>
         <div class="box_value table-cell"><div id="scrn_numberOfVillagerInWaiting"></div></div>
-        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfVillager" class="btn_operator" value="＋"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfVillager" class="btn btn-raised btn-default btn_operator" value="＋"></div>
     </div>
     <div class="table_setting">
         <div class="box_position table-cell">人狼</div>
-        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfWerewolf" class="btn_operator" value="－"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfWerewolf" class="btn btn-raised btn-default btn_operator" value="－"></div>
         <div class="box_value table-cell"><div id="scrn_numberOfWerewolfInWaiting"></div></div>
-        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfWerewolf" class="btn_operator" value="＋"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfWerewolf" class="btn btn-raised btn-default btn_operator" value="＋"></div>
     </div>
     <div class="table_setting">
         <div class="box_position table-cell">占い師</div>
-        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfFortuneteller" class="btn_operator" value="－"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfFortuneteller" class="btn btn-raised btn-default btn_operator" value="－"></div>
         <div class="box_value table-cell"><div id="scrn_numberOfFortunetellerInWaiting"></div></div>
-        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfFortuneteller" class="btn_operator" value="＋"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfFortuneteller" class="btn btn-raised btn-default btn_operator" value="＋"></div>
     </div>
     <div class="table_setting">
         <div class="box_position table-cell">怪盗</div>
-        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfThief" class="btn_operator" value="－"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfThief" class="btn btn-raised btn-default btn_operator" value="－"></div>
         <div class="box_value table-cell"><div id="scrn_numberOfThiefInWaiting"></div></div>
-        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfThief" class="btn_operator" value="＋"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfThief" class="btn btn-raised btn-default btn_operator" value="＋"></div>
     </div>
     <div class="table_setting">
         <div class="box_position table-cell">狂人</div>
-        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfMadman" class="btn_operator" value="－"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfMadman" class="btn btn-raised btn-default btn_operator" value="－"></div>
         <div class="box_value table-cell"><div id="scrn_numberOfMadmanInWaiting"></div></div>
-        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfMadman" class="btn_operator" value="＋"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfMadman" class="btn btn-raised btn-default btn_operator" value="＋"></div>
     </div>
     <div class="table_setting">
         <div class="box_position table-cell">てるてる</div>
-        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfHanging" class="btn_operator" value="－"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfNumberOfHanging" class="btn btn-raised btn-default btn_operator" value="－"></div>
         <div class="box_value table-cell"><div id="scrn_numberOfHangingInWaiting"></div></div>
-        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfHanging" class="btn_operator" value="＋"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfNumberOfHanging" class="btn btn-raised btn-default btn_operator" value="＋"></div>
     </div>
     <div class="table_left">
         <div class="box_position table-cell">残り</div>
@@ -139,13 +141,13 @@
     <div class="header">話し合い時間</div>
     <div class="table_setting">
         <div class="box_position table-cell"></div>
-        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfTalkingTime" class="btn_operator" value="－"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_decrementOfTalkingTime" class="btn btn-raised btn-default btn_operator" value="－"></div>
         <div class="box_value table-cell"><div id="scrn_talkingTimeInWaiting"></div></div>
-        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfTalkingTime" class="btn_operator" value="＋"></div>
+        <div class="box_operator table-cell"><input type="button" id="btn_incrementOfTalkingTime" class="btn btn-raised btn-default btn_operator" value="＋"></div>
     </div>
 
-    <input type="button" id="btn_gameStart" class="btn_main" value="ゲーム開始">
-    <input type="button" id="btn_backInWaiting" class="btn_main" value="村を出る">
+    <input type="button" id="btn_gameStart" class="btn btn-raised btn-default btn_main" value="ゲーム開始">
+    <input type="button" id="btn_backInWaiting" class="btn btn-raised btn-default btn_main" value="村を出る">
 </div>
 
 

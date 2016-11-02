@@ -1353,7 +1353,7 @@ function addVillage(messageArray) {
     var box = document.getElementById('box_villageList');
     var element = document.createElement('button');
     element.id = 'btn_village' + villageId;
-    element.className = 'btn btn-raised btn-info btn_selection';
+    element.className = 'btn btn-raised btn-default btn_selection';
     element.type = 'button';
     //element.value = villageName;
     element.innerHTML = villageName;
