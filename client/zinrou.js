@@ -1355,7 +1355,6 @@ function addVillage(messageArray) {
     element.id = 'btn_village' + villageId;
     element.className = 'btn btn-raised btn-default btn_selection';
     element.type = 'button';
-    //element.value = villageName;
     element.innerHTML = villageName;
     var id = villageId;
     element.addEventListener('click', function(){clickSelectionInLobby(id, passwordFlag)}, false);
@@ -1596,8 +1595,8 @@ function setTalkingTimeInWaiting(messageArray) {
 function setGameStart(messageArray) {
     console.log('ENTER: setGameStart, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
-    var trId = 'tr_playerListInWaiting' + id;
-    selectedElement(trId);
+    var elementId = 'tr_playerListInWaiting' + id;
+    selectedElement(elementId);
 }
 
 //役職の人数を更新
@@ -1879,8 +1878,8 @@ function initInDaytime(messageArray) {
     document.getElementById('box_extension').style.display = 'none';
     document.getElementById('btn_extension').disabled = false;
     document.getElementById('btn_confirmation').disabled = false;
-    document.getElementById('box_playerListInDaytime').textContent = null;
-    document.getElementById('box_spectatorListInDaytime').textContent = null;
+    document.getElementById('tbody_playerListInDaytime').textContent = null;
+    document.getElementById('tbody_spectatorListInDaytime').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
@@ -1910,12 +1909,14 @@ function setPlayerInDaytime(messageArray) {
     var name = messageArray['name'];
     var player = {id: id, name: name, position: -1};
     playerArray.push(player);
-    var box = document.getElementById('box_playerListInDaytime');
-    var element = document.createElement('div');
-    element.id = 'scrn_playerListInDaytime' + id;
-    element.className = 'box_main';
-    element.innerHTML = name;
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_playerListInDaytime');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_playerListInDaytime' + id;
+    td.className = 'table_main';
+    td.innerHTML = name;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 //観戦者を設定
@@ -1923,12 +1924,14 @@ function setSpectatorInDaytime(messageArray) {
     console.log('ENTER: setSpectatorInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
-    var box = document.getElementById('box_spectatorListInDaytime');
-    var element = document.createElement('div');
-    element.id = 'scrn_spectatorListInDaytime' + id;
-    element.className = 'box_main';
-    element.innerHTML = name;
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_spectatorListInDaytime');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_spectatorListInDaytime' + id;
+    td.className = 'table_main';
+    td.innerHTML = name;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 //役職の人数を設定
@@ -1954,7 +1957,7 @@ function setRemainingTimeInDaytime(messageArray) {
 function setTalksEnd(messageArray) {
     console.log('ENTER: setTalksEnd, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
-    var elementId = 'scrn_playerListInDaytime' + id;
+    var elementId = 'tr_playerListInDaytime' + id;
     selectedElement(elementId);
 }
 
@@ -2043,11 +2046,11 @@ function setPlayerInSelection(messageArray) {
     var id = messageArray['id'];
     var name = messageArray['name'];
     var box = document.getElementById('box_selectionInSelection');
-    var element = document.createElement('input');
+    var element = document.createElement('button');
     element.id = 'btn_selectionInSelection' + id;
-    element.className = 'btn_selection';
+    element.className = 'btn btn-raised btn-default btn_selection';
     element.type = 'button';
-    element.value = name;
+    element.innerHTML = name;
     element.addEventListener('click', function(){clickSelectionInSelection(id)}, false);
     box.appendChild(element);
 }

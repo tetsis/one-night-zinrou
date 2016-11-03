@@ -265,39 +265,141 @@
     <div class="header">参加者一覧</div>
     <div class="table">
         <div class="box_participant table-cell">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="table_head">プレイヤー</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_playerListInDaytime">
+                </tbody>
+            </table>
+            <!--
             <div class="box_head">プレイヤー</div>
             <div id="box_playerListInDaytime"></div>
+            -->
         </div>
         <div class="box_participant table-cell">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="table_head">観戦者</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_spectatorListInDaytime">
+                </tbody>
+            </table>
+            <!--
             <div class="box_head">観戦者</div>
             <div id="box_spectatorListInDaytime"></div>
+            -->
         </div>
     </div>
     <div class="header">村構成</div>
     <div class="table">
         <div class="box_position table-cell">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="table_head">役職</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="table_main">村人</td>
+                    </tr>
+                    <tr>
+                        <td class="table_main">占い師</td>
+                    </tr>
+                    <tr>
+                        <td class="table_main">狂人</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--
             <div class="box_head">役職</div>
             <div class="box_main">村人</div>
             <div class="box_main">占い師</div>
             <div class="box_main">狂人</div>
+            -->
         </div>
         <div class="box_number table-cell">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="table_head">人数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="scrn_numberOfVillagerInDaytime" class="table_main"></td>
+                    </tr>
+                    <tr>
+                        <td id="scrn_numberOfFortunetellerInDaytime" class="table_main"></td>
+                    </tr>
+                    <tr>
+                        <td id="scrn_numberOfMadmanInDaytime" class="table_main"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--
             <div class="box_head">人数</div>
             <div id="scrn_numberOfVillagerInDaytime" class="box_main"></div>
             <div id="scrn_numberOfFortunetellerInDaytime" class="box_main"></div>
             <div id="scrn_numberOfMadmanInDaytime" class="box_main"></div>
+            -->
         </div>
         <div class="box_position table-cell">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="table_head">役職</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="table_main">人狼</td>
+                    </tr>
+                    <tr>
+                        <td class="table_main">怪盗</td>
+                    </tr>
+                    <tr>
+                        <td class="table_main">てるてる</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--
             <div class="box_head">役職</div>
             <div class="box_main">人狼</div>
             <div class="box_main">怪盗</div>
             <div class="box_main">てるてる</div>
+            -->
         </div>
         <div class="box_number table-cell">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="table_head">人数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="scrn_numberOfWerewolfInDaytime" class="table_main"></td>
+                    </tr>
+                    <tr>
+                        <td id="scrn_numberOfThiefInDaytime" class="table_main"></td>
+                    </tr>
+                    <tr>
+                        <td id="scrn_numberOfHangingInDaytime" class="table_main"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--
             <div class="box_head">人数</div>
             <div id="scrn_numberOfWerewolfInDaytime" class="box_main"></div>
             <div id="scrn_numberOfThiefInDaytime" class="box_main"></div>
             <div id="scrn_numberOfHangingInDaytime" class="box_main"></div>
+            -->
         </div>
     </div>
     <input type="button" id="btn_talksEnd" class="btn btn-raised btn-default btn_main" value="話し合い終了">
