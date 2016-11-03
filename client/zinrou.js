@@ -1444,8 +1444,8 @@ function initInWaiting(messageArray) {
     attribute = messageArray['attribute'];
     id = messageArray['id'];
     document.getElementById('scrn_villageNameInWaiting').innerHTML = villageName + ' 村';
-    document.getElementById('box_playerListInWaiting').textContent = null;
-    document.getElementById('box_spectatorListInWaiting').textContent = null;
+    document.getElementById('tbody_playerListInWaiting').textContent = null;
+    document.getElementById('tbody_spectatorListInWaiting').textContent = null;
     switch (attribute) {
         case 'PLAYER':
             document.getElementById('btn_gameStart').disabled = false;
@@ -1492,8 +1492,9 @@ function displayByCessation(messageArray) {
 //参加者を追加
 function addParticipant(messageArray) {
     console.log('ENTER: addParticipant, messageArray: ' + JSON.stringify(messageArray));
-    var box = null;
-    var element;
+    var tbody = null;
+    var tr;
+    var td;
     var attribute = messageArray['attribute'];
     var id = messageArray['id'];
     var name = messageArray['name'];
@@ -1501,21 +1502,25 @@ function addParticipant(messageArray) {
         case 'PLAYER':
             var player = {id: id, name: name};
             playerArray.push(player);
-            box = document.getElementById('box_playerListInWaiting');
-            element = document.createElement('div');
-            element.id = 'scrn_playerListInWaiting' + id;
-            element.className = 'box_main';
-            element.innerHTML = name;
-            box.appendChild(element);
+            tbody = document.getElementById('tbody_playerListInWaiting');
+            tr = document.createElement('tr');
+            td = document.createElement('td');
+            tr.id = 'tr_playerListInWaiting' + id;
+            td.className = 'table_main';
+            td.innerHTML = name;
+            tr.appendChild(td);
+            tbody.appendChild(tr);
             updateNumberOfPosition();
             break;
         case 'SPECTATOR':
-            box = document.getElementById('box_spectatorListInWaiting');
-            element = document.createElement('div');
-            element.id = 'scrn_spectatorListInWaiting' + id;
-            element.className = 'box_main';
-            element.innerHTML = name;
-            box.appendChild(element);
+            tbody = document.getElementById('tbody_spectatorListInWaiting');
+            tr = document.createElement('tr');
+            td = document.createElement('td');
+            tr.id = 'tr_spectatorListInWaiting' + id;
+            td.className = 'table_main';
+            td.innerHTML = name;
+            tr.appendChild(td);
+            tbody.appendChild(tr);
             break;
     }
 }
@@ -1523,8 +1528,8 @@ function addParticipant(messageArray) {
 //参加者を削除
 function delParticipant(messageArray) {
     console.log('ENTER: delParticipant, messageArray: ' + JSON.stringify(messageArray));
-    var box;
-    var element;
+    var tbody;
+    var tr;
     var attribute = messageArray['attribute'];
     var id = messageArray['id'];
     switch (attribute) {
@@ -1538,20 +1543,20 @@ function delParticipant(messageArray) {
             }
             if (number != -1) {
                 playerArray.splice(number, 1);
-                box = document.getElementById('box_playerListInWaiting');
-                element = document.getElementById('scrn_playerListInWaiting' + id);
-                if (element != null) {
-                    box.removeChild(element);
+                tbody = document.getElementById('tbody_playerListInWaiting');
+                tr = document.getElementById('tr_playerListInWaiting' + id);
+                if (tr != null) {
+                    tbody.removeChild(tr);
                 }
                 updateNumberOfPosition();
             }
             break;
         case 'SPECTATOR':
-            box = document.getElementById('box_spectatorListInWaiting');
-            element = document.getElementById('scrn_spectatorListInWaiting' + id);
-            if (element != null) {
-                box.removeChild(element);
-            }
+                tbody = document.getElementById('tbody_spectatorListInWaiting');
+                tr = document.getElementById('tr_spectatorListInWaiting' + id);
+                if (tr != null) {
+                    tbody.removeChild(tr);
+                }
             break;
     }
 }
@@ -1591,8 +1596,8 @@ function setTalkingTimeInWaiting(messageArray) {
 function setGameStart(messageArray) {
     console.log('ENTER: setGameStart, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
-    var elementId = 'scrn_playerListInWaiting' + id;
-    selectedElement(elementId);
+    var trId = 'tr_playerListInWaiting' + id;
+    selectedElement(trId);
 }
 
 //役職の人数を更新
@@ -1782,10 +1787,10 @@ function setBuddyInNotification(messageArray) {
 function initInNight() {
     console.log('ENTER: initInNight');
     playerArray = [];
-    document.getElementById('box_playerListInNight').textContent = null;
-    document.getElementById('box_positionListInNight').textContent = null;
-    document.getElementById('box_resultOfFortunetellerInNight').textContent = null;
-    document.getElementById('box_resultOfThiefInNight').textContent = null;
+    document.getElementById('tbody_playerListInNight').textContent = null;
+    document.getElementById('tbody_positionListInNight').textContent = null;
+    document.getElementById('tbody_resultOfFortunetellerInNight').textContent = null;
+    document.getElementById('tbody_resultOfThiefInNight').textContent = null;
     //ローカルストレージに保存
     setStorageData(villageId, attribute, id);
 }
@@ -1805,18 +1810,24 @@ function setPositionOfPlayerInNight(messageArray) {
     var player = {id: id, name: name, position: position};
     playerArray.push(player);
     var positionString = getPositionNameInJapanese(position);
-    var box = document.getElementById('box_playerListInNight');
-    var element = document.createElement('div');
-    element.id = 'scrn_playerListInNight' + id;
-    element.className = 'box_main';
-    element.innerHTML = name;
-    box.appendChild(element);
-    box = document.getElementById('box_positionListInNight');
-    element = document.createElement('div');
-    element.id = 'scrn_positionListInNight' + id;
-    element.className = 'box_main';
-    element.innerHTML = positionString;
-    box.appendChild(element);
+
+    var tbody = document.getElementById('tbody_playerListInNight');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_playerListInNight' + id;
+    td.className = 'table_main';
+    td.innerHTML = name;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+
+    tbody = document.getElementById('tbody_positionListInNight');
+    tr = document.createElement('tr');
+    td = document.createElement('td');
+    tr.id = 'tr_positionListInNight' + id;
+    td.className = 'table_main';
+    td.innerHTML = positionString;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 //占い結果を設定
@@ -1824,12 +1835,14 @@ function setResultOfFortunetellerInNight(messageArray) {
     console.log('ENTER: setResultOfFortunetellerInNight, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
-    var box = document.getElementById('box_resultOfFortunetellerInNight');
-    var element = document.createElement('div');
-    element.id = 'scrn_resultOfFortunetellerInNight' + id;
-    element.className = 'box_main';
-    element.innerHTML = getResultOfFortunetellerString(id, selectionId);
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_resultOfFortunetellerInNight');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_resultOfFortunetellerInNight' + id;
+    td.className = 'table_main';
+    td.innerHTML = getResultOfFortunetellerString(id, selectionId);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 //交換結果を設定
@@ -1837,12 +1850,14 @@ function setResultOfThiefInNight(messageArray) {
     console.log('ENTER: setResultOfThiefInNight, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
-    var box = document.getElementById('box_resultOfThiefInNight');
-    var element = document.createElement('div');
-    element.id = 'scrn_resultOfThiefInNight' + id;
-    element.className = 'box_main';
-    element.innerHTML = getResultOfThiefString(id, selectionId);
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_resultOfThiefInNight');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_resultOfThiefInNight' + id;
+    td.className = 'table_main';
+    td.innerHTML = getResultOfThiefString(id, selectionId);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 
