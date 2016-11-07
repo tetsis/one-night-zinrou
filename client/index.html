@@ -97,7 +97,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="container box_participant table-cell">
+        <div class="box_participant table-cell">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -421,15 +421,56 @@
 <div id="execution" class="state">
     <div class="table">
         <div class="box_result table-cell">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th id="th_execution" class="table_head"></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_execution">
+                </tbody>
+            </table>
+        </div>
+        <!--
+        <div class="box_result table-cell">
             <div id="box_execution" class="box_head"></div>
             <div id="box_hangingInExecution"></div>
         </div>
+        -->
     </div>
+
+
+    <div class="table">
+        <div class="box_participant table-cell">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="table_head">プレイヤー</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_playerListInExecution">
+                </tbody>
+            </table>
+        </div>
+        <div class="box_participant table-cell">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="table_head">指名相手</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_hangingListInExecution">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--
     <div class="clearfix">
         <div class="box_participant box_head left">プレイヤー</div>
         <div class="box_participant box_head right">指名相手</div>
     </div>
     <div id="box_playerListInExecution"></div>
+    -->
     <input type="button" id="btn_result" class="btn btn-raised btn-default btn_main" value="結果発表へ">
 </div>
 

@@ -2061,8 +2061,9 @@ function setPlayerInSelection(messageArray) {
 function initInExecution(messageArray) {
     console.log('ENTER: initInExecution, messageArray: ' + JSON.stringify(messageArray));
     playerArray = [];
-    document.getElementById('box_hangingInExecution').textContent = null;
-    document.getElementById('box_playerListInExecution').textContent = null;
+    document.getElementById('tbody_hangingInExecution').textContent = null;
+    document.getElementById('tbody_playerListInExecution').textContent = null;
+    document.getElementById('tbody_hangingListInExecution').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
@@ -2074,27 +2075,30 @@ function initInExecution(messageArray) {
 function displayExecution() {
     console.log('ENTER: displayExecution');
     if (peaceFlag == true) {
-        document.getElementById('box_execution').innerHTML = '平和村';
+        document.getElementById('th_execution').innerHTML = '平和村';
     }
     else {
-        document.getElementById('box_execution').innerHTML = '吊られた人';
+        document.getElementById('th_execution').innerHTML = '吊られた人';
     }
     for (var i = 0; i < playerArray.length; i++) {
         var hangingName = getPlayer(playerArray[i].hangingId).name;
-        var box = document.getElementById('box_playerListInExecution');
-        var elementOfParent = document.createElement('div');
-        var elementOfSelf = document.createElement('div');
-        var elementOfHanging = document.createElement('div');
-        elementOfParent.className = "clearfix";
-        elementOfSelf.id = "scrn_playerInExecution" + playerArray[i].id;
-        elementOfSelf.className = "box_participant box_main left";
-        elementOfSelf.innerHTML = playerArray[i].name;
-        elementOfHanging.id = "scrn_hangingInExecution" + playerArray[i].id;
-        elementOfHanging.className = "box_participant box_main right";
-        elementOfHanging.innerHTML = hangingName;
-        elementOfParent.appendChild(elementOfSelf);
-        elementOfParent.appendChild(elementOfHanging);
-        box.appendChild(elementOfParent);
+        var tbody = document.getElementById('tbody_playerListInExecution');
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        tr.id = 'tr_playerListInExecution' + id;
+        td.className = 'table_main';
+        td.innerHTML = playerArray[i].name;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+
+        tbody = document.getElementById('tbody_hangingListInExecution');
+        tr = document.createElement('tr');
+        td = document.createElement('td');
+        tr.id = 'tr_hangingListInExecution' + id;
+        td.className = 'table_main';
+        td.innerHTML = hangingName;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
     }
     displayState('EXECUTION');
 }
@@ -2104,12 +2108,14 @@ function setHangingInExecution(messageArray) {
     console.log('ENTER: setHangingInExecution, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
-    var box = document.getElementById('box_hangingInExecution');
-    var element = document.createElement('div');
-    element.id = 'btn_hangingInExecution' + id;
-    element.className = "box_main";
-    element.innerHTML = name;
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_execution');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_execution' + id;
+    td.className = 'table_main';
+    td.innerHTML = name;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
     peaceFlag = false;
 }
 
