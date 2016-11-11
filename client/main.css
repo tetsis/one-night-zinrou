@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 html {
-    font-size: 62.5%;
 }
 
 *, *::before, *::after {
@@ -20,46 +19,43 @@ h1 {
     font-size: 3rem;
 }
 
+th {
+    padding: 5px 0;
+    font-size: 2rem;
+}
+
+td {
+    padding: 5px 0;
+    font-size: 3rem;
+}
+
 .state {
-    width: 80%;
+    width: 90%;
     margin: 40px auto;
-}
-
-.btn_main {
-    display: block;
-    width: 100%;
-    margin: 80px auto;
-    padding: 30px 0;
-    font-size: 4rem;
-}
-
-.btn_main {
-    display: block;
-    width: 100%;
-    margin: 80px auto;
-    padding: 30px 0;
-    font-size: 4rem;
 }
 
 .header {
     width: 100%;
     margin: 30px auto 0;
-    font-size: 2rem;
+    font-size: 3rem;
     text-align: left;
 }
 
-.txt {
+.btn_main {
     display: block;
     width: 100%;
-    height: auto;
-    font-size: 3rem;
+    margin: 80px auto;
+    padding: 30px 0;
+    font-size: 4rem;
+    text-transform: none;
 }
 
 .btn_spectator {
     display: inline-block;
-    width: 40%;
-    padding: 10px 0;
+    width: 100%;
+    padding: 10px;
     font-size: 3rem;
+    text-transform: none;
 }
 
 .btn_operator {
@@ -67,21 +63,7 @@ h1 {
     width: 100%;
     padding: 10px;
     font-size: 3rem;
-    text-align: center;
-}
-
-.left {
-    float: left;
-}
-
-.right {
-    float: right;
-}
-
-.clearfix::after {
-    content: '';
-    display: block;
-    clear: both;
+    text-transform: none;
 }
 
 .btn_selection {
@@ -90,36 +72,11 @@ h1 {
     margin: 0 0 20px;
     padding: 10px 0;
     font-size: 3rem;
+    text-transform: none;
 }
 
 .indention {
     margin: 0 0 40px;
-}
-
-
-.box_head {
-    padding: 5px 0;
-    font-size: 2rem;
-    background-color: LightGrey;
-    border: solid 2px Gray;
-}
-
-.box_main {
-    padding: 5px 0;
-    font-size: 3rem;
-    border-left: solid 2px Gray;
-    border-right: solid 2px Gray;
-    border-bottom: solid 2px Gray;
-}
-
-.table_head {
-    padding: 5px 0;
-    font-size: 2rem;
-}
-
-.table_main {
-    padding: 5px 0;
-    font-size: 3rem;
 }
 
 .box_remaining {
@@ -127,33 +84,10 @@ h1 {
     font-size: 3rem;
 }
 
-.table {
+.table_table {
     display: table;
     width: 100%;
-    margin: 0 auto 80px;
-}
-
-.table_setting {
-    display: table;
-    width: 100%;
-    margin: 0 0 20px;
-}
-
-.table_left {
-    display: table;
-    width: 100%;
-    margin: 30px 0;
-}
-
-.table_result {
-    display: table;
-    width: 100%;
-    margin: 0;
-}
-
-.box_side {
-    width: 100%;
-    margin: 0 auto 30px;
+    margin: 0 auto 20px;
 }
 
 .table-cell {
@@ -162,9 +96,23 @@ h1 {
     font-size: 3rem;
 }
 
+.table_left {
+    display: table;
+    width: 100%;
+    margin: 30px 0;
+}
+
+.box_side {
+    width: 100%;
+    margin: 0 auto 30px;
+}
+
 .box_participant {
-    vertical-align: top;
     width: 50%;
+}
+
+.box_top {
+    vertical-align: top;
 }
 
 .box_margin {
@@ -173,10 +121,6 @@ h1 {
 
 .box_position {
     width: 30%;
-}
-
-.box_result {
-    width: 100%;
 }
 
 .box_point {
@@ -197,6 +141,13 @@ h1 {
 
 .box_point {
     width: 50%;
+}
+
+.txt {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-size: 3rem;
 }
 
 .txt_right {
