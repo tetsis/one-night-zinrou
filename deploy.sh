@@ -5,15 +5,9 @@ DST_DIR="/var/www/html/one-night-zinrou/"
 mkdir tmp
 cp -rf client/* tmp/
 cd tmp
-<<<<<<< HEAD
 sed -i -e "s/^.*console\.log.*$//" *.js
-rm -f $DST_DIR/*
-cp -f * $DST_DIR
-=======
-#sed -i -e "s/^.*console\.log.*$//" *.js
 rm -rf $DST_DIR/*
 cp -rf * $DST_DIR
->>>>>>> design
 chown -R apache:apache $DST_DIR
 cd ..
 rm -rf tmp
