@@ -1352,11 +1352,11 @@ function addVillage(messageArray) {
     villageName = messageArray['villageName'];
     var passwordFlag = messageArray['passwordFlag'];
     var box = document.getElementById('box_villageList');
-    var element = document.createElement('input');
+    var element = document.createElement('button');
     element.id = 'btn_village' + villageId;
-    element.className = 'btn_selection';
+    element.className = 'btn btn-raised btn-default btn_selection';
     element.type = 'button';
-    element.value = villageName;
+    element.innerHTML = villageName;
     var id = villageId;
     element.addEventListener('click', function(){clickSelectionInLobby(id, passwordFlag)}, false);
     box.appendChild(element);
@@ -1444,8 +1444,8 @@ function initInWaiting(messageArray) {
     attribute = messageArray['attribute'];
     id = messageArray['id'];
     document.getElementById('scrn_villageNameInWaiting').innerHTML = villageName + ' 村';
-    document.getElementById('box_playerListInWaiting').textContent = null;
-    document.getElementById('box_spectatorListInWaiting').textContent = null;
+    document.getElementById('tbody_playerListInWaiting').textContent = null;
+    document.getElementById('tbody_spectatorListInWaiting').textContent = null;
     switch (attribute) {
         case 'PLAYER':
             document.getElementById('btn_gameStart').disabled = false;
@@ -1492,8 +1492,9 @@ function displayByCessation(messageArray) {
 //参加者を追加
 function addParticipant(messageArray) {
     console.log('ENTER: addParticipant, messageArray: ' + JSON.stringify(messageArray));
-    var box = null;
-    var element;
+    var tbody = null;
+    var tr;
+    var td;
     var attribute = messageArray['attribute'];
     var id = messageArray['id'];
     var name = messageArray['name'];
@@ -1501,21 +1502,23 @@ function addParticipant(messageArray) {
         case 'PLAYER':
             var player = {id: id, name: name};
             playerArray.push(player);
-            box = document.getElementById('box_playerListInWaiting');
-            element = document.createElement('div');
-            element.id = 'scrn_playerListInWaiting' + id;
-            element.className = 'box_main';
-            element.innerHTML = name;
-            box.appendChild(element);
+            tbody = document.getElementById('tbody_playerListInWaiting');
+            tr = document.createElement('tr');
+            td = document.createElement('td');
+            tr.id = 'tr_playerListInWaiting' + id;
+            td.innerHTML = name;
+            tr.appendChild(td);
+            tbody.appendChild(tr);
             updateNumberOfPosition();
             break;
         case 'SPECTATOR':
-            box = document.getElementById('box_spectatorListInWaiting');
-            element = document.createElement('div');
-            element.id = 'scrn_spectatorListInWaiting' + id;
-            element.className = 'box_main';
-            element.innerHTML = name;
-            box.appendChild(element);
+            tbody = document.getElementById('tbody_spectatorListInWaiting');
+            tr = document.createElement('tr');
+            td = document.createElement('td');
+            tr.id = 'tr_spectatorListInWaiting' + id;
+            td.innerHTML = name;
+            tr.appendChild(td);
+            tbody.appendChild(tr);
             break;
     }
 }
@@ -1523,8 +1526,8 @@ function addParticipant(messageArray) {
 //参加者を削除
 function delParticipant(messageArray) {
     console.log('ENTER: delParticipant, messageArray: ' + JSON.stringify(messageArray));
-    var box;
-    var element;
+    var tbody;
+    var tr;
     var attribute = messageArray['attribute'];
     var id = messageArray['id'];
     switch (attribute) {
@@ -1538,20 +1541,20 @@ function delParticipant(messageArray) {
             }
             if (number != -1) {
                 playerArray.splice(number, 1);
-                box = document.getElementById('box_playerListInWaiting');
-                element = document.getElementById('scrn_playerListInWaiting' + id);
-                if (element != null) {
-                    box.removeChild(element);
+                tbody = document.getElementById('tbody_playerListInWaiting');
+                tr = document.getElementById('tr_playerListInWaiting' + id);
+                if (tr != null) {
+                    tbody.removeChild(tr);
                 }
                 updateNumberOfPosition();
             }
             break;
         case 'SPECTATOR':
-            box = document.getElementById('box_spectatorListInWaiting');
-            element = document.getElementById('scrn_spectatorListInWaiting' + id);
-            if (element != null) {
-                box.removeChild(element);
-            }
+                tbody = document.getElementById('tbody_spectatorListInWaiting');
+                tr = document.getElementById('tr_spectatorListInWaiting' + id);
+                if (tr != null) {
+                    tbody.removeChild(tr);
+                }
             break;
     }
 }
@@ -1591,7 +1594,7 @@ function setTalkingTimeInWaiting(messageArray) {
 function setGameStart(messageArray) {
     console.log('ENTER: setGameStart, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
-    var elementId = 'scrn_playerListInWaiting' + id;
+    var elementId = 'tr_playerListInWaiting' + id;
     selectedElement(elementId);
 }
 
@@ -1699,17 +1702,17 @@ function displayAction() {
     //占い師と怪盗は選択ボタンの最後にボタンを追加
     if (((position == 'FORTUNETELLER') || (position == 'THIEF'))) {
         var box = document.getElementById('box_selectionInAction');
-        var element = document.createElement('input');
+        var element = document.createElement('button');
         var id = -1
         element.id = 'btn_selectionInAction' + id;
-        element.className = 'btn_selection';
+        element.className = 'btn btn-raised btn-default btn_selection';
         element.type = 'button';
         switch (position) {
             case 'FORTUNETELLER':
-                element.value = '場を占う';
+                element.innerHTML = '場を占う';
                 break;
             case 'THIEF':
-                element.value = '交換しない';
+                element.innerHTML = '交換しない';
                 break;
         }
         element.addEventListener('click', function(){clickSelectionInAction(id)}, false);
@@ -1724,11 +1727,11 @@ function setPlayerInAction(messageArray) {
     var id = messageArray['id'];
     var name = messageArray['name'];
     var box = document.getElementById('box_selectionInAction');
-    var element = document.createElement('input');
+    var element = document.createElement('button');
     element.id = 'btn_selectionInAction' + id;
-    element.className = 'btn_selection';
+    element.className = 'btn btn-raised btn-default btn_selection';
     element.type = 'button';
-    element.value = name;
+    element.innerHTML = name;
     element.addEventListener('click', function(){clickSelectionInAction(id)}, false);
     box.appendChild(element);
 }
@@ -1782,10 +1785,9 @@ function setBuddyInNotification(messageArray) {
 function initInNight() {
     console.log('ENTER: initInNight');
     playerArray = [];
-    document.getElementById('box_playerListInNight').textContent = null;
-    document.getElementById('box_positionListInNight').textContent = null;
-    document.getElementById('box_resultOfFortunetellerInNight').textContent = null;
-    document.getElementById('box_resultOfThiefInNight').textContent = null;
+    document.getElementById('tbody_playerListInNight').textContent = null;
+    document.getElementById('tbody_resultOfFortunetellerInNight').textContent = null;
+    document.getElementById('tbody_resultOfThiefInNight').textContent = null;
     //ローカルストレージに保存
     setStorageData(villageId, attribute, id);
 }
@@ -1805,18 +1807,17 @@ function setPositionOfPlayerInNight(messageArray) {
     var player = {id: id, name: name, position: position};
     playerArray.push(player);
     var positionString = getPositionNameInJapanese(position);
-    var box = document.getElementById('box_playerListInNight');
-    var element = document.createElement('div');
-    element.id = 'scrn_playerListInNight' + id;
-    element.className = 'box_main';
-    element.innerHTML = name;
-    box.appendChild(element);
-    box = document.getElementById('box_positionListInNight');
-    element = document.createElement('div');
-    element.id = 'scrn_positionListInNight' + id;
-    element.className = 'box_main';
-    element.innerHTML = positionString;
-    box.appendChild(element);
+
+    var tbody = document.getElementById('tbody_playerListInNight');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    td.innerHTML = name;
+    tr.appendChild(td);
+
+    td = document.createElement('td');
+    td.innerHTML = positionString;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 //占い結果を設定
@@ -1824,12 +1825,13 @@ function setResultOfFortunetellerInNight(messageArray) {
     console.log('ENTER: setResultOfFortunetellerInNight, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
-    var box = document.getElementById('box_resultOfFortunetellerInNight');
-    var element = document.createElement('div');
-    element.id = 'scrn_resultOfFortunetellerInNight' + id;
-    element.className = 'box_main';
-    element.innerHTML = getResultOfFortunetellerString(id, selectionId);
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_resultOfFortunetellerInNight');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_resultOfFortunetellerInNight' + id;
+    td.innerHTML = getResultOfFortunetellerString(id, selectionId);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 //交換結果を設定
@@ -1837,12 +1839,13 @@ function setResultOfThiefInNight(messageArray) {
     console.log('ENTER: setResultOfThiefInNight, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var selectionId = messageArray['selectionId'];
-    var box = document.getElementById('box_resultOfThiefInNight');
-    var element = document.createElement('div');
-    element.id = 'scrn_resultOfThiefInNight' + id;
-    element.className = 'box_main';
-    element.innerHTML = getResultOfThiefString(id, selectionId);
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_resultOfThiefInNight');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_resultOfThiefInNight' + id;
+    td.innerHTML = getResultOfThiefString(id, selectionId);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 
@@ -1864,8 +1867,8 @@ function initInDaytime(messageArray) {
     document.getElementById('box_extension').style.display = 'none';
     document.getElementById('btn_extension').disabled = false;
     document.getElementById('btn_confirmation').disabled = false;
-    document.getElementById('box_playerListInDaytime').textContent = null;
-    document.getElementById('box_spectatorListInDaytime').textContent = null;
+    document.getElementById('tbody_playerListInDaytime').textContent = null;
+    document.getElementById('tbody_spectatorListInDaytime').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
@@ -1895,12 +1898,13 @@ function setPlayerInDaytime(messageArray) {
     var name = messageArray['name'];
     var player = {id: id, name: name, position: -1};
     playerArray.push(player);
-    var box = document.getElementById('box_playerListInDaytime');
-    var element = document.createElement('div');
-    element.id = 'scrn_playerListInDaytime' + id;
-    element.className = 'box_main';
-    element.innerHTML = name;
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_playerListInDaytime');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_playerListInDaytime' + id;
+    td.innerHTML = name;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 //観戦者を設定
@@ -1908,12 +1912,13 @@ function setSpectatorInDaytime(messageArray) {
     console.log('ENTER: setSpectatorInDaytime, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
-    var box = document.getElementById('box_spectatorListInDaytime');
-    var element = document.createElement('div');
-    element.id = 'scrn_spectatorListInDaytime' + id;
-    element.className = 'box_main';
-    element.innerHTML = name;
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_spectatorListInDaytime');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_spectatorListInDaytime' + id;
+    td.innerHTML = name;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 //役職の人数を設定
@@ -1939,7 +1944,7 @@ function setRemainingTimeInDaytime(messageArray) {
 function setTalksEnd(messageArray) {
     console.log('ENTER: setTalksEnd, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
-    var elementId = 'scrn_playerListInDaytime' + id;
+    var elementId = 'tr_playerListInDaytime' + id;
     selectedElement(elementId);
 }
 
@@ -2028,11 +2033,11 @@ function setPlayerInSelection(messageArray) {
     var id = messageArray['id'];
     var name = messageArray['name'];
     var box = document.getElementById('box_selectionInSelection');
-    var element = document.createElement('input');
+    var element = document.createElement('button');
     element.id = 'btn_selectionInSelection' + id;
-    element.className = 'btn_selection';
+    element.className = 'btn btn-raised btn-default btn_selection';
     element.type = 'button';
-    element.value = name;
+    element.innerHTML = name;
     element.addEventListener('click', function(){clickSelectionInSelection(id)}, false);
     box.appendChild(element);
 }
@@ -2043,8 +2048,8 @@ function setPlayerInSelection(messageArray) {
 function initInExecution(messageArray) {
     console.log('ENTER: initInExecution, messageArray: ' + JSON.stringify(messageArray));
     playerArray = [];
-    document.getElementById('box_hangingInExecution').textContent = null;
-    document.getElementById('box_playerListInExecution').textContent = null;
+    document.getElementById('tbody_execution').textContent = null;
+    document.getElementById('tbody_playerListInExecution').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
@@ -2056,27 +2061,23 @@ function initInExecution(messageArray) {
 function displayExecution() {
     console.log('ENTER: displayExecution');
     if (peaceFlag == true) {
-        document.getElementById('box_execution').innerHTML = '平和村';
+        document.getElementById('th_execution').innerHTML = '平和村';
     }
     else {
-        document.getElementById('box_execution').innerHTML = '吊られた人';
+        document.getElementById('th_execution').innerHTML = '吊られた人';
     }
     for (var i = 0; i < playerArray.length; i++) {
         var hangingName = getPlayer(playerArray[i].hangingId).name;
-        var box = document.getElementById('box_playerListInExecution');
-        var elementOfParent = document.createElement('div');
-        var elementOfSelf = document.createElement('div');
-        var elementOfHanging = document.createElement('div');
-        elementOfParent.className = "clearfix";
-        elementOfSelf.id = "scrn_playerInExecution" + playerArray[i].id;
-        elementOfSelf.className = "box_participant box_main left";
-        elementOfSelf.innerHTML = playerArray[i].name;
-        elementOfHanging.id = "scrn_hangingInExecution" + playerArray[i].id;
-        elementOfHanging.className = "box_participant box_main right";
-        elementOfHanging.innerHTML = hangingName;
-        elementOfParent.appendChild(elementOfSelf);
-        elementOfParent.appendChild(elementOfHanging);
-        box.appendChild(elementOfParent);
+        var tbody = document.getElementById('tbody_playerListInExecution');
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        td.innerHTML = playerArray[i].name;
+        tr.appendChild(td);
+
+        td = document.createElement('td');
+        td.innerHTML = hangingName;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
     }
     displayState('EXECUTION');
 }
@@ -2086,12 +2087,13 @@ function setHangingInExecution(messageArray) {
     console.log('ENTER: setHangingInExecution, messageArray: ' + JSON.stringify(messageArray));
     var id = messageArray['id'];
     var name = messageArray['name'];
-    var box = document.getElementById('box_hangingInExecution');
-    var element = document.createElement('div');
-    element.id = 'btn_hangingInExecution' + id;
-    element.className = "box_main";
-    element.innerHTML = name;
-    box.appendChild(element);
+    var tbody = document.getElementById('tbody_execution');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    tr.id = 'tr_execution' + id;
+    td.innerHTML = name;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
     peaceFlag = false;
 }
 
@@ -2112,13 +2114,13 @@ function initInResult(messageArray) {
     playerArray = [];
     resultOfFortunetellerArray = [];
     resultOfThiefArray = [];
-    document.getElementById('box_resultOfVillager').textContent = null;
-    document.getElementById('box_resultOfFortuneteller').textContent = null;
-    document.getElementById('box_resultOfThief').textContent = null;
-    document.getElementById('box_resultOfWerewolf').textContent = null;
-    document.getElementById('box_resultOfMadman').textContent = null;
-    document.getElementById('box_resultOfHanging').textContent = null;
-    document.getElementById('box_pointList').textContent = null;
+    document.getElementById('tbody_villagerListInResult').textContent = null;
+    document.getElementById('tbody_fortunetellerListInResult').textContent = null;
+    document.getElementById('tbody_theifListInResult').textContent = null;
+    document.getElementById('tbody_werewolfListInResult').textContent = null;
+    document.getElementById('tbody_madmanListInResult').textContent = null;
+    document.getElementById('tbody_hangingListInResult').textContent = null;
+    document.getElementById('tbody_pointList').textContent = null;
     villageId = messageArray['villageId'];
     attribute = messageArray['attribute'];
     id = messageArray['id'];
@@ -2165,60 +2167,58 @@ function displayResult() {
     console.log('ENTER: displayResult');
     for (var i = 0; i < playerArray.length; i++) {
         var hangingName = getPlayer(playerArray[i].hangingId).name;
-        var box;
-        var elementOfParent = document.createElement('div');
-        var elementOfSelf = document.createElement('div');
-        var elementOfHanging = document.createElement('div');
+        var tbody;
+        var tr;
+        var td;
         switch (playerArray[i].position) {
             case "VILLAGER":
-                box = document.getElementById('box_resultOfVillager');
+                tbody = document.getElementById('tbody_villagerListInResult');
                 document.getElementById('box_villagerSide').style.display = 'block';
                 document.getElementById('box_villager').style.display = 'block';
                 break;
             case "WEREWOLF":
-                box = document.getElementById('box_resultOfWerewolf');
+                tbody = document.getElementById('tbody_werewolfListInResult');
                 document.getElementById('box_werewolfSide').style.display = 'block';
                 document.getElementById('box_werewolf').style.display = 'block';
                 break;
             case "FORTUNETELLER":
-                box = document.getElementById('box_resultOfFortuneteller');
+                tbody = document.getElementById('tbody_fortunetellerListInResult');
                 document.getElementById('box_villagerSide').style.display = 'block';
                 document.getElementById('box_fortuneteller').style.display = 'block';
                 break;
             case "THIEF":
-                box = document.getElementById('box_resultOfThief');
+                tbody = document.getElementById('tbody_theifListInResult');
                 document.getElementById('box_villagerSide').style.display = 'block';
                 document.getElementById('box_thief').style.display = 'block';
                 break;
             case "MADMAN":
-                box = document.getElementById('box_resultOfMadman');
+                tbody = document.getElementById('tbody_madmanListInResult');
                 document.getElementById('box_werewolfSide').style.display = 'block';
                 document.getElementById('box_madman').style.display = 'block';
                 break;
             case "HANGING":
-                box = document.getElementById('box_resultOfHanging');
+                tbody = document.getElementById('tbody_hangingListInResult');
                 document.getElementById('box_hangingSide').style.display = 'block';
                 break;
         }
-        elementOfParent.className = "clearfix";
-        elementOfSelf.id = "scrn_playerInResult" + playerArray[i].id;
-        elementOfSelf.className = "box_participant box_main left";
-        elementOfSelf.innerHTML = playerArray[i].name;
-        elementOfHanging.id = "scrn_hangingInResult" + playerArray[i].id;
-        elementOfHanging.className = "box_participant box_main right";
-        elementOfHanging.innerHTML = hangingName;
-        elementOfParent.appendChild(elementOfSelf);
-        elementOfParent.appendChild(elementOfHanging);
-        box.appendChild(elementOfParent);
+        tr = document.createElement('tr');
+        td = document.createElement('td');
+        td.innerHTML = playerArray[i].name;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.innerHTML = hangingName;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+
         switch (playerArray[i].position) {
             case "FORTUNETELLER":
                 var flag = false;
-                var elementOfResult = document.createElement('div');
-                elementOfResult.id = 'scrn_resultOfFortunetellerInResult' + playerArray[i].id;
-                elementOfResult.className = 'box_result box_main';
+                tr = document.createElement('tr');
+                td = document.createElement('td');
+                td.colSpan = 2;
                 for (var j = 0; j < resultOfFortunetellerArray.length; j++) {
                     if (playerArray[i].id == resultOfFortunetellerArray[j].id) {
-                        elementOfResult.innerHTML = getResultOfFortunetellerString(resultOfFortunetellerArray[j].id, resultOfFortunetellerArray[j].selectionId);
+                        td.innerHTML = getResultOfFortunetellerString(resultOfFortunetellerArray[j].id, resultOfFortunetellerArray[j].selectionId);
                         flag = true;
                         break;
                     }
@@ -2228,7 +2228,7 @@ function displayResult() {
                         if (playerArray[i].id == resultOfThiefArray[j].id) {
                             for (var k = 0; k < resultOfFortunetellerArray.length; k++) {
                                 if (resultOfThiefArray[j].selectionId == resultOfFortunetellerArray[k].id) {
-                                    elementOfResult.innerHTML = getResultOfFortunetellerString(resultOfFortunetellerArray[k].id, resultOfFortunetellerArray[k].selectionId);
+                                    td.innerHTML = getResultOfFortunetellerString(resultOfFortunetellerArray[k].id, resultOfFortunetellerArray[k].selectionId);
                                     break;
                                 }
                             }
@@ -2236,16 +2236,17 @@ function displayResult() {
                         }
                     }
                 }
-                box.appendChild(elementOfResult);
+                tr.appendChild(td);
+                tbody.appendChild(tr);
                 break;
             case "THIEF":
-                var elementOfResult = document.createElement('div');
-                elementOfResult.id = 'scrn_resultOfThiefInResult' + playerArray[i].id;
-                elementOfResult.className = 'box_result box_main';
+                tr = document.createElement('tr');
+                td = document.createElement('td');
+                td.colSpan = 2;
                 var flag = false;
                 for (var j = 0; j < resultOfThiefArray.length; j++) {
                     if (playerArray[i].id == resultOfThiefArray[j].id) {
-                        elementOfResult.innerHTML = getResultOfThiefString(resultOfThiefArray[j].id, resultOfThiefArray[j].selectionId);
+                        td.innerHTML = getResultOfThiefString(resultOfThiefArray[j].id, resultOfThiefArray[j].selectionId);
                         flag = true;
                         break;
                     }
@@ -2253,12 +2254,13 @@ function displayResult() {
                 if (flag == false) {
                     for (var j = 0; j < resultOfThiefArray.length; j++) {
                         if (playerArray[i].id == resultOfThiefArray[j].selectionId) {
-                            elementOfResult.innerHTML = getResultOfThiefString(resultOfThiefArray[j].id, resultOfThiefArray[j].selectionId);
+                            td.innerHTML = getResultOfThiefString(resultOfThiefArray[j].id, resultOfThiefArray[j].selectionId);
                             break;
                         }
                     }
                 }
-                box.appendChild(elementOfResult);
+                tr.appendChild(td);
+                tbody.appendChild(tr);
                 break;
         }
     }
@@ -2290,20 +2292,17 @@ function setResultOfPlayerInResult(messageArray) {
     var earningPoint = messageArray['earningPoint'];
     var player = {id: id, name: name, position: position, hangingId: hangingId, point: point, earningPoint: earningPoint};
     playerArray.push(player);
-    var box = document.getElementById('box_pointList');
-    var elementOfParent = document.createElement('div');
-    var elementOfPlayer = document.createElement('div');
-    var elementOfPoint = document.createElement('div');
-    elementOfParent.className = "clearfix";
-    elementOfPlayer.id = "scrn_playerInPointList" + id;
-    elementOfPlayer.className = "box_participant box_main left";
-    elementOfPlayer.innerHTML = name;
-    elementOfPoint.id = "scrn_pointInPointList" + point;
-    elementOfPoint.className = "box_participant box_main right txt_right";
-    elementOfPoint.innerHTML = point + " (" + earningPoint + ")";
-    elementOfParent.appendChild(elementOfPlayer);
-    elementOfParent.appendChild(elementOfPoint);
-    box.appendChild(elementOfParent);
+
+    var tbody = document.getElementById('tbody_pointList');
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    td.innerHTML = name;
+    tr.appendChild(td);
+    td = document.createElement('td');
+    td.className = 'txt_right';
+    td.innerHTML = point + " (" + earningPoint + ")";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
 }
 
 //占い結果を表示
