@@ -2061,7 +2061,7 @@ function setPlayerInSelection(messageArray) {
 function initInExecution(messageArray) {
     console.log('ENTER: initInExecution, messageArray: ' + JSON.stringify(messageArray));
     playerArray = [];
-    document.getElementById('tbody_hangingInExecution').textContent = null;
+    document.getElementById('tbody_execution').textContent = null;
     document.getElementById('tbody_playerListInExecution').textContent = null;
     document.getElementById('tbody_hangingListInExecution').textContent = null;
     villageId = messageArray['villageId'];
